@@ -222,7 +222,7 @@
     <h3 style="margin:0; color:var(--brand-red); display:flex; justify-content:space-between;">
         🏁 RACE DIRECTOR <span onclick="toggleAdmin()" style="cursor:pointer; color:white;">&times;</span>
     </h3>
-    <p style="font-size:11px; margin:5px 0; color:#aaa;">Enter Race Results to score points.</p>
+    <p style="font-size:11px; margin:5px 0; color:#aaa;">Enter Race Results to calculate scores.</p>
     <textarea id="adminResults" class="admin-input" rows="5" placeholder="Events (comma separated)"></textarea>
     <button class="admin-btn" onclick="calculateScore()">CALCULATE POINTS</button>
 </div>
@@ -230,6 +230,7 @@
 <div class="race-bar" id="raceBar"></div>
 
 <div class="main-stage">
+    
     <div class="panel">
         <div class="panel-header">Components</div>
         <div class="pool-container">
@@ -244,11 +245,12 @@
     </div>
 
     <div class="active-panel" id="mainPanel">
+        
         <div id="view-login" class="view-login">
             <h1 style="font-style:italic;">TEAM PRINCIPAL LOGIN</h1>
             <input type="text" id="teamNameInput" class="login-input" placeholder="Team Name (e.g. McLaren Boys)">
             <button class="login-btn" onclick="login()">Enter Paddock</button>
-            <div id="loginStatus" style="margin-top:10px; font-size:10px; color:#999;"></div>
+            <div id="loginStatus" style="margin-top:10px; font-size:10px; color:#999; min-height:15px;"></div>
         </div>
 
         <div id="view-strategy" class="view-strategy hidden">
@@ -304,8 +306,6 @@
 
 <script>
     // --- APP LOGIC ---
-    // 1. Check if Firebase exists (window.firebase)
-    // 2. If yes, try init. If no, or if init fails, run Offline Mode.
 
     const firebaseConfig = {
         apiKey: "YOUR_API_KEY",
@@ -320,6 +320,12 @@
     let isOffline = true;
 
     function initFirebase() {
+        if (firebaseConfig.apiKey === "YOUR_API_KEY") {
+            console.warn("No API Key Detected. Forcing Offline Mode.");
+            isOffline = true;
+            return;
+        }
+        
         if (window.firebase) {
             try {
                 firebase.initializeApp(firebaseConfig);
@@ -328,10 +334,8 @@
                 isOffline = false;
                 console.log("Firebase Initialized");
             } catch (e) {
-                console.warn("Firebase Init Failed (Check Keys). Running Offline.");
+                console.warn("Firebase Init Failed. Running Offline.");
             }
-        } else {
-            console.warn("Firebase SDK not loaded. Running Offline.");
         }
     }
 
@@ -375,7 +379,7 @@
             poolData = await res.json();
         } catch(e) {
             console.error("Data.json Missing. Using Fallback.");
-            poolData = { driver: ["Data Error"], team: [], tech: [], chaos: [] };
+            poolData = { driver: ["Check data.json"], team: [], tech: [], chaos: [] };
         }
         
         renderRaces();
@@ -383,7 +387,6 @@
         const saved = localStorage.getItem('f1_team_name');
         if(saved) {
             document.getElementById('teamNameInput').value = saved;
-            // Auto-login logic would go here, but let's force button click for safety
         }
         switchState('login');
     }
@@ -398,7 +401,7 @@
     // --- LOGIN ---
     function login() {
         const name = document.getElementById('teamNameInput').value;
-        if(!name) return alert("Enter Team Name");
+        if(!name) { alert("Enter Team Name"); return; }
         
         currentUser = { name, id: name.replace(/\s+/g, '_').toLowerCase() };
         localStorage.setItem('f1_team_name', name);
@@ -536,7 +539,7 @@
         });
     }
 
-    // --- ADMIN ---
+    // --- ADMIN / SCORING ---
     function toggleAdmin() {
         isAdminOpen = !isAdminOpen;
         document.getElementById('adminPanel').style.display = isAdminOpen ? 'flex' : 'none';
