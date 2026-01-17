@@ -74,13 +74,27 @@
 
         .view-game { width: 100%; height: 100%; display: flex; flex-direction: column; }
         .bingo-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; width: 100%; aspect-ratio: 1/1; margin: 0 auto; max-height: 550px; }
-        .slot { background: #fafafa; border: 2px dashed #ddd; border-radius: 8px; display: flex; align-items: center; justify-content: center; text-align: center; padding: 4px; font-size: 11px; font-weight: 700; position: relative; user-select: none; }
-        .slot.filled { border: none; color: white !important; box-shadow: 0 4px 8px rgba(0,0,0,0.15); }
+        
+        /* SLOT STYLING - COLOR LOCKS RESTORED */
+        .slot { 
+            background: #fafafa; border: 2px dashed #ddd; border-radius: 8px; 
+            display: flex; align-items: center; justify-content: center; text-align: center; 
+            padding: 4px; font-size: 11px; font-weight: 700; position: relative; user-select: none; 
+        }
+        
+        /* Empty Slot Color Hints */
+        .slot[data-req="driver"] { background: #fff8e1; border-color: var(--c-driver); color: var(--c-driver); opacity: 0.7; }
+        .slot[data-req="team"] { background: #e0f2f1; border-color: var(--c-team); color: var(--c-team); opacity: 0.7; }
+        .slot[data-req="tech"] { background: #e3f2fd; border-color: var(--c-tech); color: var(--c-tech); opacity: 0.7; }
+        .slot[data-req="chaos"] { background: #fff5f5; border-color: var(--c-chaos); color: var(--c-chaos); opacity: 0.7; }
+
+        /* Filled Slot */
+        .slot.filled { border: none; color: white !important; box-shadow: 0 4px 8px rgba(0,0,0,0.15); opacity: 1; }
         .slot.filled[data-type="driver"] { background: var(--c-driver); }
         .slot.filled[data-type="team"] { background: var(--c-team); }
         .slot.filled[data-type="tech"] { background: var(--c-tech); }
         .slot.filled[data-type="chaos"] { background: var(--c-chaos); }
-        .slot.center { background: linear-gradient(135deg, #222, #000); color: var(--brand-red); border:none; font-size: 14px; text-transform: uppercase; }
+        .slot.center { background: linear-gradient(135deg, #222, #000) !important; color: var(--brand-red) !important; border:none; font-size: 14px; text-transform: uppercase; }
         .slot.matched::after { content: '✓'; position: absolute; top: -8px; right: -8px; background: var(--score-win); color: black; border-radius: 50%; width: 20px; height: 20px; display: flex; align-items: center; justify-content: center; font-weight: bold; }
 
         /* ADMIN */
@@ -89,6 +103,7 @@
         .admin-item { display: flex; align-items: center; gap: 10px; padding: 8px; background: #333; cursor: pointer; font-size: 11px; }
         .admin-item.checked { background: var(--brand-red); color: white; }
         
+        /* UTILS */
         .leaderboard { flex: 1; overflow-y: auto; padding: 10px; }
         .lb-row { display: flex; justify-content: space-between; padding: 8px; border-bottom: 1px solid #f0f0f0; font-size: 12px; }
     </style>
@@ -196,14 +211,10 @@
         currentUser = name;
         localStorage.setItem('f1_team_name', name);
         document.getElementById('displayTeamName').innerText = name.toUpperCase();
-        
-        // Populate leaderboard with mock data since we are offline
-        const mockBoard = [
-            {name: name, score: 0},
-            {name: "Max V.", score: 150},
-            {name: "Lewis H.", score: 140}
-        ];
-        renderLeaderboard(mockBoard);
+        document.getElementById('connectionDot').style.background = "#e10600"; // Offline color
+
+        // Mock Leaderboard
+        renderLeaderboard([{name: name, score: 0}, {name: "Max V.", score: 150}, {name: "Lewis H.", score: 140}]);
 
         checkLocalGrid();
     }
@@ -251,7 +262,7 @@
         const pattern = templates[type];
         currentGrid = pattern.map(t => t === 'FREE' ? { text:"LIGHTS OUT", type:"FREE" } : null);
         
-        // Initialize Empty Slots
+        // Initialize Empty Grid with Requirements
         const grid = document.getElementById('grid');
         grid.innerHTML = '';
         pattern.forEach((reqType, i) => {
@@ -260,7 +271,8 @@
             if(reqType === 'FREE') {
                 slot.className = 'slot center'; slot.innerText = "LIGHTS OUT";
             } else {
-                slot.className = 'slot'; slot.dataset.req = reqType;
+                slot.className = 'slot'; 
+                slot.dataset.req = reqType; // THIS ENABLES COLOR LOCK
                 slot.ondragover = e => e.preventDefault();
                 slot.ondrop = e => handleDrop(e, i, reqType);
                 slot.onclick = () => { currentGrid[i] = null; renderGrid(); };
@@ -312,15 +324,18 @@
             const data = currentGrid[idx];
             s.classList.remove('matched');
             
-            if(data) {
+            // Re-apply Requirement Styling if empty
+            if (!data) {
+                s.className = 'slot';
+                s.innerText = '';
+                delete s.dataset.type;
+                // Important: We need to know the requirement from the template.
+                // For simplicity, we rely on the DOM state `dataset.req` which persists.
+            } else {
                 s.innerText = data.text;
                 s.className = `slot filled`;
                 s.dataset.type = data.type;
                 if(verifiedResults.includes(data.text)) s.classList.add('matched');
-            } else {
-                s.innerText = '';
-                s.className = 'slot';
-                delete s.dataset.type;
             }
         });
         const center = document.querySelector('.slot.center');
@@ -379,7 +394,7 @@
             if(i === 12) { score += 10; return; }
             if(item && verifiedResults.includes(item.text)) score += 10;
         });
-        document.getElementById('scoreDisplay').innerText = `Race Score: ${score} pts`;
+        document.getElementById('scoreDisplay').innerText = `Score: ${score}`;
     }
 
     function saveLocal() {
