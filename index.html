@@ -11,10 +11,10 @@
         :root {
             --brand-red: #e10600; --brand-dark: #15151e; --bg-body: #f4f4f8;
             --card-shadow: 0 4px 15px rgba(0,0,0,0.08);
-            /* Updated Colors (No Tech) */
+            /* Colors */
             --c-driver: #ff9500; 
             --c-team: #00d2be; 
-            --c-chaos: #e10600;
+            --c-chaos: #e10600; /* Maps to FIA events */
             --score-win: #39ff14; 
         }
         body { font-family: 'Titillium Web', sans-serif; background: var(--bg-body); color: var(--brand-dark); margin: 0; height: 100vh; display: flex; flex-direction: column; overflow: hidden; }
@@ -46,6 +46,7 @@
         
         .helmet-icon { width: 28px; height: 28px; background: var(--team-color); border-radius: 50% 50% 10% 10%; border: 2px solid #333; position: relative; box-shadow: 0 2px 4px rgba(0,0,0,0.2); }
         .helmet-icon::after { content: ''; position: absolute; top: 8px; left: 2px; right: 2px; height: 8px; background: rgba(0,0,0,0.6); border-radius: 2px; }
+        /* FIA OVERRIDE */
         .driver-header[data-team="FIA"] .helmet-icon { border-radius: 4px; background: #333; }
         .driver-header[data-team="FIA"] .helmet-icon::after { display: none; }
         .driver-header[data-team="FIA"] .helmet-icon::before { content: '🏁'; position: absolute; top: 2px; left: 4px; font-size: 16px; }
@@ -66,49 +67,27 @@
 
         .chip { padding: 8px 10px; background: white; border: 1px solid #ddd; border-radius: 4px; font-size: 11px; font-weight: 700; cursor: grab; text-align: left; border-left-width: 5px; border-left-style: solid; transition: 0.1s; }
         .chip:hover { transform: translateX(3px); box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+        
+        /* CHIP COLORS */
         .chip.driver { border-left-color: var(--c-driver); }
         .chip.team { border-left-color: var(--c-team); }
         .chip.chaos { border-left-color: var(--c-chaos); }
 
-        /* CENTER GRID - STRICT 1:1 SIZING */
+        /* CENTER GRID */
         .active-panel { background: white; border-radius: 12px; border: 1px solid #e0e0e0; padding: 20px; display: flex; flex-direction: column; align-items: center; justify-content: center; position: relative; overflow: hidden; height: 100%; }
+        .bingo-grid { display: grid; grid-template-columns: repeat(5, 1fr); grid-template-rows: repeat(5, 1fr); gap: 10px; width: 100%; aspect-ratio: 1/1; max-height: 600px; }
         
-        .bingo-grid { 
-            display: grid; 
-            grid-template-columns: repeat(5, 1fr); 
-            grid-template-rows: repeat(5, 1fr); 
-            gap: 10px; 
-            width: 100%; 
-            aspect-ratio: 1/1; /* FORCES SQUARE */
-            max-height: 600px; 
-        }
-        
-        .slot { 
-            background: #fafafa; border: 2px dashed #ddd; border-radius: 8px; 
-            display: flex; align-items: center; justify-content: center; text-align: center; 
-            padding: 5px; font-size: 11px; font-weight: 700; position: relative; user-select: none;
-            transition: 0.2s; width: 100%; height: 100%; 
-            box-sizing: border-box;
-        }
+        .slot { background: #fafafa; border: 2px dashed #ddd; border-radius: 8px; display: flex; align-items: center; justify-content: center; text-align: center; padding: 5px; font-size: 11px; font-weight: 700; position: relative; user-select: none; transition: 0.2s; width: 100%; height: 100%; box-sizing: border-box; }
         .slot[data-req="driver"] { background: #fff8e6; border-color: var(--c-driver); color: var(--c-driver); opacity: 0.8; }
         .slot[data-req="team"] { background: #e0fbf8; border-color: var(--c-team); color: var(--c-team); opacity: 0.8; }
         .slot[data-req="chaos"] { background: #fff2f2; border-color: var(--c-chaos); color: var(--c-chaos); opacity: 0.8; }
 
-        .slot.filled { 
-            border: none !important; color: white !important; 
-            box-shadow: 0 4px 10px rgba(0,0,0,0.2); 
-            opacity: 1; font-size: 12px; line-height: 1.2; padding: 5px;
-            text-shadow: 0 1px 2px rgba(0,0,0,0.2);
-        }
+        .slot.filled { border: none !important; color: white !important; box-shadow: 0 4px 10px rgba(0,0,0,0.2); opacity: 1; font-size: 13px; line-height: 1.2; padding: 5px; text-shadow: 0 1px 2px rgba(0,0,0,0.2); }
         .slot.filled[data-type="driver"] { background: var(--c-driver) !important; }
         .slot.filled[data-type="team"] { background: var(--c-team) !important; }
         .slot.filled[data-type="chaos"] { background: var(--c-chaos) !important; }
 
-        /* CENTER SLOT - Same Size */
-        .slot.center { 
-            background: #222 !important; color: white !important; 
-            border: none !important; font-size: 14px; text-transform: uppercase; 
-        }
+        .slot.center { background: #222 !important; color: white !important; border: none !important; font-size: 16px; text-transform: uppercase; }
         .slot.matched { opacity: 1; box-shadow: inset 0 0 0 5px var(--score-win); transform: scale(1.02); z-index: 5; }
         .slot.matched::after { content: '✓'; position: absolute; top: -8px; right: -8px; background: var(--score-win); color: black; border-radius: 50%; width: 20px; height: 20px; display: flex; align-items: center; justify-content: center; font-weight: 900; font-size: 14px; box-shadow: 0 2px 5px rgba(0,0,0,0.3); }
 
@@ -182,7 +161,7 @@
                 </div>
                 <div class="strat-card" onclick="confirmStrategy('chaos')">
                     <div class="mini-grid"><div class="mg-c" style="background:var(--c-chaos)"></div><div class="mg-c" style="background:var(--c-chaos)"></div><div class="mg-c" style="background:var(--c-driver)"></div><div class="mg-c" style="background:var(--c-chaos)"></div><div class="mg-c" style="background:var(--c-chaos)"></div></div>
-                    <strong>🚩 Chaos</strong>
+                    <strong>🚩 FIA / Track</strong>
                 </div>
                 <div class="strat-card" onclick="confirmStrategy('driver')">
                     <div class="mini-grid"><div class="mg-c" style="background:var(--c-driver)"></div><div class="mg-c" style="background:var(--c-driver)"></div><div class="mg-c" style="background:var(--c-driver)"></div><div class="mg-c" style="background:var(--c-driver)"></div><div class="mg-c" style="background:var(--c-driver)"></div></div>
@@ -209,7 +188,6 @@
     let currentGrid = Array(25).fill(null);
     let verifiedResults = [];
 
-    // UPDATED TEMPLATES - NO TECH
     const templates = {
         balanced: ['driver','driver','team','driver','chaos','driver','team','chaos','driver','team','team','driver','FREE','driver','team','team','chaos','driver','team','chaos','driver','team','team','driver','chaos'],
         team: ['team','team','driver','team','team','team','driver','team','chaos','team','driver','team','FREE','team','team','driver','team','chaos','team','driver','team','team','team','driver','chaos'],
@@ -253,21 +231,21 @@
             const content = row.querySelector('.driver-content');
             
             if(d.team === "FIA") {
-                const btn = document.createElement('div'); btn.className = 'sub-btn'; btn.innerText = "TRACK EVENTS";
+                const btn = document.createElement('div'); btn.className = 'sub-btn'; btn.innerText = "FIA / TRACK EVENTS";
                 btn.onclick = () => btn.classList.toggle('active');
                 content.appendChild(btn);
                 const grid = document.createElement('div'); grid.className = 'sub-content';
                 content.appendChild(grid);
-                BINGO_CONFIG.templates.chaos.forEach(t => createChip(grid, t, 'chaos', false)); 
+                BINGO_CONFIG.templates.fia.forEach(t => createChip(grid, t, 'chaos', false)); 
             } else {
                 // 1. QUALI
                 createSubSection(content, "QUALIFYING", BINGO_CONFIG.templates.quali, `${d.name} `, 'driver', 'quali', d.name);
                 // 2. RACE
                 createSubSection(content, "RACE RESULT", BINGO_CONFIG.templates.race, `${d.name} `, 'driver', 'race', d.name);
                 // 3. BONUS
-                createSubSection(content, "BONUS", BINGO_CONFIG.templates.extras, `${d.name} `, 'driver', 'extras');
+                createSubSection(content, "BONUS", BINGO_CONFIG.templates.bonus, `${d.name} `, 'driver', 'bonus', d.name);
                 // 4. TEAM
-                createSubSection(content, "CONSTRUCTOR", BINGO_CONFIG.templates.team, `${d.team} `, 'team');
+                createSubSection(content, "CONSTRUCTOR", BINGO_CONFIG.templates.team, `${d.team} `, 'team', 'team', d.name);
             }
             container.appendChild(row);
         });
@@ -315,7 +293,8 @@
 
         if(type !== reqType) return; 
 
-        if (driverName && (subType === 'race' || subType === 'quali')) {
+        // STRICT ONE PER CATEGORY PER DRIVER LOGIC
+        if (driverName && subType) {
             const hasConflict = currentGrid.some(item => 
                 item && item.driver === driverName && item.subtype === subType
             );

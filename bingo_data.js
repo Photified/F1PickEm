@@ -1,8 +1,4 @@
-/* F1 2026 BINGO DATA - FINAL COMPLETE VERIFIED
-   - 25 Races (Full Calendar including Madrid)
-   - Tech Removed
-   - "Race Control" added for Chaos Events
-*/
+
 
 const BINGO_CONFIG = {
     // 25 RACES - FULL LIST
@@ -34,9 +30,10 @@ const BINGO_CONFIG = {
         {id:'abu', c:'ae', n:'Abu Dhabi', d:'Dec 6'}
     ],
 
+
     // DRIVER ROSTER
     drivers: [
-        { name: "Race Control", team: "FIA", color: "#333333" }, 
+        { name: "Race Control", team: "FIA", color: "#333333" }, // Holds the FIA events
         { name: "Max Verstappen", team: "Red Bull", color: "#3671C6" },
         { name: "Isack Hadjar", team: "Red Bull", color: "#3671C6" },
         { name: "Lando Norris", team: "McLaren", color: "#FF8000" },
@@ -61,7 +58,7 @@ const BINGO_CONFIG = {
         { name: "Sergio Perez", team: "Cadillac", color: "#FFD700" }
     ],
 
-    // TEMPLATES (Tech Removed)
+    // TEMPLATES
     templates: {
         quali: [
             "Pole Position", "Front Row Start", "Q3 Appearance", 
@@ -71,17 +68,21 @@ const BINGO_CONFIG = {
             "Race Win", "Podium Finish", "Top 5 Finish", "Top 10 Finish", 
             "Points Finish", "Crash / DNF", "11th-20th Finish"
         ],
-        extras: [
+        bonus: [
             "Fastest Lap", "Driver of the Day", "Beats Teammate (Race)", 
             "5s Penalty", "Leads a Lap", "Stalls at Start"
         ],
         team: [
             "Double Podium", "1-2 Finish", "Double Points", "Double DNF", 
-            "Pit Stop Error (>4s)", "Strategy Error", "Engine Failure", "Mechanical DNF"
+            "Pit Stop Error (>4s)", "Strategy Error", "Engine Failure"
         ],
-        chaos: [
-            "Safety Car", "Virtual SC", "Red Flag", "Rain", "Turn 1 Pile-up",
-            "Start Aborted", "Track Limits", "Animal on Track", "Safety Car Finish"
+        
+        // NEW FIA EVENTS (Replaces Chaos)
+        fia: [
+            "Safety Car Deployed", "Green Flag Race (No SC)", "Virtual Safety Car", 
+            "Red Flag Suspends Race", "Rain / Wet Track", "All Cars Finish (No DNF)",
+            "Blue Flags Shown", "Black & White Flag", "Turn 1 Incident", 
+            "Unsafe Release Investigation", "Track Limits Penalty"
         ]
     }
 };
