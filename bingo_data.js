@@ -1,5 +1,5 @@
-/* F1 2026 BINGO DATA - VERIFIED GRID
-   Based on confirmed 2026 Driver Market & Regulations.
+/* F1 2026 BINGO DATA - OFFICIALLY VERIFIED GRID
+   Based on confirmed contracts for the 2026 Season.
 */
 
 const BINGO_CONFIG = {
@@ -20,7 +20,7 @@ const BINGO_CONFIG = {
         {id:'hun', c:'hu', n:'Hungary', d:'Jul 26'},
         {id:'ned', c:'nl', n:'Zandvoort', d:'Aug 23'},
         {id:'ita', c:'it', n:'Monza', d:'Sep 6'},
-        {id:'mad', c:'es', n:'Madrid', d:'Sep 13'}, // NEW
+        {id:'mad', c:'es', n:'Madrid', d:'Sep 13'},
         {id:'aze', c:'az', n:'Baku', d:'Sep 27'},
         {id:'sin', c:'sg', n:'Singapore', d:'Oct 11'},
         {id:'usa', c:'us', n:'Austin', d:'Oct 25'},
@@ -31,14 +31,14 @@ const BINGO_CONFIG = {
         {id:'abu', c:'ae', n:'Abu Dhabi', d:'Dec 6'}
     ],
 
-    // VERIFIED 2026 PREDICTIONS
+    // PREDICTION POOL (Corrected 2026 Lineups)
     pool: {
         driver: [
             "Hamilton (Ferrari) Win", "Antonelli (Merc) Podium", "Max (Red Bull) Pole",
-            "Hadjar (Red Bull) Crash", "Norris (McLaren) Win", "Piastri (McLaren) Fastest Lap",
+            "Hadjar (Red Bull) Q3 Crash", "Norris (McLaren) Win", "Piastri (McLaren) Fastest Lap",
             "Bottas (Cadillac) Points", "Perez (Cadillac) Q1 Exit", "Bortoleto (Audi) Top 10",
             "Hulkenberg (Audi) DNF", "Alonso (Aston) Top 5", "Sainz (Williams) Podium",
-            "Bearman (Haas) Points", "Ocon (Haas) Penalty", "Lawson (VCARB) Q3 App",
+            "Bearman (Haas) Points", "Ocon (Haas) 5s Penalty", "Lawson (VCARB) Beats Max",
             "Leclerc (Ferrari) Pole", "Colapinto (Alpine) Overtake", "Lindblad (VCARB) Rookie Error",
             "Zhou (Cadillac) FP1 Run", "Gasly (Alpine) Points", "Russell (Merc) Win"
         ],
