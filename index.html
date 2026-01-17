@@ -34,9 +34,17 @@
         .race-name { font-size: 11px; font-weight: 800; text-transform: uppercase; line-height: 1; }
 
         /* MAIN LAYOUT */
-        .main-stage { flex: 1; display: grid; grid-template-columns: 360px 1fr 280px; padding: 20px; gap: 20px; overflow: hidden; height: 100%; }
+        .main-stage { flex: 1; display: grid; grid-template-columns: 360px 1fr 300px; padding: 20px; gap: 20px; overflow: hidden; height: 100%; }
         .panel { background: white; border-radius: 12px; box-shadow: var(--card-shadow); overflow: hidden; display: flex; flex-direction: column; border: 1px solid #e0e0e0; height: 100%; }
-        .panel-header { padding: 15px; background: #f8f8f8; font-weight: 800; font-size: 14px; text-transform: uppercase; border-bottom: 1px solid #ddd; text-align: center; color: #444; flex-shrink: 0; }
+        
+        /* SHARED TAB HEADERS */
+        .tab-header { display: flex; border-bottom: 1px solid #eee; background: #f9f9f9; flex-shrink: 0; }
+        .tab-btn { 
+            flex: 1; padding: 12px; text-align: center; font-weight: 800; font-size: 12px; 
+            cursor: pointer; color: #888; border-bottom: 3px solid transparent; transition: 0.2s;
+        }
+        .tab-btn:hover { background: #f0f0f0; }
+        .tab-btn.active { color: #000; border-bottom-color: var(--brand-red); background: white; }
 
         /* DRIVER MARKET */
         .driver-list { flex: 1; overflow-y: auto; padding: 10px; background: #f4f4f8; }
@@ -46,7 +54,6 @@
         
         .helmet-icon { width: 28px; height: 28px; background: var(--team-color); border-radius: 50% 50% 10% 10%; border: 2px solid #333; position: relative; box-shadow: 0 2px 4px rgba(0,0,0,0.2); }
         .helmet-icon::after { content: ''; position: absolute; top: 8px; left: 2px; right: 2px; height: 8px; background: rgba(0,0,0,0.6); border-radius: 2px; }
-        /* FIA OVERRIDE */
         .driver-header[data-team="FIA"] .helmet-icon { border-radius: 4px; background: #333; }
         .driver-header[data-team="FIA"] .helmet-icon::after { display: none; }
         .driver-header[data-team="FIA"] .helmet-icon::before { content: '🏁'; position: absolute; top: 2px; left: 4px; font-size: 16px; }
@@ -54,21 +61,14 @@
         .driver-name { font-weight: 800; font-size: 14px; color: #333; }
         .driver-team { font-size: 10px; color: #888; text-transform: uppercase; margin-top:2px; }
 
-        /* NESTED ACCORDION & COLORED TABS */
+        /* NESTED ACCORDION */
         .driver-content { display: none; padding: 10px; background: #fff; border-top: 1px solid #eee; }
         .driver-row.open .driver-content { display: flex; flex-direction: column; gap: 5px; }
         .driver-row.open .driver-header { background: #eee; border-bottom: 1px solid #ddd; }
 
-        .sub-btn { 
-            background: #f8f9fa; padding: 10px; border: 1px solid #ddd; border-radius: 6px; 
-            font-size: 11px; font-weight: 800; text-transform: uppercase; cursor: pointer; 
-            display: flex; justify-content: space-between; align-items: center; color: #555; 
-            transition: 0.1s; border-left-width: 6px; border-left-style: solid;
-        }
+        .sub-btn { background: #f8f9fa; padding: 10px; border: 1px solid #ddd; border-radius: 6px; font-size: 11px; font-weight: 800; text-transform: uppercase; cursor: pointer; display: flex; justify-content: space-between; align-items: center; color: #555; transition: 0.1s; border-left-width: 6px; border-left-style: solid; }
         .sub-btn:hover { background: #f0f0f0; color: #000; }
         .sub-btn.active { background: #f4f4f4; color: #000; box-shadow: inset 0 0 5px rgba(0,0,0,0.05); }
-        
-        /* TAB COLORS */
         .sub-btn.driver { border-left-color: var(--c-driver); }
         .sub-btn.team { border-left-color: var(--c-team); }
         .sub-btn.chaos { border-left-color: var(--c-chaos); }
@@ -78,7 +78,6 @@
 
         .chip { padding: 8px 10px; background: white; border: 1px solid #ddd; border-radius: 4px; font-size: 11px; font-weight: 700; cursor: grab; text-align: left; border-left-width: 5px; border-left-style: solid; transition: 0.1s; }
         .chip:hover { transform: translateX(3px); box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
-        
         .chip.driver { border-left-color: var(--c-driver); }
         .chip.team { border-left-color: var(--c-team); }
         .chip.chaos { border-left-color: var(--c-chaos); }
@@ -100,6 +99,22 @@
         .slot.center { background: #222 !important; color: white !important; border: none !important; font-size: 16px; text-transform: uppercase; }
         .slot.matched { opacity: 1; box-shadow: inset 0 0 0 5px var(--score-win); transform: scale(1.02); z-index: 5; }
         .slot.matched::after { content: '✓'; position: absolute; top: -8px; right: -8px; background: var(--score-win); color: black; border-radius: 50%; width: 20px; height: 20px; display: flex; align-items: center; justify-content: center; font-weight: 900; font-size: 14px; box-shadow: 0 2px 5px rgba(0,0,0,0.3); }
+
+        /* RIGHT PANEL (STANDINGS & RULES) */
+        .right-content { flex: 1; overflow-y: auto; padding: 15px; display: none; }
+        .right-content.active { display: block; }
+
+        .score-box { text-align: center; margin-bottom: 20px; padding: 20px; background: #fafafa; border-radius: 8px; border: 1px solid #eee; }
+        .score-val { font-size: 36px; font-weight: 900; color: var(--brand-dark); line-height: 1; }
+        .score-lbl { font-size: 12px; font-weight: 700; color: #888; text-transform: uppercase; margin-top: 5px; }
+        
+        .bonus-pill { display: inline-block; padding: 4px 8px; background: var(--score-win); color: #000; border-radius: 12px; font-size: 10px; font-weight: 900; margin: 2px; }
+
+        .rules-block { margin-bottom: 20px; }
+        .rules-title { font-weight: 800; font-size: 14px; margin-bottom: 8px; text-transform: uppercase; color: var(--brand-red); border-bottom: 1px solid #eee; padding-bottom: 5px; }
+        .rules-text { font-size: 12px; line-height: 1.5; color: #555; }
+        .rules-list { padding-left: 20px; margin: 5px 0; font-size: 12px; color: #555; }
+        .rules-list li { margin-bottom: 6px; }
 
         /* VIEWS */
         .view-login, .view-strategy { text-align: center; width: 100%; }
@@ -146,8 +161,9 @@
 <div class="race-bar" id="raceBar"></div>
 
 <div class="main-stage">
+    
     <div class="panel">
-        <div class="panel-header">Driver Market</div>
+        <div class="panel-header">BINGO CHIPS</div>
         <div id="driverList" class="driver-list"></div>
     </div>
 
@@ -187,9 +203,50 @@
     </div>
 
     <div class="panel">
-        <div class="panel-header">Standings</div>
-        <div style="padding:20px; text-align:center; font-size:24px; font-weight:800;" id="scoreDisplay">0 PTS</div>
-        <div class="leaderboard" id="leaderboardList"></div>
+        <div class="tab-header">
+            <div class="tab-btn active" onclick="switchRightTab('standings', this)">STANDINGS</div>
+            <div class="tab-btn" onclick="switchRightTab('rules', this)">RULES & SCORING</div>
+        </div>
+
+        <div id="tab-standings" class="right-content active">
+            <div class="score-box">
+                <div class="score-val" id="scoreDisplay">0</div>
+                <div class="score-lbl">Total Points</div>
+                <div id="bonusDisplay" style="margin-top:10px;"></div>
+            </div>
+            <div class="leaderboard" id="leaderboardList"></div>
+        </div>
+
+        <div id="tab-rules" class="right-content">
+            <div class="rules-block">
+                <div class="rules-title">HOW TO PLAY</div>
+                <div class="rules-text">
+                    1. Select a <strong>Race Strategy</strong> to generate your grid layout.<br><br>
+                    2. Drag chips from the <strong>Bingo Chips</strong> menu onto matching colored slots.<br><br>
+                    3. <strong>Limit:</strong> You may only select 1 chip per category (e.g., 1 Quali result) per driver.
+                </div>
+            </div>
+
+            <div class="rules-block">
+                <div class="rules-title">SCORING</div>
+                <ul class="rules-list">
+                    <li><strong>10 PTS</strong> - Each Correct Tile</li>
+                    <li><strong>+30 PTS</strong> - Per Straight Line (Row/Col)</li>
+                    <li><strong>+50 PTS</strong> - 4 Corners Bonus</li>
+                    <li><strong>+150 PTS</strong> - The "X" (Criss-Cross)</li>
+                    <li><strong>+1000 PTS</strong> - FULL CARD (Blackout)</li>
+                </ul>
+            </div>
+
+            <div class="rules-block">
+                <div class="rules-title">COLOR GUIDE</div>
+                <ul class="rules-list">
+                    <li style="color:var(--c-driver)">● <strong>ORANGE:</strong> Driver Events</li>
+                    <li style="color:var(--c-team)">● <strong>TEAL:</strong> Constructor Events</li>
+                    <li style="color:var(--c-chaos)">● <strong>RED:</strong> FIA / Track Events</li>
+                </ul>
+            </div>
+        </div>
     </div>
 </div>
 
@@ -221,6 +278,15 @@
         if(savedName && savedGrid) login();
     };
 
+    function switchRightTab(tabName, btn) {
+        document.querySelectorAll('.right-content').forEach(el => el.classList.remove('active'));
+        document.getElementById(`tab-${tabName}`).classList.add('active');
+        
+        const btns = btn.parentElement.querySelectorAll('.tab-btn');
+        btns.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+    }
+
     function buildDriverMarket() {
         const container = document.getElementById('driverList');
         BINGO_CONFIG.drivers.forEach(d => {
@@ -248,13 +314,9 @@
                 content.appendChild(grid);
                 BINGO_CONFIG.templates.fia.forEach(t => createChip(grid, t, 'chaos', false)); 
             } else {
-                // 1. QUALI (Orange)
                 createSubSection(content, "QUALIFYING", BINGO_CONFIG.templates.quali, `${d.name} `, 'driver', 'quali', d.name, 'driver');
-                // 2. RACE (Orange)
                 createSubSection(content, "RACE RESULT", BINGO_CONFIG.templates.race, `${d.name} `, 'driver', 'race', d.name, 'driver');
-                // 3. BONUS (Orange)
                 createSubSection(content, "BONUS", BINGO_CONFIG.templates.bonus, `${d.name} `, 'driver', 'bonus', d.name, 'driver');
-                // 4. TEAM (Teal)
                 createSubSection(content, "CONSTRUCTOR", BINGO_CONFIG.templates.team, `${d.team} `, 'team', 'team', d.name, 'team');
             }
             container.appendChild(row);
@@ -303,7 +365,6 @@
 
         if(type !== reqType) return; 
 
-        // STRICT ONE PER CATEGORY PER DRIVER LOGIC
         if (driverName && subType) {
             const hasConflict = currentGrid.some(item => 
                 item && item.driver === driverName && item.subtype === subType
@@ -385,7 +446,7 @@
     function renderGrid() {
         const slots = document.querySelectorAll('.slot:not(.center)');
         slots.forEach(s => {
-            const idx = s.dataset.index;
+            const idx = parseInt(s.dataset.index);
             const data = currentGrid[idx];
             if(data) {
                 s.innerText = data.text;
@@ -457,12 +518,65 @@
 
     function updateScore() {
         let score = 0;
+        let matches = Array(25).fill(false);
+        matches[12] = true; // Free space
+
         currentGrid.forEach((item, i) => {
             if(!item) return;
-            if(i===12) { score += 10; return; }
-            if(verifiedResults.includes(item.text)) score += 10;
+            if(i===12) return;
+            if(verifiedResults.includes(item.text)) {
+                score += 10;
+                matches[i] = true;
+            }
         });
-        document.getElementById('scoreDisplay').innerText = `${score} PTS`;
+
+        const bonuses = [];
+        let lineCount = 0;
+
+        // 1. STRAIGHT LINES (Rows & Cols)
+        // Rows
+        for(let r=0; r<5; r++) {
+            let isLine = true;
+            for(let c=0; c<5; c++) {
+                if(!matches[r*5 + c]) isLine = false;
+            }
+            if(isLine) { score += 30; lineCount++; }
+        }
+        // Cols
+        for(let c=0; c<5; c++) {
+            let isLine = true;
+            for(let r=0; r<5; r++) {
+                if(!matches[r*5 + c]) isLine = false;
+            }
+            if(isLine) { score += 30; lineCount++; }
+        }
+        if(lineCount > 0) bonuses.push(`${lineCount} LINE${lineCount>1?'S':''} (+${lineCount*30})`);
+
+        // 2. CORNERS (0, 4, 20, 24)
+        if(matches[0] && matches[4] && matches[20] && matches[24]) {
+            score += 50;
+            bonuses.push("4 CORNERS (+50)");
+        }
+
+        // 3. THE "X"
+        // Diag 1: 0, 6, 12, 18, 24
+        // Diag 2: 4, 8, 12, 16, 20
+        const d1 = matches[0] && matches[6] && matches[12] && matches[18] && matches[24];
+        const d2 = matches[4] && matches[8] && matches[12] && matches[16] && matches[20];
+        if(d1 && d2) {
+            score += 150;
+            bonuses.push("THE X (+150)");
+        }
+
+        // 4. FULL CARD
+        const allMatched = matches.every(m => m === true);
+        if(allMatched) {
+            score += 1000;
+            bonuses.push("FULL HOUSE (+1000)");
+        }
+
+        document.getElementById('scoreDisplay').innerText = score;
+        document.getElementById('bonusDisplay').innerHTML = bonuses.map(b => `<div class="bonus-pill">${b}</div>`).join('');
     }
 </script>
 
