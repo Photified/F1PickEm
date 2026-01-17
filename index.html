@@ -11,7 +11,7 @@
         :root {
             --brand-red: #e10600; --brand-dark: #15151e; --bg-body: #f4f4f8;
             --card-shadow: 0 4px 15px rgba(0,0,0,0.08);
-            /* Category Colors */
+            /* Colors */
             --c-driver: #ff9500; --c-team: #00d2be; --c-tech: #0070ff; --c-chaos: #e10600;
             --score-win: #39ff14; 
         }
@@ -30,18 +30,25 @@
         .race-flag-img { width: 36px; height: 26px; object-fit: cover; border-radius: 3px; margin-bottom: 6px; }
         .race-name { font-size: 11px; font-weight: 800; text-transform: uppercase; line-height: 1; }
 
-        /* MAIN LAYOUT */
-        .main-stage { flex: 1; display: grid; grid-template-columns: 320px 1fr 280px; padding: 20px; gap: 20px; overflow: hidden; height: 100%; }
-        .panel { background: white; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.08); overflow: hidden; display: flex; flex-direction: column; border: 1px solid #e0e0e0; height: 100%; }
+        /* LAYOUT */
+        .main-stage { flex: 1; display: grid; grid-template-columns: 360px 1fr 280px; padding: 20px; gap: 20px; overflow: hidden; height: 100%; }
+        .panel { background: white; border-radius: 12px; box-shadow: var(--card-shadow); overflow: hidden; display: flex; flex-direction: column; border: 1px solid #e0e0e0; height: 100%; }
         .panel-header { padding: 15px; background: #f8f8f8; font-weight: 800; font-size: 14px; text-transform: uppercase; border-bottom: 1px solid #ddd; text-align: center; color: #444; flex-shrink: 0; }
 
         /* DRIVER MARKET */
         .driver-list { flex: 1; overflow-y: auto; padding: 10px; background: #f4f4f8; }
         
-        .driver-row { background: white; border-radius: 8px; margin-bottom: 8px; border: 1px solid #eee; overflow: hidden; }
-        .driver-header { padding: 12px 15px; display: flex; align-items: center; gap: 15px; cursor: pointer; background: linear-gradient(90deg, transparent 95%, #fafafa); transition: 0.2s; }
-        .driver-header:hover { background: #f0f0f0; }
+        .driver-row { 
+            background: white; border-radius: 8px; margin-bottom: 8px; 
+            border: 1px solid #eee; overflow: hidden; transition: max-height 0.3s ease;
+        }
+        .driver-header {
+            padding: 12px 15px; display: flex; align-items: center; gap: 15px; cursor: pointer;
+            background: linear-gradient(90deg, transparent 95%, #fafafa);
+        }
+        .driver-header:hover { background: #f5f5f5; }
         
+        /* HELMET */
         .helmet-icon {
             width: 28px; height: 28px; 
             background: var(--team-color);
@@ -53,35 +60,45 @@
             content: ''; position: absolute; top: 8px; left: 2px; right: 2px; height: 8px;
             background: rgba(0,0,0,0.6); border-radius: 2px;
         }
+        /* FIA ICON OVERRIDE */
+        .driver-header[data-team="FIA"] .helmet-icon { border-radius: 4px; background: #333; }
+        .driver-header[data-team="FIA"] .helmet-icon::after { display: none; }
+        .driver-header[data-team="FIA"] .helmet-icon::before { content: '🏁'; position: absolute; top: 2px; left: 4px; font-size: 16px; }
 
         .driver-name { font-weight: 800; font-size: 14px; color: #333; }
         .driver-team { font-size: 10px; color: #888; text-transform: uppercase; margin-top:2px; }
 
-        /* PREDICTIONS ACCORDION */
-        .predictions-container { 
-            display: none; padding: 10px; background: #f9f9f9; border-top: 1px solid #eee; 
-            grid-template-columns: 1fr; gap: 6px; max-height: 300px; overflow-y: auto;
-        }
-        .driver-row.open .predictions-container { display: grid; }
+        /* PREDICTIONS (Hidden by default) */
+        .predictions-wrapper { display: none; background: #fff; border-top: 1px solid #eee; }
+        .driver-row.open .predictions-wrapper { display: block; animation: slideDown 0.2s ease-out; }
         .driver-row.open .driver-header { background: #eee; border-bottom: 1px solid #ddd; }
 
-        /* SEPARATORS */
-        .pred-sep { font-size:10px; font-weight:900; color:#aaa; margin-top:5px; text-transform:uppercase; letter-spacing:1px; }
+        /* SECTION HEADERS */
+        .section-header {
+            padding: 8px 12px; background: #f8f9fa; font-size: 10px; font-weight: 900; 
+            color: #666; text-transform: uppercase; letter-spacing: 1px; border-bottom: 1px solid #eee;
+            border-top: 1px solid #eee; margin-top: -1px;
+        }
+        .section-header:first-child { border-top: none; }
+
+        .pred-grid { display: grid; grid-template-columns: 1fr; gap: 6px; padding: 10px; }
 
         .chip {
-            padding: 8px; background: white; border: 1px solid #ddd; border-radius: 4px;
-            font-size: 11px; font-weight: 700; cursor: grab; text-align: center;
-            border-left: 4px solid #ccc; transition: 0.1s;
+            padding: 8px 10px; background: white; border: 1px solid #ddd; border-radius: 4px;
+            font-size: 11px; font-weight: 700; cursor: grab; text-align: left;
+            border-left: 4px solid #ccc; transition: 0.1s; display: flex; align-items: center;
         }
-        .chip:hover { transform: translateX(3px); box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
-        .chip.driver { border-left-color: var(--c-driver); }
+        .chip:hover { transform: translateX(3px); box-shadow: 0 2px 5px rgba(0,0,0,0.1); border-color: #bbb; }
+        
+        /* CHIP COLORS */
+        .chip.quali { border-left-color: #9c27b0; }
+        .chip.race { border-left-color: var(--c-driver); }
+        .chip.extras { border-left-color: #4caf50; }
         .chip.team { border-left-color: var(--c-team); }
-        .chip.tech { border-left-color: var(--c-tech); }
         .chip.chaos { border-left-color: var(--c-chaos); }
 
         /* CENTER GRID */
         .active-panel { background: white; border-radius: 12px; border: 1px solid #e0e0e0; padding: 20px; display: flex; flex-direction: column; align-items: center; justify-content: center; position: relative; overflow: hidden; height: 100%; }
-        
         .bingo-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px; width: 100%; aspect-ratio: 1/1; max-height: 650px; }
         
         .slot { 
@@ -125,9 +142,10 @@
         .admin-item { padding: 10px; background: #333; cursor: pointer; font-size: 12px; display: flex; align-items: center; gap: 10px; border-radius: 4px; }
         .admin-item.checked { background: var(--brand-red); font-weight: bold; }
         
-        /* UTILS */
         .leaderboard { flex: 1; overflow-y: auto; padding: 10px; }
         .lb-row { display: flex; justify-content: space-between; padding: 10px; border-bottom: 1px solid #f0f0f0; font-size: 13px; }
+
+        @keyframes slideDown { from { opacity:0; transform:translateY(-10px); } to { opacity:1; transform:translateY(0); } }
     </style>
 </head>
 <body>
@@ -208,6 +226,7 @@
     <div class="panel">
         <div class="panel-header">Standings</div>
         <div style="padding:20px; text-align:center; font-size:24px; font-weight:800;" id="scoreDisplay">0 PTS</div>
+        <div class="leaderboard" id="leaderboardList"></div>
     </div>
 </div>
 
@@ -228,10 +247,8 @@
         renderRaces();
         buildDriverMarket();
         
-        // Auto-login
         const savedName = localStorage.getItem('f1_team_name');
         if(savedName) document.getElementById('teamNameInput').value = savedName;
-        
         const savedGrid = localStorage.getItem(`grid_${activeRace}`);
         if(savedName && savedGrid) login();
     };
@@ -241,62 +258,105 @@
         BINGO_CONFIG.drivers.forEach(d => {
             const row = document.createElement('div');
             row.className = 'driver-row';
+            
+            // Generate Header with proper coloring
             row.innerHTML = `
-                <div class="driver-header" onclick="this.parentElement.classList.toggle('open')" style="--team-color:${d.color}">
+                <div class="driver-header" onclick="toggleDriver(this)" data-team="${d.team}" style="--team-color:${d.color}">
                     <div class="helmet-icon"></div>
                     <div>
                         <div class="driver-name">${d.name}</div>
                         <div class="driver-team">${d.team}</div>
                     </div>
                 </div>
-                <div class="predictions-container"></div>
+                <div class="predictions-wrapper"></div>
             `;
             
-            const predContainer = row.querySelector('.predictions-container');
+            const predWrapper = row.querySelector('.predictions-wrapper');
             
-            // 1. FINISH (Exclusive - Orange)
-            const lbl1 = document.createElement('div'); lbl1.className = 'pred-sep'; lbl1.innerText = "FINISH POS (Max 1)";
-            predContainer.appendChild(lbl1);
-            BINGO_CONFIG.templates.driver_finish.forEach(t => createChip(predContainer, `${d.name} ${t}`, 'driver', true, d.name));
-
-            // 2. EXTRAS (Non-exclusive - Orange)
-            const lbl2 = document.createElement('div'); lbl2.className = 'pred-sep'; lbl2.innerText = "EXTRAS";
-            predContainer.appendChild(lbl2);
-            BINGO_CONFIG.templates.driver_misc.forEach(t => createChip(predContainer, `${d.name} ${t}`, 'driver', false, d.name));
-
-            // 3. TEAM (Teal)
-            const lbl3 = document.createElement('div'); lbl3.className = 'pred-sep'; lbl3.innerText = "TEAM";
-            predContainer.appendChild(lbl3);
-            BINGO_CONFIG.templates.team.forEach(t => createChip(predContainer, `${d.team} ${t}`, 'team', false));
-            
-            // 4. TECH (Blue)
-            const lbl4 = document.createElement('div'); lbl4.className = 'pred-sep'; lbl4.innerText = "TECH";
-            predContainer.appendChild(lbl4);
-            BINGO_CONFIG.templates.tech.forEach(t => createChip(predContainer, t, 'tech', false));
-
-            // 5. CHAOS (Red)
-            const lbl5 = document.createElement('div'); lbl5.className = 'pred-sep'; lbl5.innerText = "CHAOS";
-            predContainer.appendChild(lbl5);
-            BINGO_CONFIG.templates.chaos.forEach(t => createChip(predContainer, t, 'chaos', false));
+            // IF "Race Control" (Chaos Only)
+            if(d.team === "FIA") {
+                const head = document.createElement('div'); head.className = 'section-header'; head.innerText = "TRACK EVENTS"; head.style.color = '#e10600';
+                predWrapper.appendChild(head);
+                const grid = document.createElement('div'); grid.className = 'pred-grid';
+                predWrapper.appendChild(grid);
+                BINGO_CONFIG.templates.chaos.forEach(t => createChip(grid, t, 'chaos', false));
+            } 
+            // IF Real Driver
+            else {
+                // 1. Quali
+                addSection(predWrapper, "QUALIFYING (Max 1)", BINGO_CONFIG.templates.quali, `${d.name} `, 'driver', 'quali', d.name);
+                // 2. Race
+                addSection(predWrapper, "RACE RESULT (Max 1)", BINGO_CONFIG.templates.race, `${d.name} `, 'driver', 'race', d.name);
+                // 3. Extras
+                addSection(predWrapper, "EXTRAS", BINGO_CONFIG.templates.extras, `${d.name} `, 'driver', 'extras');
+                // 4. Team
+                addSection(predWrapper, "TEAM", BINGO_CONFIG.templates.team, `${d.team} `, 'team', '');
+            }
 
             container.appendChild(row);
         });
     }
 
-    function createChip(container, text, type, isExclusive, driverName = null) {
+    function addSection(wrapper, title, items, prefix, type, subtype, driverName = null) {
+        const head = document.createElement('div'); head.className = 'section-header'; head.innerText = title;
+        wrapper.appendChild(head);
+        const grid = document.createElement('div'); grid.className = 'pred-grid';
+        wrapper.appendChild(grid);
+        items.forEach(t => createChip(grid, prefix + t, type, subtype, driverName));
+    }
+
+    function toggleDriver(header) {
+        // Close others
+        const allRows = document.querySelectorAll('.driver-row');
+        allRows.forEach(r => {
+            if(r !== header.parentElement) r.classList.remove('open');
+        });
+        // Toggle active
+        header.parentElement.classList.toggle('open');
+    }
+
+    function createChip(container, text, type, subType = '', driverName = null) {
         const chip = document.createElement('div');
-        chip.className = `chip ${type}`;
+        chip.className = `chip ${type} ${subType}`;
         chip.innerText = text;
         chip.draggable = true;
         chip.ondragstart = e => {
             e.dataTransfer.setData('text', text);
             e.dataTransfer.setData('type', type);
-            if(isExclusive) e.dataTransfer.setData('exclusive', 'yes');
-            if(driverName) e.dataTransfer.setData('driver', driverName);
+            if(driverName) e.dataTransfer.setData('exclusive_driver', driverName);
+            if(subType) e.dataTransfer.setData('subtype', subType);
         };
         container.appendChild(chip);
     }
 
+    function handleDrop(e, index, reqType) {
+        e.preventDefault();
+        const text = e.dataTransfer.getData('text');
+        const type = e.dataTransfer.getData('type');
+        const driverName = e.dataTransfer.getData('exclusive_driver');
+        const subType = e.dataTransfer.getData('subtype'); 
+
+        // 1. Slot Type Check (Drivers in Driver slots, etc)
+        // Note: For simplicity, "Race Control" chaos items fit in "Chaos" slots.
+        if(type !== reqType) return; 
+
+        // 2. EXCLUSIVE LOGIC
+        if (driverName && (subType === 'race' || subType === 'quali')) {
+            const hasConflict = currentGrid.some(item => 
+                item && item.driver === driverName && item.subtype === subType
+            );
+            if (hasConflict) {
+                alert(`Cannot add: ${driverName} already has a ${subType.toUpperCase()} prediction.`);
+                return;
+            }
+        }
+        
+        currentGrid[index] = { text, type, driver: driverName, subtype: subType };
+        renderGrid();
+        saveLocal();
+    }
+
+    // --- (Standard Logic) ---
     function login() {
         const name = document.getElementById('teamNameInput').value;
         if(!name) return alert("Enter Name");
@@ -327,58 +387,26 @@
 
     function confirmStrategy(type) {
         currentGrid = templates[type].map(t => t === 'FREE' ? {text:'FREE', type:'FREE'} : null);
-        
+        renderGridStructure(templates[type]);
+        switchState('game');
+    }
+
+    function renderGridStructure(pattern) {
         const grid = document.getElementById('grid');
         grid.innerHTML = '';
-        templates[type].forEach((reqType, i) => {
+        pattern.forEach((type, i) => {
             const slot = document.createElement('div');
             slot.dataset.index = i;
-            if(reqType === 'FREE') {
+            if(type === 'FREE') {
                 slot.className = 'slot center'; slot.innerHTML = "🏁<br>FREE";
             } else {
                 slot.className = 'slot'; 
-                slot.dataset.req = reqType; 
+                slot.dataset.req = type; 
                 slot.ondragover = e => e.preventDefault();
-                slot.ondrop = e => handleDrop(e, i, reqType);
+                slot.ondrop = e => handleDrop(e, i, type);
             }
             grid.appendChild(slot);
         });
-
-        switchState('game');
-        renderGrid();
-        saveLocal();
-    }
-
-    function handleDrop(e, index, reqType) {
-        e.preventDefault();
-        const text = e.dataTransfer.getData('text');
-        const type = e.dataTransfer.getData('type');
-        const isExclusive = e.dataTransfer.getData('exclusive') === 'yes';
-        const driverName = e.dataTransfer.getData('driver');
-
-        // 1. Check Slot Type
-        if(type !== reqType) return; 
-
-        // 2. CHECK EXCLUSIVE (One Finish per Driver)
-        if (isExclusive && driverName) {
-            const alreadyHasFinish = currentGrid.some(item => 
-                item && item.exclusive && item.driver === driverName
-            );
-            if (alreadyHasFinish) {
-                alert(`Cannot add: ${driverName} already has a Finish Prediction on this board.`);
-                return;
-            }
-        }
-        
-        // Save Metadata
-        currentGrid[index] = { 
-            text, type, 
-            exclusive: isExclusive, 
-            driver: driverName 
-        };
-        
-        renderGrid();
-        saveLocal();
     }
 
     function renderGrid() {
@@ -386,7 +414,6 @@
         slots.forEach(s => {
             const idx = s.dataset.index;
             const data = currentGrid[idx];
-            
             if(data) {
                 s.innerText = data.text;
                 s.className = `slot filled`;
@@ -424,14 +451,12 @@
     function toggleAdmin() {
         const p = document.getElementById('adminPanel');
         p.style.display = p.style.display === 'flex' ? 'none' : 'flex';
-        if (p.style.display === 'flex') {
+        if(p.style.display === 'flex') {
             const list = document.getElementById('adminList');
             list.innerHTML = '';
             let items = currentGrid.filter(x => x && x.type !== 'FREE').map(x => x.text);
             items = [...new Set(items)];
-            
             if(items.length === 0) list.innerHTML = "<div style='color:#aaa'>Grid empty.</div>";
-
             items.forEach(text => {
                 const item = document.createElement('div');
                 const isChecked = verifiedResults.includes(text);
@@ -455,13 +480,12 @@
     function updateScore() {
         let score = 0;
         currentGrid.forEach((item, i) => {
-            if (!item) return;
-            if (i === 12) { score += 10; return; }
-            if (verifiedResults.includes(item.text)) score += 10;
+            if(!item) return;
+            if(i===12) { score += 10; return; }
+            if(verifiedResults.includes(item.text)) score += 10;
         });
         document.getElementById('scoreDisplay').innerText = `${score} PTS`;
     }
-
 </script>
 
 </body>

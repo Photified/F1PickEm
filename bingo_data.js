@@ -1,12 +1,9 @@
-/* F1 2026 BINGO DATA - COMPLETE & VERIFIED
-   Contains:
-   1. Full 25-Race Calendar
-   2. 2026 Driver Lineup with Team Colors
-   3. Smart Prediction Templates (Exclusive vs Stackable)
+/* F1 2026 BINGO DATA - COMPLETE
+   Includes 25 Races, 20 Drivers, and "Race Control" for chaos events.
 */
 
 const BINGO_CONFIG = {
-    // 2026 CALENDAR (25 Races)
+    // 25 RACES (Australia start, Canada in May, Imola & Madrid included)
     races: [
         {id:'aus', c:'au', n:'Australia', d:'Mar 8'},
         {id:'chn', c:'cn', n:'China', d:'Mar 15'},
@@ -35,8 +32,9 @@ const BINGO_CONFIG = {
         {id:'abu', c:'ae', n:'Abu Dhabi', d:'Dec 6'}
     ],
 
-    // DRIVER ROSTER (With Team Colors)
+    // DRIVERS + RACE CONTROL (The "FIA" entry holds the chaos events)
     drivers: [
+        { name: "Race Control", team: "FIA", color: "#333333" }, // <--- CHAOS LIVES HERE
         { name: "Max Verstappen", team: "Red Bull", color: "#3671C6" },
         { name: "Isack Hadjar", team: "Red Bull", color: "#3671C6" },
         { name: "Lando Norris", team: "McLaren", color: "#FF8000" },
@@ -61,37 +59,17 @@ const BINGO_CONFIG = {
         { name: "Sergio Perez", team: "Cadillac", color: "#FFD700" }
     ],
 
-    // PREDICTION TEMPLATES
+    // TEMPLATES
     templates: {
-        // EXCLUSIVE: Logic prevents adding more than 1 of these per driver
-        driver_finish: [
-            "Win", "Podium", "Top 5", "Top 10", "Points Finish", 
-            "Q1 Exit", "Q2 Exit", "Crash / DNF", "11th-20th Finish"
-        ],
+        // DRIVER SPECIFIC
+        quali: ["Pole Position", "Front Row Start", "Q3 Appearance", "Q2 Exit", "Q1 Exit", "Beats Teammate (Quali)"],
+        race: ["Race Win", "Podium Finish", "Top 5 Finish", "Top 10 Finish", "Points Finish", "Crash / DNF", "11th-20th Finish"],
+        extras: ["Fastest Lap", "Driver of the Day", "Beats Teammate (Race)", "5s Penalty", "Leads a Lap", "Stalls at Start"],
         
-        // STACKABLE: You can add these even if you have a finish position
-        driver_misc: [
-            "Pole Position", "Fastest Lap", "Beats Teammate", 
-            "Driver of the Day", "5s Penalty", "Leads a Lap", "Stalls at Start"
-        ],
+        // TEAM SPECIFIC
+        team: ["Double Podium", "1-2 Finish", "Double Points", "Double DNF", "Pit Stop Error (>4s)", "Strategy Error", "Engine Failure"],
         
-        // TEAM EVENTS
-        team: [
-            "Double Podium", "1-2 Finish", "Double Points", "Double DNF", 
-            "Pit Stop Error (>4s)", "Strategy Error", "Engine Failure", "Mechanical DNF"
-        ],
-        
-        // TECH EVENTS
-        tech: [
-            "MOM (Manual Override) Pass", "X-Mode Stuck", "Z-Mode Fail",
-            "MGU-K Clipping", "Underweight Car", "Fuel Flow Breach",
-            "Narrow Tyre Lock-up", "Active Aero Damage", "Newey Trick Spotted"
-        ],
-        
-        // CHAOS EVENTS
-        chaos: [
-            "Safety Car", "Virtual SC", "Red Flag", "Rain", "Turn 1 Pile-up",
-            "Start Aborted", "Track Limits Warning", "Animal on Track", "Safety Car Finish"
-        ]
+        // GENERIC CHAOS (Assigned to Race Control)
+        chaos: ["Safety Car", "Virtual SC", "Red Flag", "Rain", "Turn 1 Pile-up", "Start Aborted", "Track Limits Warning", "Animal on Track", "Safety Car Finish"]
     }
 };
