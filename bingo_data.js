@@ -1,5 +1,3 @@
-
-
 const BINGO_CONFIG = {
     // 25 RACES - FULL LIST
     races: [
@@ -29,7 +27,6 @@ const BINGO_CONFIG = {
         {id:'qat', c:'qa', n:'Qatar', d:'Nov 29'},
         {id:'abu', c:'ae', n:'Abu Dhabi', d:'Dec 6'}
     ],
-
 
     // DRIVER ROSTER
     drivers: [

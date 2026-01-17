@@ -236,6 +236,7 @@
                 content.appendChild(btn);
                 const grid = document.createElement('div'); grid.className = 'sub-content';
                 content.appendChild(grid);
+                // FIX: use .fia template and 'chaos' type for color
                 BINGO_CONFIG.templates.fia.forEach(t => createChip(grid, t, 'chaos', false)); 
             } else {
                 // 1. QUALI
@@ -243,6 +244,7 @@
                 // 2. RACE
                 createSubSection(content, "RACE RESULT", BINGO_CONFIG.templates.race, `${d.name} `, 'driver', 'race', d.name);
                 // 3. BONUS
+                // FIX: use .bonus template
                 createSubSection(content, "BONUS", BINGO_CONFIG.templates.bonus, `${d.name} `, 'driver', 'bonus', d.name);
                 // 4. TEAM
                 createSubSection(content, "CONSTRUCTOR", BINGO_CONFIG.templates.team, `${d.team} `, 'team', 'team', d.name);
