@@ -1,9 +1,12 @@
-/* F1 2026 BINGO DATA - COMPLETE
-   Includes 25 Races, 20 Drivers, and "Race Control" for chaos events.
+/* F1 2026 BINGO DATA - COMPLETE 
+   Contains: 
+   1. 25-Race Calendar
+   2. Driver Roster + Race Control (FIA)
+   3. Logic Templates
 */
 
 const BINGO_CONFIG = {
-    // 25 RACES (Australia start, Canada in May, Imola & Madrid included)
+    // 25 RACES (Full Calendar)
     races: [
         {id:'aus', c:'au', n:'Australia', d:'Mar 8'},
         {id:'chn', c:'cn', n:'China', d:'Mar 15'},
@@ -32,9 +35,9 @@ const BINGO_CONFIG = {
         {id:'abu', c:'ae', n:'Abu Dhabi', d:'Dec 6'}
     ],
 
-    // DRIVERS + RACE CONTROL (The "FIA" entry holds the chaos events)
+    // DRIVER ROSTER (Race Control first, then Teams)
     drivers: [
-        { name: "Race Control", team: "FIA", color: "#333333" }, // <--- CHAOS LIVES HERE
+        { name: "Race Control", team: "FIA", color: "#333333" }, 
         { name: "Max Verstappen", team: "Red Bull", color: "#3671C6" },
         { name: "Isack Hadjar", team: "Red Bull", color: "#3671C6" },
         { name: "Lando Norris", team: "McLaren", color: "#FF8000" },
@@ -61,15 +64,29 @@ const BINGO_CONFIG = {
 
     // TEMPLATES
     templates: {
-        // DRIVER SPECIFIC
-        quali: ["Pole Position", "Front Row Start", "Q3 Appearance", "Q2 Exit", "Q1 Exit", "Beats Teammate (Quali)"],
-        race: ["Race Win", "Podium Finish", "Top 5 Finish", "Top 10 Finish", "Points Finish", "Crash / DNF", "11th-20th Finish"],
-        extras: ["Fastest Lap", "Driver of the Day", "Beats Teammate (Race)", "5s Penalty", "Leads a Lap", "Stalls at Start"],
-        
-        // TEAM SPECIFIC
-        team: ["Double Podium", "1-2 Finish", "Double Points", "Double DNF", "Pit Stop Error (>4s)", "Strategy Error", "Engine Failure"],
-        
-        // GENERIC CHAOS (Assigned to Race Control)
-        chaos: ["Safety Car", "Virtual SC", "Red Flag", "Rain", "Turn 1 Pile-up", "Start Aborted", "Track Limits Warning", "Animal on Track", "Safety Car Finish"]
+        quali: [
+            "Pole Position", "Front Row Start", "Q3 Appearance", 
+            "Q2 Exit", "Q1 Exit", "Beats Teammate (Quali)"
+        ],
+        race: [
+            "Race Win", "Podium Finish", "Top 5 Finish", "Top 10 Finish", 
+            "Points Finish", "Crash / DNF", "11th-20th Finish"
+        ],
+        extras: [
+            "Fastest Lap", "Driver of the Day", "Beats Teammate (Race)", 
+            "5s Penalty", "Leads a Lap", "Stalls at Start"
+        ],
+        team: [
+            "Double Podium", "1-2 Finish", "Double Points", "Double DNF", 
+            "Pit Stop Error (>4s)", "Strategy Error", "Engine Failure"
+        ],
+        tech: [
+            "MOM Pass", "X-Mode Stuck", "Z-Mode Fail", "MGU-K Clipping", 
+            "Underweight", "Fuel Breach", "Active Aero Damage"
+        ],
+        chaos: [
+            "Safety Car", "Virtual SC", "Red Flag", "Rain", "Turn 1 Pile-up",
+            "Start Aborted", "Track Limits", "Animal on Track"
+        ]
     }
 };
