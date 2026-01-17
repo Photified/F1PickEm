@@ -33,14 +33,13 @@
             overflow: hidden;
         }
 
-        /* --- LOGIN OVERLAY --- */
+        /* --- 1. LOGIN OVERLAY --- */
         #loginOverlay {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(21, 21, 30, 0.95);
-            z-index: 1000;
+            background: rgba(21, 21, 30, 0.98);
+            z-index: 2000;
             display: flex; flex-direction: column;
             align-items: center; justify-content: center; color: white;
-            backdrop-filter: blur(5px);
         }
         .login-box {
             background: #222; padding: 40px; border-radius: 12px;
@@ -59,7 +58,66 @@
             text-transform: uppercase; border-radius: 6px; width: 100%;
         }
 
-        /* --- HEADER --- */
+        /* --- 2. STRATEGY MODAL (New) --- */
+        #strategyModal {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.9);
+            z-index: 1500;
+            display: none; /* Hidden by default */
+            flex-direction: column;
+            align-items: center; justify-content: center;
+            backdrop-filter: blur(10px);
+        }
+
+        .strat-container {
+            background: white; border-radius: 16px; padding: 30px;
+            text-align: center; max-width: 800px; width: 90%;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+        }
+
+        .strat-header {
+            display: flex; align-items: center; justify-content: center; gap: 20px;
+            margin-bottom: 20px; border-bottom: 2px solid #eee; padding-bottom: 20px;
+        }
+
+        .strat-flag { width: 80px; border-radius: 6px; box-shadow: 0 4px 10px rgba(0,0,0,0.2); }
+        
+        .strat-options {
+            display: flex; gap: 15px; justify-content: center; flex-wrap: wrap;
+        }
+
+        .strat-card {
+            background: #f8f8f8; border: 2px solid #ddd; border-radius: 12px;
+            padding: 20px; width: 140px; cursor: pointer; transition: 0.2s;
+            display: flex; flex-direction: column; align-items: center;
+        }
+        .strat-card:hover { transform: translateY(-5px); border-color: var(--brand-red); box-shadow: 0 10px 20px rgba(0,0,0,0.1); }
+        
+        /* Mini Grid Preview Icons */
+        .mini-grid {
+            display: grid; grid-template-columns: repeat(5, 1fr); gap: 2px;
+            width: 60px; height: 60px; margin-bottom: 15px;
+        }
+        .mg-cell { background: #ddd; border-radius: 1px; }
+        
+        /* Color the mini-grids based on type */
+        .sc-balanced .mg-cell:nth-child(odd) { background: var(--c-driver); }
+        .sc-balanced .mg-cell:nth-child(even) { background: var(--c-team); }
+        
+        .sc-tech .mg-cell { background: var(--c-tech); opacity: 0.3; }
+        .sc-tech .mg-cell:nth-child(3n) { background: var(--c-tech); opacity: 1; }
+        
+        .sc-chaos .mg-cell { background: var(--c-chaos); opacity: 0.3; }
+        .sc-chaos .mg-cell:nth-child(2n) { background: var(--c-chaos); opacity: 1; }
+        
+        .sc-driver .mg-cell { background: var(--c-driver); opacity: 0.3; }
+        .sc-driver .mg-cell:nth-child(odd) { background: var(--c-driver); opacity: 1; }
+
+        .strat-title { font-weight: 800; font-size: 14px; text-transform: uppercase; margin-bottom: 5px; }
+        .strat-desc { font-size: 11px; color: #666; line-height: 1.2; }
+
+
+        /* --- 3. MAIN APP STYLES --- */
         header {
             background: white; border-bottom: 3px solid var(--brand-red);
             padding: 10px 25px; display: flex; justify-content: space-between;
@@ -70,7 +128,7 @@
         .status-dot { width: 10px; height: 10px; background: #ccc; border-radius: 50%; }
         .status-dot.online { background: #00d2be; box-shadow: 0 0 8px #00d2be; }
 
-        /* --- RACE BAR (FLAGS) --- */
+        /* Race Bar */
         .race-bar {
             background: #fff; padding: 0; display: flex;
             overflow-x: auto; border-bottom: 1px solid #ddd;
@@ -96,14 +154,13 @@
         .race-name { font-size: 11px; font-weight: 800; text-transform: uppercase; line-height: 1; margin-bottom: 3px; }
         .race-date { font-size: 9px; color: #888; font-weight: 600; }
 
-        /* --- MAIN LAYOUT (3 COLUMNS) --- */
+        /* Main Layout */
         .main-stage {
             flex: 1; display: grid; 
-            grid-template-columns: 300px 1fr 280px; /* Left | Center | Right */
+            grid-template-columns: 300px 1fr 280px;
             padding: 20px; gap: 20px; overflow: hidden;
         }
 
-        /* --- PANELS --- */
         .panel {
             background: white; border-radius: 10px; box-shadow: var(--card-shadow);
             overflow: hidden; display: flex; flex-direction: column; border: 1px solid #e0e0e0;
@@ -114,23 +171,29 @@
             text-align: center; color: #666;
         }
 
-        /* --- LEFT: POOL & TABS --- */
-        .pool-tabs { display: flex; flex-direction: column; }
+        /* --- 4. IMPROVED TABS (Color Coded Strokes) --- */
+        .pool-tabs { display: flex; flex-direction: column; padding: 10px; gap: 8px; }
+        
         .tab-btn {
-            padding: 12px; text-align: center; cursor: pointer;
+            padding: 12px 15px; cursor: pointer; text-align: left;
             font-weight: 700; font-size: 12px; text-transform: uppercase;
-            border: 1px solid transparent; margin: 5px 10px; border-radius: 6px;
-            transition: 0.2s; color: #888; background: #f4f4f4;
+            border-radius: 4px; transition: 0.2s; background: white;
+            color: #555; border: 1px solid #eee;
+            /* The Key Feature: Left Border */
+            border-left-width: 5px; border-left-style: solid;
         }
-        
-        /* Color Coded Active States */
-        .tab-btn:hover { filter: brightness(0.95); }
-        .tab-btn.active { color: white; box-shadow: 0 2px 6px rgba(0,0,0,0.2); border: none; }
-        
-        .tab-btn[data-cat="driver"].active { background: var(--c-driver); }
-        .tab-btn[data-cat="team"].active   { background: var(--c-team); }
-        .tab-btn[data-cat="tech"].active   { background: var(--c-tech); }
-        .tab-btn[data-cat="chaos"].active  { background: var(--c-chaos); }
+
+        /* Specific Colors for Tab Strokes */
+        .tab-btn[data-cat="driver"] { border-left-color: var(--c-driver); }
+        .tab-btn[data-cat="team"]   { border-left-color: var(--c-team); }
+        .tab-btn[data-cat="tech"]   { border-left-color: var(--c-tech); }
+        .tab-btn[data-cat="chaos"]  { border-left-color: var(--c-chaos); }
+
+        /* Active State */
+        .tab-btn:hover { background: #f9f9f9; transform: translateX(2px); }
+        .tab-btn.active { 
+            background: #222; color: white; border-color: #222;
+        }
 
         .pool-list { flex: 1; overflow-y: auto; padding: 10px; background: #fbfbfb; }
         
@@ -146,19 +209,12 @@
         .chip.tech { border-left-color: var(--c-tech); color: var(--brand-dark); }
         .chip.chaos { border-left-color: var(--c-chaos); color: var(--brand-dark); }
 
-        /* --- CENTER: GRID --- */
+        /* Grid */
         .grid-container {
             flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center;
             background: white; border-radius: 10px; box-shadow: var(--card-shadow); border: 1px solid #e0e0e0;
             padding: 20px;
         }
-
-        .strategy-row { display: flex; gap: 8px; margin-bottom: 15px; }
-        .strat-btn {
-            padding: 6px 12px; border: 1px solid #ddd; border-radius: 20px;
-            font-size: 11px; font-weight: 700; cursor: pointer; background: white; color: #666;
-        }
-        .strat-btn.active { background: var(--brand-dark); color: white; border-color: var(--brand-dark); }
 
         .bingo-grid {
             display: grid; grid-template-columns: repeat(5, 1fr);
@@ -172,7 +228,6 @@
             position: relative; transition: 0.2s;
         }
 
-        /* Color Coded Drop Zones */
         .slot[data-req="driver"] { background: #fff8e1; border-color: #ffe0b2; color: var(--c-driver); }
         .slot[data-req="team"]   { background: #e0f2f1; border-color: #b2dfdb; color: var(--c-team); }
         .slot[data-req="tech"]   { background: #e3f2fd; border-color: #bbdefb; color: var(--c-tech); }
@@ -183,10 +238,9 @@
         .slot.filled[data-type="team"]   { background: var(--c-team); }
         .slot.filled[data-type="tech"]   { background: var(--c-tech); }
         .slot.filled[data-type="chaos"]  { background: var(--c-chaos); }
-        
         .slot.center { background: linear-gradient(135deg, #222, #000) !important; color: var(--brand-red) !important; border:none; font-size: 14px; text-transform: uppercase; }
 
-        /* --- RIGHT: LEADERBOARD --- */
+        /* Leaderboard */
         .leaderboard { flex: 1; overflow-y: auto; font-size: 12px; }
         .lb-row {
             display: flex; justify-content: space-between; padding: 10px 15px;
@@ -210,6 +264,71 @@
     </div>
 </div>
 
+<div id="strategyModal">
+    <div class="strat-container">
+        <h2 style="margin-top:0;">ROUND 1: STRATEGY BRIEFING</h2>
+        <div class="strat-header">
+            <img src="https://flagcdn.com/w160/au.png" class="strat-flag">
+            <div style="text-align:left;">
+                <div style="font-size:24px; font-weight:900; font-style:italic;">AUSTRALIAN GP</div>
+                <div style="color:#666; font-size:12px;">ALBERT PARK CIRCUIT • MAR 06-08</div>
+            </div>
+        </div>
+        
+        <p style="font-size:14px; color:#555; margin-bottom:20px;">Select your Bingo Card Template to lock in your strategy:</p>
+
+        <div class="strat-options">
+            <div class="strat-card sc-balanced" onclick="confirmStrategy('balanced')">
+                <div class="mini-grid">
+                    <div class="mg-cell"></div><div class="mg-cell"></div><div class="mg-cell"></div><div class="mg-cell"></div><div class="mg-cell"></div>
+                    <div class="mg-cell"></div><div class="mg-cell"></div><div class="mg-cell"></div><div class="mg-cell"></div><div class="mg-cell"></div>
+                    <div class="mg-cell"></div><div class="mg-cell"></div><div class="mg-cell"></div><div class="mg-cell"></div><div class="mg-cell"></div>
+                    <div class="mg-cell"></div><div class="mg-cell"></div><div class="mg-cell"></div><div class="mg-cell"></div><div class="mg-cell"></div>
+                    <div class="mg-cell"></div><div class="mg-cell"></div><div class="mg-cell"></div><div class="mg-cell"></div><div class="mg-cell"></div>
+                </div>
+                <div class="strat-title">⚖️ Balanced</div>
+                <div class="strat-desc">Equal mix of Drivers, Teams, and Tech events.</div>
+            </div>
+
+            <div class="strat-card sc-tech" onclick="confirmStrategy('tech')">
+                <div class="mini-grid">
+                    <div class="mg-cell"></div><div class="mg-cell"></div><div class="mg-cell"></div><div class="mg-cell"></div><div class="mg-cell"></div>
+                    <div class="mg-cell"></div><div class="mg-cell"></div><div class="mg-cell"></div><div class="mg-cell"></div><div class="mg-cell"></div>
+                    <div class="mg-cell"></div><div class="mg-cell"></div><div class="mg-cell"></div><div class="mg-cell"></div><div class="mg-cell"></div>
+                    <div class="mg-cell"></div><div class="mg-cell"></div><div class="mg-cell"></div><div class="mg-cell"></div><div class="mg-cell"></div>
+                    <div class="mg-cell"></div><div class="mg-cell"></div><div class="mg-cell"></div><div class="mg-cell"></div><div class="mg-cell"></div>
+                </div>
+                <div class="strat-title">🔧 Tech Spec</div>
+                <div class="strat-desc">Heavy focus on New Regs, Active Aero & Engines.</div>
+            </div>
+
+            <div class="strat-card sc-chaos" onclick="confirmStrategy('chaos')">
+                <div class="mini-grid">
+                    <div class="mg-cell"></div><div class="mg-cell"></div><div class="mg-cell"></div><div class="mg-cell"></div><div class="mg-cell"></div>
+                    <div class="mg-cell"></div><div class="mg-cell"></div><div class="mg-cell"></div><div class="mg-cell"></div><div class="mg-cell"></div>
+                    <div class="mg-cell"></div><div class="mg-cell"></div><div class="mg-cell"></div><div class="mg-cell"></div><div class="mg-cell"></div>
+                    <div class="mg-cell"></div><div class="mg-cell"></div><div class="mg-cell"></div><div class="mg-cell"></div><div class="mg-cell"></div>
+                    <div class="mg-cell"></div><div class="mg-cell"></div><div class="mg-cell"></div><div class="mg-cell"></div><div class="mg-cell"></div>
+                </div>
+                <div class="strat-title">🚩 Chaos Agent</div>
+                <div class="strat-desc">Maximum Safety Cars, Crashes, and Penalties.</div>
+            </div>
+
+            <div class="strat-card sc-driver" onclick="confirmStrategy('driver')">
+                <div class="mini-grid">
+                    <div class="mg-cell"></div><div class="mg-cell"></div><div class="mg-cell"></div><div class="mg-cell"></div><div class="mg-cell"></div>
+                    <div class="mg-cell"></div><div class="mg-cell"></div><div class="mg-cell"></div><div class="mg-cell"></div><div class="mg-cell"></div>
+                    <div class="mg-cell"></div><div class="mg-cell"></div><div class="mg-cell"></div><div class="mg-cell"></div><div class="mg-cell"></div>
+                    <div class="mg-cell"></div><div class="mg-cell"></div><div class="mg-cell"></div><div class="mg-cell"></div><div class="mg-cell"></div>
+                    <div class="mg-cell"></div><div class="mg-cell"></div><div class="mg-cell"></div><div class="mg-cell"></div><div class="mg-cell"></div>
+                </div>
+                <div class="strat-title">🏎️ Silly Season</div>
+                <div class="strat-desc">Focus on Driver Rivalries, Radios, and Podiums.</div>
+            </div>
+        </div>
+    </div>
+</div>
+
 <header>
     <div class="user-profile">
         <div class="status-dot" id="connectionDot"></div>
@@ -219,52 +338,36 @@
     <button onclick="saveToServer()" style="background:var(--brand-red); color:white; border:none; padding:8px 20px; border-radius:20px; font-weight:bold; cursor:pointer; box-shadow:0 4px 6px rgba(225,6,0,0.2);">CLOUD SAVE</button>
 </header>
 
-<div class="race-bar" id="raceBar">
-    </div>
+<div class="race-bar" id="raceBar"></div>
 
 <div class="main-stage">
     
     <div class="panel">
         <div class="panel-header">Predictions Pool</div>
-        
         <div class="pool-tabs">
-            <div style="display:grid; grid-template-columns: 1fr 1fr; gap:0;">
-                <div class="tab-btn active" data-cat="driver" onclick="setPool('driver')">🏎️ Drivers</div>
-                <div class="tab-btn" data-cat="team" onclick="setPool('team')">🛠️ Teams</div>
-                <div class="tab-btn" data-cat="tech" onclick="setPool('tech')">⚡ Tech</div>
-                <div class="tab-btn" data-cat="chaos" onclick="setPool('chaos')">🚩 Chaos</div>
-            </div>
+            <div class="tab-btn active" data-cat="driver" onclick="setPool('driver')">🏎️ Drivers</div>
+            <div class="tab-btn" data-cat="team" onclick="setPool('team')">🛠️ Teams</div>
+            <div class="tab-btn" data-cat="tech" onclick="setPool('tech')">⚡ Tech</div>
+            <div class="tab-btn" data-cat="chaos" onclick="setPool('chaos')">🚩 Chaos</div>
         </div>
-        
         <div id="pool" class="pool-list"></div>
     </div>
 
     <div class="grid-container">
-        <div class="strategy-row">
-            <button class="strat-btn active" onclick="applyTemplate('balanced')">⚖️ Balanced</button>
-            <button class="strat-btn" onclick="applyTemplate('tech')">🔧 Tech Heavy</button>
-            <button class="strat-btn" onclick="applyTemplate('chaos')">🚩 Chaos Mode</button>
-            <button class="strat-btn" onclick="applyTemplate('driver')">🏎️ Silly Season</button>
-        </div>
         <div id="grid" class="bingo-grid"></div>
     </div>
 
     <div class="panel">
-        <div class="panel-header">
-            <span>🏆 World Championship</span>
-        </div>
+        <div class="panel-header">🏆 World Championship</div>
         <div class="leaderboard" id="leaderboardList">
             <div style="padding:20px; text-align:center; color:#999;">Loading...</div>
-        </div>
-        <div style="padding:10px; background:#f8f8f8; text-align:center; font-size:10px; color:#aaa; border-top:1px solid #eee;">
-            Points update post-race
         </div>
     </div>
 
 </div>
 
 <script>
-    // --- FIREBASE CONFIG (Add yours here) ---
+    // --- CONFIG ---
     const firebaseConfig = {
         apiKey: "YOUR_API_KEY",
         authDomain: "YOUR_PROJECT.firebaseapp.com",
@@ -281,33 +384,19 @@
         auth = firebase.auth();
     } catch(e) { console.warn("Offline Mode"); }
 
-    // --- DATA MAPPING ---
-    // Country codes for FlagCDN
     const races = [
-        {id:'aus', c:'au', n:'Australia', d:'Mar 8'},
-        {id:'chn', c:'cn', n:'China', d:'Mar 15'},
-        {id:'jpn', c:'jp', n:'Japan', d:'Mar 29'},
-        {id:'bhr', c:'bh', n:'Bahrain', d:'Apr 12'},
-        {id:'sau', c:'sa', n:'Saudi Arabia', d:'Apr 19'},
-        {id:'mia', c:'us', n:'Miami', d:'May 3'},
-        {id:'can', c:'ca', n:'Canada', d:'May 24'},
-        {id:'mon', c:'mc', n:'Monaco', d:'Jun 7'},
-        {id:'bar', c:'es', n:'Spain', d:'Jun 14'},
-        {id:'aut', c:'at', n:'Austria', d:'Jun 28'},
-        {id:'gbr', c:'gb', n:'Britain', d:'Jul 5'},
-        {id:'bel', c:'be', n:'Belgium', d:'Jul 19'},
-        {id:'hun', c:'hu', n:'Hungary', d:'Jul 26'},
-        {id:'ned', c:'nl', n:'Dutch', d:'Aug 23'},
-        {id:'ita', c:'it', n:'Monza', d:'Sep 6'},
-        {id:'mad', c:'es', n:'Madrid', d:'Sep 13'},
-        {id:'aze', c:'az', n:'Baku', d:'Sep 27'},
-        {id:'sin', c:'sg', n:'Singapore', d:'Oct 11'},
-        {id:'usa', c:'us', n:'Austin', d:'Oct 25'},
-        {id:'mex', c:'mx', n:'Mexico', d:'Nov 1'},
-        {id:'bra', c:'br', n:'Brazil', d:'Nov 8'},
-        {id:'lvg', c:'us', n:'Vegas', d:'Nov 21'},
-        {id:'qat', c:'qa', n:'Qatar', d:'Nov 29'},
-        {id:'abu', c:'ae', n:'Abu Dhabi', d:'Dec 6'}
+        {id:'aus', c:'au', n:'Australia', d:'Mar 8'}, {id:'chn', c:'cn', n:'China', d:'Mar 15'},
+        {id:'jpn', c:'jp', n:'Japan', d:'Mar 29'}, {id:'bhr', c:'bh', n:'Bahrain', d:'Apr 12'},
+        {id:'sau', c:'sa', n:'Saudi Arabia', d:'Apr 19'}, {id:'mia', c:'us', n:'Miami', d:'May 3'},
+        {id:'can', c:'ca', n:'Canada', d:'May 24'}, {id:'mon', c:'mc', n:'Monaco', d:'Jun 7'},
+        {id:'bar', c:'es', n:'Spain', d:'Jun 14'}, {id:'aut', c:'at', n:'Austria', d:'Jun 28'},
+        {id:'gbr', c:'gb', n:'Britain', d:'Jul 5'}, {id:'bel', c:'be', n:'Belgium', d:'Jul 19'},
+        {id:'hun', c:'hu', n:'Hungary', d:'Jul 26'}, {id:'ned', c:'nl', n:'Dutch', d:'Aug 23'},
+        {id:'ita', c:'it', n:'Monza', d:'Sep 6'}, {id:'mad', c:'es', n:'Madrid', d:'Sep 13'},
+        {id:'aze', c:'az', n:'Baku', d:'Sep 27'}, {id:'sin', c:'sg', n:'Singapore', d:'Oct 11'},
+        {id:'usa', c:'us', n:'Austin', d:'Oct 25'}, {id:'mex', c:'mx', n:'Mexico', d:'Nov 1'},
+        {id:'bra', c:'br', n:'Brazil', d:'Nov 8'}, {id:'lvg', c:'us', n:'Vegas', d:'Nov 21'},
+        {id:'qat', c:'qa', n:'Qatar', d:'Nov 29'}, {id:'abu', c:'ae', n:'Abu Dhabi', d:'Dec 6'}
     ];
 
     const templates = {
@@ -330,8 +419,6 @@
         } catch(e) { console.log('Err JSON'); }
         
         renderRaces();
-        applyTemplate('balanced');
-        renderPool();
         
         const saved = localStorage.getItem('f1_team_name');
         if(saved) {
@@ -350,20 +437,39 @@
         document.getElementById('displayTeamName').innerText = name.toUpperCase();
         document.getElementById('connectionDot').classList.add('online');
 
+        // Check if user has a saved grid. If not, SHOW STRATEGY MODAL.
+        const localGrid = localStorage.getItem(`grid_${activeRace}`);
+        
+        if(!localGrid) {
+            // New user or new race -> Show Strategy Modal
+            document.getElementById('strategyModal').style.display = 'flex';
+        } else {
+            // Load existing
+            if(auth) { auth.signInAnonymously(); loadCloud(); listenLeaderboard(); }
+            // If offline, just load local? We'll rely on cloud load mainly.
+            applyTemplate('balanced'); // Fallback structure
+        }
+
         if(auth) {
             auth.signInAnonymously();
             loadCloud();
             listenLeaderboard();
         } else {
-            renderLeaderboard([
-                {name: name, score: 0}, 
-                {name: "Max V.", score: 150},
-                {name: "Lewis H.", score: 140}
-            ]);
+            // Mock Leaderboard
+            renderLeaderboard([{name: name, score: 0}, {name: "Max V.", score: 150}]);
         }
+        
+        setPool('driver');
     }
 
-    // --- UI RENDERING ---
+    // --- MODAL LOGIC ---
+    function confirmStrategy(type) {
+        applyTemplate(type);
+        document.getElementById('strategyModal').style.display = 'none';
+        // Force save empty template to avoid showing modal again
+        saveToServer(); 
+    }
+
     function renderRaces() {
         const bar = document.getElementById('raceBar');
         bar.innerHTML = '';
@@ -382,7 +488,6 @@
 
     function setPool(cat) {
         currentPoolCat = cat;
-        // Update Tab Colors
         document.querySelectorAll('.tab-btn').forEach(b => {
             b.classList.remove('active');
             if(b.dataset.cat === cat) b.classList.add('active');
@@ -409,9 +514,6 @@
     }
 
     function applyTemplate(t) {
-        document.querySelectorAll('.strat-btn').forEach(b => b.classList.remove('active'));
-        event.target.classList.add('active');
-        
         const pattern = templates[t];
         const grid = document.getElementById('grid');
         grid.innerHTML = '';
@@ -446,7 +548,7 @@
         const text = e.dataTransfer.getData('text');
         const type = e.dataTransfer.getData('type');
         
-        if(type !== reqType) return alert(`Needs a ${reqType.toUpperCase()} card here!`);
+        if(type !== reqType) return;
         
         currentGrid[index] = { text, type };
         renderGrid();
@@ -469,14 +571,14 @@
         });
     }
 
-    // --- CLOUD ---
     function saveToServer() {
-        if(!db) return alert("Offline Mode. Saved Locally.");
+        if(!db) return;
         db.collection('players').doc(currentUser.id).set({
             name: currentUser.name,
-            score: Math.floor(Math.random() * 200), // Fake score for demo
+            score: Math.floor(Math.random() * 200),
             [`grid_${activeRace}`]: currentGrid
-        }, { merge: true }).then(() => alert("Saved to Cloud!"));
+        }, { merge: true });
+        localStorage.setItem(`grid_${activeRace}`, JSON.stringify(currentGrid));
     }
 
     function loadCloud() {
@@ -484,9 +586,13 @@
         db.collection('players').doc(currentUser.id).get().then(doc => {
             if(doc.exists && doc.data()[`grid_${activeRace}`]) {
                 currentGrid = doc.data()[`grid_${activeRace}`];
+                // Since we found a grid, no need for modal
                 renderGrid();
             } else {
+                // If cloud has no grid, check local or show modal
+                // For simplicity here, we reset
                 currentGrid = Array(25).fill(null);
+                document.getElementById('strategyModal').style.display = 'flex';
                 renderGrid();
             }
         });
