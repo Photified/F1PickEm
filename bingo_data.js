@@ -1,9 +1,9 @@
-/* F1 2026 BINGO DATA - OFFICIALLY VERIFIED GRID
-   Based on confirmed contracts for the 2026 Season.
+/* F1 2026 CONFIGURATION
+   Static lists used to generate dynamic predictions.
 */
 
 const BINGO_CONFIG = {
-    // 2026 CALENDAR (Madrid added, Canada moved)
+    // 2026 CALENDAR
     races: [
         {id:'aus', c:'au', n:'Australia', d:'Mar 8'},
         {id:'chn', c:'cn', n:'China', d:'Mar 15'},
@@ -31,38 +31,44 @@ const BINGO_CONFIG = {
         {id:'abu', c:'ae', n:'Abu Dhabi', d:'Dec 6'}
     ],
 
-    // PREDICTION POOL (Corrected 2026 Lineups)
-    pool: {
-        driver: [
-            "Hamilton (Ferrari) Win", "Antonelli (Merc) Podium", "Max (Red Bull) Pole",
-            "Hadjar (Red Bull) Q3 Crash", "Norris (McLaren) Win", "Piastri (McLaren) Fastest Lap",
-            "Bottas (Cadillac) Points", "Perez (Cadillac) Q1 Exit", "Bortoleto (Audi) Top 10",
-            "Hulkenberg (Audi) DNF", "Alonso (Aston) Top 5", "Sainz (Williams) Podium",
-            "Bearman (Haas) Points", "Ocon (Haas) 5s Penalty", "Lawson (VCARB) Beats Max",
-            "Leclerc (Ferrari) Pole", "Colapinto (Alpine) Overtake", "Lindblad (VCARB) Rookie Error",
-            "Zhou (Cadillac) FP1 Run", "Gasly (Alpine) Points", "Russell (Merc) Win"
-        ],
-        team: [
-            "Cadillac Double DNF", "Audi Engine Failure", "Ford Battery Fail (RBR)",
-            "Aston Martin Aero Fail", "Mercedes 1-2 Finish", "McLaren Double Podium",
-            "Williams Double Q3", "Haas Points Finish", "Alpine Internal Clash",
-            "Ferrari Strategy Error", "Cadillac 'Undrivable' Radio", "Honda-Aston Integration Issue",
-            "Audi Slow Pit Stop (>4s)", "Red Bull Engine Smoke", "Alpine Suspension Fail"
-        ],
-        tech: [
-            "Manual Override (MOM) Pass", "X-Mode (Low Drag) Stuck", "Z-Mode (Cornering) Fail",
-            "MGU-K Clipping (>290kph)", "Car Underweight (768kg)", "Fuel Flow Breach",
-            "Narrow Tyre Lock-up", "Battery Depleted Defense", "Active Front Wing Dmg",
-            "Compression Ratio Protest", "Mule Car Comparison", "Newey Aero Trick Spotted",
-            "50/50 Power Split Issue"
-        ],
-        chaos: [
-            "Q1 Traffic Jam (22 Cars)", "Lap 1 Safety Car", "Red Flag in Q1",
-            "Turn 1 Pile-up", "5s Penalty Served", "VSC Deployment",
-            "Start Aborted", "Unsafe Release", "Rain starts Mid-Race",
-            "Protest Filed (€20k Fee)", "20 Car Length SC Gap",
-            "Track Limits (Narrow Cars)", "Two-Stage Nose Detached",
-            "Madrid Street Drain Loose"
-        ]
-    }
+    // THE 2026 GRID (Fixed)
+    drivers: [
+        { name: "Max Verstappen", team: "Red Bull", short: "VER" },
+        { name: "Isack Hadjar", team: "Red Bull", short: "HAD" },
+        { name: "Lando Norris", team: "McLaren", short: "NOR" },
+        { name: "Oscar Piastri", team: "McLaren", short: "PIA" },
+        { name: "Lewis Hamilton", team: "Ferrari", short: "HAM" },
+        { name: "Charles Leclerc", team: "Ferrari", short: "LEC" },
+        { name: "George Russell", team: "Mercedes", short: "RUS" },
+        { name: "Kimi Antonelli", team: "Mercedes", short: "ANT" },
+        { name: "Fernando Alonso", team: "Aston Martin", short: "ALO" },
+        { name: "Lance Stroll", team: "Aston Martin", short: "STR" },
+        { name: "Pierre Gasly", team: "Alpine", short: "GAS" },
+        { name: "Franco Colapinto", team: "Alpine", short: "COL" },
+        { name: "Alex Albon", team: "Williams", short: "ALB" },
+        { name: "Carlos Sainz", team: "Williams", short: "SAI" },
+        { name: "Liam Lawson", team: "VCARB", short: "LAW" },
+        { name: "Arvid Lindblad", team: "VCARB", short: "LIN" }, // The actual rookie
+        { name: "Esteban Ocon", team: "Haas", short: "OCO" },
+        { name: "Ollie Bearman", team: "Haas", short: "BEA" },
+        { name: "Nico Hulkenberg", team: "Audi", short: "HUL" },
+        { name: "Gabriel Bortoleto", team: "Audi", short: "BOR" },
+        { name: "Valtteri Bottas", team: "Cadillac", short: "BOT" },
+        { name: "Sergio Perez", team: "Cadillac", short: "PER" }
+    ],
+
+    // SCORING OUTCOMES
+    outcomes: [
+        "Race Win", "Podium Finish", "Top 5 Finish", "Top 10 Finish", 
+        "Points Finish", "Pole Position", "Front Row Start", "Q3 Appearance", 
+        "Q1 Exit", "DNF (Retires)", "Fastest Lap", "Driver of the Day",
+        "Beats Teammate", "Gains 5+ Places", "Penalty (5s+)", "Crash / Spin"
+    ],
+
+    // GENERIC CHAOS (Non-driver specific)
+    chaos: [
+        "Safety Car (Full)", "Virtual Safety Car", "Red Flag", "Rain During Race",
+        "Turn 1 Pile-up", "Slow Stop (>4s)", "Less than 16 Finishers",
+        "Leader Crashes", "Animal on Track", "Safety Car Ending"
+    ]
 };
