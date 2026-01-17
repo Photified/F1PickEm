@@ -3,17 +3,21 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>F1 2026: AUSTRALIAN GP BINGO</title>
+    <title>F1 2026: CHAMPIONSHIP BINGO</title>
     <link href="https://fonts.googleapis.com/css2?family=Titillium+Web:ital,wght@0,400;0,600;0,700;0,900;1,400&display=swap" rel="stylesheet">
     <style>
         :root {
-            /* CORE THEME */
-            --brand-red: #e10600;
-            --brand-dark: #15151e;
-            --bg-body: #f0f0f5;
+            --f1-red: #e10600;
+            --f1-dark: #15151e;
+            --bg-body: #f4f4f8;
             --card-shadow: 0 4px 12px rgba(0,0,0,0.08);
             
-            /* CATEGORY COLORS (Vibrant & Distinct) */
+            /* Scoring Colors */
+            --score-tile: #e10600;
+            --score-line: #00d2be;
+            --score-bingo: #ffb800;
+            
+            /* Category Colors */
             --c-driver: #ff9500; 
             --c-team: #00d2be;   
             --c-tech: #2962ff;   
@@ -23,7 +27,7 @@
         body {
             font-family: 'Titillium Web', sans-serif;
             background: var(--bg-body);
-            color: var(--brand-dark);
+            color: var(--f1-dark);
             margin: 0;
             height: 100vh;
             display: flex;
@@ -31,553 +35,524 @@
             overflow: hidden;
         }
 
-        /* --- HEADER --- */
+        /* --- HEADER & NAV --- */
         header {
             background: white;
-            border-bottom: 4px solid var(--brand-red);
+            border-bottom: 4px solid var(--f1-red);
             padding: 15px 30px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.05);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
             z-index: 20;
         }
 
-        .brand-section h1 {
-            margin: 0;
-            font-size: 26px;
+        .header-title {
+            font-size: 24px;
             font-weight: 900;
             font-style: italic;
             text-transform: uppercase;
-            letter-spacing: -0.5px;
-            line-height: 1;
         }
 
-        .brand-section .subtitle {
-            font-size: 14px;
-            color: #888;
-            font-weight: 600;
-            letter-spacing: 1px;
-            margin-top: 2px;
-        }
-
-        .actions {
-            display: flex;
-            gap: 12px;
-        }
+        .header-controls { display: flex; gap: 10px; }
 
         .btn {
-            padding: 10px 24px;
-            border-radius: 50px;
+            padding: 8px 16px;
+            border-radius: 4px;
             border: none;
             font-weight: 700;
             font-size: 13px;
-            text-transform: uppercase;
             cursor: pointer;
-            transition: all 0.2s;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-        }
-
-        .btn-save { background: var(--brand-red); color: white; }
-        .btn-save:hover { background: #b30000; transform: translateY(-1px); }
-        
-        .btn-reset { background: #e0e0e0; color: #555; }
-        .btn-reset:hover { background: #d0d0d0; color: #000; }
-
-        /* --- LAYOUT --- */
-        .main-layout {
-            display: flex;
-            flex: 1;
-            padding: 20px;
-            gap: 25px;
-            overflow: hidden;
-        }
-
-        /* --- LEFT SIDEBAR (The Market) --- */
-        .sidebar {
-            width: 380px;
-            background: white;
-            border-radius: 16px;
-            box-shadow: var(--card-shadow);
-            display: flex;
-            flex-direction: column;
-            overflow: hidden;
-        }
-
-        .category-nav {
-            display: flex;
-            border-bottom: 1px solid #eee;
-        }
-
-        .nav-item {
-            flex: 1;
-            text-align: center;
-            padding: 16px 5px;
-            font-size: 12px;
-            font-weight: 800;
-            color: #bbb;
-            cursor: pointer;
-            transition: 0.2s;
             text-transform: uppercase;
         }
 
-        .nav-item:hover { background: #fafafa; color: #888; }
+        .btn-score { background: var(--f1-dark); color: white; }
+        .btn-score:hover { background: #333; }
         
-        /* Active States with Underline glow */
-        .nav-item.active { background: white; color: var(--brand-dark); position: relative; }
-        .nav-item.active::after {
-            content:''; position: absolute; bottom:0; left:0; width:100%; height:4px;
-        }
-        .nav-item[data-cat="driver"].active::after { background: var(--c-driver); }
-        .nav-item[data-cat="team"].active::after { background: var(--c-team); }
-        .nav-item[data-cat="tech"].active::after { background: var(--c-tech); }
-        .nav-item[data-cat="chaos"].active::after { background: var(--c-chaos); }
-
-        .pool-container {
-            flex: 1;
-            overflow-y: auto;
-            padding: 15px;
-            background: #fafafa;
+        /* --- RACE BAR --- */
+        .race-bar {
+            background: #fff;
+            padding: 10px 20px;
+            display: flex;
+            gap: 15px;
+            overflow-x: auto;
+            border-bottom: 1px solid #ddd;
+            scrollbar-width: thin;
         }
 
-        /* --- DRAGGABLE CARDS (Improved) --- */
-        .card-chip {
-            background: white;
-            padding: 14px 18px;
-            margin-bottom: 10px;
-            border-radius: 8px;
-            border-left: 6px solid #ccc;
-            font-weight: 600;
-            font-size: 14px;
-            color: #333;
-            cursor: grab;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-            transition: all 0.2s ease;
+        .race-item {
+            flex: 0 0 auto;
             display: flex;
             align-items: center;
-            justify-content: space-between;
+            gap: 8px;
+            padding: 5px 12px;
+            border-radius: 20px;
+            background: #f0f0f0;
+            opacity: 0.5;
+            cursor: default;
+            font-weight: 700;
+            font-size: 12px;
         }
 
-        .card-chip:hover {
-            transform: translateX(4px);
-            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        .race-item.active {
+            opacity: 1;
+            background: var(--f1-red);
+            color: white;
+            box-shadow: 0 4px 8px rgba(225, 6, 0, 0.3);
         }
 
-        .card-chip.driver { border-left-color: var(--c-driver); }
-        .card-chip.team { border-left-color: var(--c-team); }
-        .card-chip.tech { border-left-color: var(--c-tech); }
-        .card-chip.chaos { border-left-color: var(--c-chaos); }
+        .race-item.past {
+            opacity: 0.7;
+            background: #333;
+            color: white;
+        }
 
-        .card-chip i { font-style: normal; font-size: 16px; opacity: 0.5; }
-
-        /* --- RIGHT AREA (Game Board) --- */
-        .game-board {
+        /* --- MAIN LAYOUT --- */
+        .main-stage {
             flex: 1;
+            display: flex;
+            padding: 20px;
+            gap: 20px;
+            overflow: hidden;
+        }
+
+        /* --- SIDEBAR (Leaderboard & Pool) --- */
+        .sidebar {
+            width: 350px;
             display: flex;
             flex-direction: column;
             gap: 20px;
+        }
+
+        .panel {
             background: white;
-            border-radius: 16px;
+            border-radius: 10px;
             box-shadow: var(--card-shadow);
-            padding: 25px;
-            position: relative;
-        }
-
-        /* TEMPLATE SELECTOR (New UX) */
-        .strategy-deck {
+            overflow: hidden;
             display: flex;
-            gap: 15px;
-            justify-content: center;
-            margin-bottom: 10px;
+            flex-direction: column;
         }
 
-        .strat-card {
-            padding: 8px 16px;
-            border: 2px solid #eee;
-            border-radius: 8px;
-            cursor: pointer;
+        .panel-header {
+            padding: 12px;
+            background: #f9f9f9;
+            font-weight: 800;
+            font-size: 14px;
+            text-transform: uppercase;
+            border-bottom: 1px solid #eee;
             text-align: center;
-            opacity: 0.6;
-            transition: 0.2s;
+        }
+
+        /* LEADERBOARD */
+        .leaderboard-list {
+            padding: 0;
+            margin: 0;
+            list-style: none;
+            overflow-y: auto;
+            max-height: 200px;
+        }
+
+        .lb-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 15px;
+            border-bottom: 1px solid #f0f0f0;
+            font-size: 13px;
+        }
+        .lb-row:nth-child(1) { background: rgba(255, 184, 0, 0.1); font-weight: bold; border-left: 4px solid #ffb800; }
+        .lb-row:nth-child(2) { border-left: 4px solid #c0c0c0; }
+        .lb-row:nth-child(3) { border-left: 4px solid #cd7f32; }
+
+        /* POOL */
+        .pool-list {
+            flex: 1;
+            overflow-y: auto;
+            padding: 10px;
+        }
+
+        .pool-item {
+            padding: 8px 12px;
+            margin-bottom: 6px;
             background: white;
+            border: 1px solid #eee;
+            border-left: 4px solid #555;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: 600;
+            cursor: grab;
         }
+        .pool-item.driver { border-left-color: var(--c-driver); }
+        .pool-item.team { border-left-color: var(--c-team); }
+        .pool-item.tech { border-left-color: var(--c-tech); }
+        .pool-item.chaos { border-left-color: var(--c-chaos); }
 
-        .strat-card:hover { opacity: 1; border-color: #ccc; }
-        
-        .strat-card.active {
-            opacity: 1;
-            border-color: var(--brand-red);
-            background: #fff5f5;
-            color: var(--brand-red);
-            font-weight: 700;
-            box-shadow: 0 4px 10px rgba(225, 6, 0, 0.15);
-        }
-
-        .strat-title { font-size: 13px; text-transform: uppercase; }
-        .strat-desc { font-size: 10px; font-weight: 400; color: #777; margin-top: 2px; }
-
-        /* BINGO GRID */
-        .bingo-grid {
-            display: grid;
-            grid-template-columns: repeat(5, 1fr);
-            grid-template-rows: repeat(5, 1fr);
-            gap: 10px;
-            height: 100%;
-            width: 100%;
-            max-width: 800px;
-            aspect-ratio: 1/1;
-            margin: 0 auto;
-        }
-
-        .slot {
-            position: relative;
-            border-radius: 8px;
+        /* --- GAME GRID --- */
+        .grid-container {
+            flex: 1;
+            background: white;
+            border-radius: 10px;
+            box-shadow: var(--card-shadow);
+            padding: 20px;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            text-align: center;
-            padding: 5px;
-            transition: all 0.2s;
-            border: 2px solid transparent;
+            position: relative;
         }
 
-        /* Empty Slot Visuals */
-        .slot:empty {
+        .bingo-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 8px;
+            width: 100%;
+            max-width: 650px;
+            aspect-ratio: 1/1;
+        }
+
+        .slot {
             background: #f8f8f8;
-            border-color: #eee;
+            border: 2px dashed #e0e0e0;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 4px;
+            font-size: 11px;
+            font-weight: 700;
+            position: relative;
         }
 
-        .slot:empty::after {
-            content: attr(data-label);
-            font-size: 10px;
-            font-weight: 800;
-            text-transform: uppercase;
-            opacity: 0.5;
-            letter-spacing: 1px;
-        }
-
-        /* Color Coding for Empty Slots */
-        .slot[data-req="driver"]:empty { background: #fff8f0; border-color: #ffe0b2; color: var(--c-driver); }
-        .slot[data-req="team"]:empty   { background: #f0fdfc; border-color: #b2dfdb; color: var(--c-team); }
-        .slot[data-req="tech"]:empty   { background: #f0f7ff; border-color: #bbdefb; color: var(--c-tech); }
-        .slot[data-req="chaos"]:empty  { background: #fff0f0; border-color: #ffcdd2; color: var(--c-chaos); }
-
-        /* Filled Slot */
         .slot.filled {
-            color: white;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.15);
-            font-size: 12px;
-            font-weight: 600;
-            line-height: 1.3;
-            padding: 8px;
-            cursor: pointer;
             border: none;
+            color: white;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.15);
+        }
+        
+        .slot[data-type="driver"].filled { background: var(--c-driver); }
+        .slot[data-type="team"].filled { background: var(--c-team); }
+        .slot[data-type="tech"].filled { background: var(--c-tech); }
+        .slot[data-type="chaos"].filled { background: var(--c-chaos); }
+        .slot.free { background: #111; color: var(--f1-red); font-size: 14px; text-transform: uppercase; border:none; }
+
+        /* SCORING HIGHLIGHTS */
+        .slot.correct { 
+            opacity: 1; 
+            box-shadow: inset 0 0 0 3px #fff, 0 0 15px var(--score-tile); 
+        }
+        .slot.correct::after {
+            content: '✓'; position: absolute; top: -5px; right: -5px;
+            background: white; color: var(--score-tile);
+            border-radius: 50%; width: 16px; height: 16px; font-size: 12px;
+            display: flex; align-items: center; justify-content: center;
         }
 
-        .slot.filled[data-type="driver"] { background: var(--c-driver); }
-        .slot.filled[data-type="team"]   { background: var(--c-team); }
-        .slot.filled[data-type="tech"]   { background: var(--c-tech); }
-        .slot.filled[data-type="chaos"]  { background: var(--c-chaos); }
-
-        .slot.filled:hover::before {
-            content: '×';
-            position: absolute;
-            top: 2px;
-            right: 5px;
-            font-size: 14px;
-            opacity: 0.8;
+        /* --- MODAL --- */
+        .modal {
+            display: none;
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.8);
+            z-index: 100;
+            align-items: center; justify-content: center;
         }
-
-        /* Center Free Space */
-        .slot.free-space {
-            background: radial-gradient(circle, #222, #000);
-            color: var(--brand-red);
-            font-weight: 900;
-            font-size: 18px;
-            text-transform: uppercase;
-            border: 3px solid var(--brand-red);
+        .modal-content {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            max-width: 500px;
+            width: 90%;
+            position: relative;
         }
+        .close-btn { position: absolute; top: 10px; right: 15px; font-size: 24px; cursor: pointer; }
 
-        /* Drag Interactions */
-        .slot.drag-hover { transform: scale(1.05); z-index: 10; opacity: 1; }
-        .slot.drag-reject { animation: shake 0.3s; }
+        .score-row { display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid #eee; }
+        .score-val { font-weight: 900; color: var(--f1-red); }
 
-        @keyframes shake {
-            0%, 100% { transform: translateX(0); }
-            25% { transform: translateX(-5px); }
-            75% { transform: translateX(5px); }
+        /* --- ADMIN TEST PANEL (Bottom) --- */
+        .admin-panel {
+            background: #222; color: white; padding: 10px; font-size: 12px;
+            display: flex; gap: 10px; align-items: center;
         }
+        .admin-input { padding: 5px; background: #333; border: 1px solid #555; color: white; width: 300px; }
 
     </style>
 </head>
 <body>
 
 <header>
-    <div class="brand-section">
-        <h1>F1 <span style="color:var(--brand-red)">BINGO</span></h1>
-        <div class="subtitle">🇦🇺 AUSTRALIAN GRAND PRIX 2026</div>
-    </div>
-    <div class="actions">
-        <button class="btn btn-save" onclick="saveCard()">Save Card</button>
-        <button class="btn btn-reset" onclick="clearCard()">Reset</button>
+    <div class="header-title">F1 <span style="color:var(--f1-red)">2026</span> BINGO</div>
+    <div class="header-controls">
+        <button class="btn btn-score" onclick="openModal()">Scoring Rules</button>
+        <button class="btn" style="background:#e0e0e0" onclick="reset()">Reset</button>
     </div>
 </header>
 
-<div class="main-layout">
+<div class="race-bar">
+    <div class="race-item active">🇦🇺 Melbourne</div>
+    <div class="race-item">🇨🇳 Shanghai</div>
+    <div class="race-item">🇯🇵 Suzuka</div>
+    <div class="race-item">🇧🇭 Sakhir</div>
+    <div class="race-item">🇪🇸 Madrid</div>
+</div>
+
+<div class="main-stage">
     
     <div class="sidebar">
-        <div class="category-nav">
-            <div class="nav-item active" data-cat="driver" onclick="setCategory('driver')">Drivers</div>
-            <div class="nav-item" data-cat="team" onclick="setCategory('team')">Teams</div>
-            <div class="nav-item" data-cat="tech" onclick="setCategory('tech')">Tech</div>
-            <div class="nav-item" data-cat="chaos" onclick="setCategory('chaos')">Chaos</div>
+        <div class="panel" style="flex:0 0 auto; height: 200px;">
+            <div class="panel-header">🏆 Championship Standings</div>
+            <ul class="leaderboard-list" id="leaderboard">
+                </ul>
         </div>
-        
-        <div id="pool" class="pool-container">
+
+        <div class="panel" style="flex:1;">
+            <div class="panel-header">Prediction Pool</div>
+            
+            <div style="display:flex; padding:5px; gap:5px; background:#f0f0f0;">
+                <button class="btn" style="flex:1; font-size:10px; background:#fff;" onclick="filterPool('driver')">Drivers</button>
+                <button class="btn" style="flex:1; font-size:10px; background:#fff;" onclick="filterPool('team')">Teams</button>
+                <button class="btn" style="flex:1; font-size:10px; background:#fff;" onclick="filterPool('tech')">Tech</button>
+                <button class="btn" style="flex:1; font-size:10px; background:#fff;" onclick="filterPool('chaos')">Chaos</button>
             </div>
+
+            <div id="pool" class="pool-list"></div>
+        </div>
     </div>
 
-    <div class="game-board">
-        
-        <div class="strategy-deck">
-            <div class="strat-card active" onclick="setTemplate('balanced')" id="t-balanced">
-                <div class="strat-title">⚖️ Balanced</div>
-                <div class="strat-desc">Standard Mix</div>
-            </div>
-            <div class="strat-card" onclick="setTemplate('tech')" id="t-tech">
-                <div class="strat-title">🔧 Tech Spec</div>
-                <div class="strat-desc">Regs Focused</div>
-            </div>
-            <div class="strat-card" onclick="setTemplate('chaos')" id="t-chaos">
-                <div class="strat-title">🚩 Chaos Agent</div>
-                <div class="strat-desc">Crashes & Flags</div>
-            </div>
-            <div class="strat-card" onclick="setTemplate('driver')" id="t-driver">
-                <div class="strat-title">🏎️ Silly Season</div>
-                <div class="strat-desc">Driver Drama</div>
-            </div>
-        </div>
-
-        <div id="grid" class="bingo-grid">
-            </div>
-
+    <div class="grid-container">
+        <div class="bingo-grid" id="grid"></div>
     </div>
 </div>
 
-<script>
-    // --- APP STATE ---
-    let poolData = {};
-    let currentCategory = 'driver';
-    let currentTemplate = 'balanced';
-    let gridState = Array(25).fill(null);
+<div id="scoreModal" class="modal">
+    <div class="modal-content">
+        <span class="close-btn" onclick="closeModal()">&times;</span>
+        <h2 style="margin-top:0; color:var(--f1-red)">OFFICIAL SCORING</h2>
+        <p style="font-size:12px; color:#666;">Points are awarded after the race based on verified results.</p>
+        
+        <div class="score-row">
+            <span>✅ Single Correct Tile</span>
+            <span class="score-val">+10 pts</span>
+        </div>
+        <div class="score-row">
+            <span>➖ Horizontal Line</span>
+            <span class="score-val">+50 pts</span>
+        </div>
+        <div class="score-row">
+            <span>⬇️ Vertical Line</span>
+            <span class="score-val">+50 pts</span>
+        </div>
+        <div class="score-row">
+            <span>❌ Diagonal Line</span>
+            <span class="score-val">+75 pts</span>
+        </div>
+        <div class="score-row">
+            <span>🔲 4 Corners (Outer)</span>
+            <span class="score-val">+100 pts</span>
+        </div>
+        <div class="score-row">
+            <span>🔠 Letter 'H' Pattern</span>
+            <span class="score-val">+150 pts</span>
+        </div>
+        <div class="score-row">
+            <span>🔠 Letter 'T' Pattern</span>
+            <span class="score-val">+150 pts</span>
+        </div>
+    </div>
+</div>
 
-    // --- TEMPLATES ---
-    const templates = {
-        balanced: [
-            'driver','driver','team','tech','chaos',
-            'driver','team','tech','chaos','driver',
-            'team','tech','FREE','driver','team',
-            'tech','chaos','driver','team','tech',
-            'chaos','driver','team','tech','chaos'
-        ],
-        tech: [
-            'tech','tech','team','driver','tech',
-            'tech','team','driver','tech','chaos',
-            'team','driver','FREE','tech','tech',
-            'driver','tech','chaos','tech','team',
-            'tech','team','tech','driver','chaos'
-        ],
-        chaos: [
-            'chaos','chaos','driver','team','chaos',
-            'chaos','driver','team','chaos','tech',
-            'driver','team','FREE','chaos','chaos',
-            'team','chaos','tech','chaos','driver',
-            'chaos','driver','chaos','team','chaos'
-        ],
-        driver: [
-            'driver','driver','driver','team','driver',
-            'driver','team','chaos','driver','driver',
-            'team','driver','FREE','driver','team',
-            'driver','chaos','team','driver','driver',
-            'driver','driver','team','driver','chaos'
-        ]
+<div class="admin-panel">
+    <strong>👨‍💻 ADMIN:</strong>
+    <input type="text" id="adminResults" class="admin-input" placeholder="Enter comma-separated events (e.g., Norris Win, Lap 1 Safety Car)">
+    <button class="btn" style="background:var(--f1-red); color:white" onclick="adminSubmitResults()">Verify & Score</button>
+</div>
+
+<script>
+    // --- 1. DATA SOURCES ---
+    // In a real app, this comes from a database
+    const poolData = {
+        driver: ["Norris Win", "Verstappen Pole", "Hamilton Podium", "Antonelli Top 5", "Leclerc DNF", "Piastri Fastest Lap", "Alonso Radio Rant"],
+        team: ["McLaren 1-2", "Red Bull Slow Stop", "Ferrari Strategy Fail", "Williams Double Q3", "Audi DNF", "Mercedes Double Points"],
+        tech: ["Manual Override Pass", "Active Aero Stuck", "MGU-K Issue", "Underweight Car", "Front Wing Dmg"],
+        chaos: ["Lap 1 Safety Car", "Red Flag", "Rain", "Turn 1 Pile-up", "5s Penalty", "VSC"]
     };
 
-    // --- INIT ---
-    async function init() {
-        await loadData();
-        loadSavedState(); // Tries to load existing game
-        if(!gridState.some(x=>x)) applyTemplate(currentTemplate); // If empty, apply default
-        renderPool();
+    // Simulated Leaderboard Data
+    let leaderboardData = [
+        { name: "You (Team Principal)", score: 0, grid: [] }, // This is the user
+        { name: "Toto Wolff", score: 120, grid: [] },
+        { name: "Christian Horner", score: 85, grid: [] },
+        { name: "Fred Vasseur", score: 40, grid: [] }
+    ];
+
+    let myGrid = Array(25).fill(null);
+    let currentCat = 'driver';
+
+    // --- 2. INIT ---
+    function init() {
+        createGrid();
+        filterPool('driver');
+        updateLeaderboard();
     }
 
-    async function loadData() {
-        try {
-            const res = await fetch('data.json');
-            poolData = await res.json();
-        } catch (e) {
-            console.error("JSON Error:", e);
-            document.getElementById('pool').innerHTML = "<p style='text-align:center; padding:20px; color:red'>Error: data.json not found.</p>";
-        }
-    }
-
-    // --- TEMPLATE LOGIC ---
-    function setTemplate(name) {
-        // Visual UI update
-        document.querySelectorAll('.strat-card').forEach(el => el.classList.remove('active'));
-        document.getElementById(`t-${name}`).classList.add('active');
-        
-        // Logic update
-        if (confirm("Switching strategy will reset the board. Continue?")) {
-            currentTemplate = name;
-            gridState = Array(25).fill(null);
-            applyTemplate(name);
-        }
-    }
-
-    function applyTemplate(name) {
-        const pattern = templates[name];
+    // --- 3. GRID & DRAG LOGIC ---
+    function createGrid() {
         const grid = document.getElementById('grid');
         grid.innerHTML = '';
-
-        pattern.forEach((type, index) => {
+        
+        for(let i=0; i<25; i++) {
             const slot = document.createElement('div');
             
-            if (type === 'FREE') {
-                slot.className = 'slot free-space';
+            if(i===12) {
+                slot.className = 'slot free';
                 slot.innerText = "LIGHTS OUT";
+                // Free space is effectively "filled" for logic
+                myGrid[i] = "FREE"; 
             } else {
                 slot.className = 'slot';
-                slot.dataset.index = index;
-                slot.dataset.req = type;
-                slot.dataset.label = type;
-
-                // Drag Events
                 slot.ondragover = e => e.preventDefault();
-                slot.ondragenter = e => {
-                    if(!e.dataTransfer.types.includes('text/plain')) return;
-                    slot.classList.add('drag-hover');
-                };
-                slot.ondragleave = () => slot.classList.remove('drag-hover');
-                slot.ondrop = e => handleDrop(e, slot);
-                slot.onclick = () => clearSlot(index);
-                
-                // Re-fill if state exists
-                if (gridState[index]) {
-                    fillSlotUI(slot, gridState[index].text, gridState[index].type);
-                }
+                slot.ondrop = e => handleDrop(e, i);
+                slot.onclick = () => removeTile(i);
             }
-            grid.appendChild(slot);
-        });
-    }
-
-    // --- POOL LOGIC ---
-    function setCategory(cat) {
-        currentCategory = cat;
-        document.querySelectorAll('.nav-item').forEach(el => {
-            el.classList.toggle('active', el.dataset.cat === cat);
-        });
-        renderPool();
-    }
-
-    function renderPool() {
-        const container = document.getElementById('pool');
-        container.innerHTML = '';
-        
-        if (!poolData[currentCategory]) return;
-
-        // Icons map
-        const icons = { driver: '🏎️', team: '🛠️', tech: '🔋', chaos: '🚩' };
-
-        poolData[currentCategory].forEach(text => {
-            const chip = document.createElement('div');
-            chip.className = `card-chip ${currentCategory}`;
-            chip.innerHTML = `<span>${text}</span> <i>${icons[currentCategory]}</i>`;
-            chip.draggable = true;
             
-            chip.ondragstart = e => {
+            // Re-render if state exists
+            if(myGrid[i] && i !== 12) {
+                slot.classList.add('filled');
+                slot.innerText = myGrid[i].text;
+                slot.dataset.type = myGrid[i].type;
+            }
+
+            grid.appendChild(slot);
+        }
+    }
+
+    function filterPool(cat) {
+        const pool = document.getElementById('pool');
+        pool.innerHTML = '';
+        currentCat = cat;
+        
+        poolData[cat].forEach(text => {
+            const el = document.createElement('div');
+            el.className = `pool-item ${cat}`;
+            el.innerText = text;
+            el.draggable = true;
+            el.ondragstart = e => {
                 e.dataTransfer.setData('text', text);
-                e.dataTransfer.setData('type', currentCategory);
+                e.dataTransfer.setData('type', cat);
             };
-            container.appendChild(chip);
+            pool.appendChild(el);
         });
     }
 
-    // --- DRAG & DROP ---
-    function handleDrop(e, slot) {
+    function handleDrop(e, index) {
         e.preventDefault();
-        slot.classList.remove('drag-hover');
-
         const text = e.dataTransfer.getData('text');
         const type = e.dataTransfer.getData('type');
-        const required = slot.dataset.req;
-
-        // Validation
-        if (type !== required) {
-            slot.classList.add('drag-reject');
-            setTimeout(() => slot.classList.remove('drag-reject'), 400);
-            return;
-        }
-
-        // Save State
-        const idx = slot.dataset.index;
-        gridState[idx] = { text, type };
-        fillSlotUI(slot, text, type);
-        saveCard();
-    }
-
-    function fillSlotUI(slot, text, type) {
-        slot.innerText = text;
-        slot.classList.add('filled');
-        slot.dataset.type = type;
-    }
-
-    function clearSlot(index) {
-        if (!gridState[index]) return;
-        gridState[index] = null;
         
-        // Re-render just this slot
-        const slot = document.querySelector(`.slot[data-index="${index}"]`);
-        slot.innerText = '';
-        slot.classList.remove('filled');
-        delete slot.dataset.type;
-        saveCard();
+        myGrid[index] = { text, type };
+        createGrid(); // Re-render
     }
 
-    // --- SAVING ---
-    function saveCard() {
-        const data = {
-            template: currentTemplate,
-            grid: gridState
-        };
-        localStorage.setItem('f1_bingo_aus_2026', JSON.stringify(data));
-        // Visual feedback could go here
+    function removeTile(index) {
+        myGrid[index] = null;
+        createGrid();
     }
 
-    function loadSavedState() {
-        const saved = localStorage.getItem('f1_bingo_aus_2026');
-        if (saved) {
-            const data = JSON.parse(saved);
-            currentTemplate = data.template;
-            gridState = data.grid;
-            
-            // Highlight correct template button
-            document.querySelectorAll('.strat-card').forEach(el => el.classList.remove('active'));
-            document.getElementById(`t-${currentTemplate}`).classList.add('active');
+    // --- 4. SCORING ENGINE (The Logic you asked for) ---
+    function calculateScore(grid, verifiedEvents) {
+        let score = 0;
+        let matches = []; // indices of correct tiles
+
+        // 1. Check Individual Tiles
+        grid.forEach((item, index) => {
+            if(index === 12) { matches.push(12); return; } // Free space always matches
+            if(item && verifiedEvents.includes(item.text)) {
+                score += 10;
+                matches.push(index);
+            }
+        });
+
+        // 2. Check Lines (50pts)
+        // Rows
+        for(let r=0; r<5; r++) {
+            if([0,1,2,3,4].every(o => matches.includes(r*5 + o))) score += 50;
         }
-    }
-
-    function clearCard() {
-        if(confirm("Clear the entire board?")) {
-            localStorage.removeItem('f1_bingo_aus_2026');
-            location.reload();
+        // Cols
+        for(let c=0; c<5; c++) {
+            if([0,1,2,3,4].every(o => matches.includes(o*5 + c))) score += 50;
         }
+
+        // 3. Diagonals (X) (75pts)
+        const diag1 = [0,6,12,18,24];
+        const diag2 = [4,8,12,16,20];
+        if(diag1.every(i => matches.includes(i))) score += 75;
+        if(diag2.every(i => matches.includes(i))) score += 75;
+
+        // 4. Four Corners (100pts)
+        const corners = [0,4,20,24];
+        if(corners.every(i => matches.includes(i))) score += 100;
+
+        // 5. Letter T (Row 0 + Col 2) (150pts)
+        const letterT = [0,1,2,3,4, 7,12,17,22]; // Top row + Middle Col
+        if(letterT.every(i => matches.includes(i))) score += 150;
+
+        // 6. Letter H (Col 0 + Col 4 + Row 2) (150pts)
+        const letterH = [0,5,10,15,20, 4,9,14,19,24, 11,12,13];
+        if(letterH.every(i => matches.includes(i))) score += 150;
+
+        return { score, matches };
     }
 
-    // Start
+    // --- 5. ADMIN / SERVER SIMULATION ---
+    function adminSubmitResults() {
+        const input = document.getElementById('adminResults').value;
+        const events = input.split(',').map(s => s.trim());
+
+        // Calculate User Score
+        const result = calculateScore(myGrid, events);
+        
+        // Update User in Leaderboard Array
+        leaderboardData[0].score = result.score;
+        
+        // Visualize Correct Tiles on Board
+        const slots = document.querySelectorAll('.slot');
+        slots.forEach((s, i) => {
+            s.classList.remove('correct');
+            if(result.matches.includes(i) && i !== 12) s.classList.add('correct');
+        });
+
+        // Randomize CPU scores for fun
+        leaderboardData[1].score += Math.floor(Math.random()*50);
+        leaderboardData[2].score += Math.floor(Math.random()*50);
+        leaderboardData[3].score += Math.floor(Math.random()*50);
+
+        // Sort and Update UI
+        leaderboardData.sort((a,b) => b.score - a.score);
+        updateLeaderboard();
+        alert(`Scoring Complete! You scored ${result.score} points.`);
+    }
+
+    function updateLeaderboard() {
+        const list = document.getElementById('leaderboard');
+        list.innerHTML = '';
+        leaderboardData.forEach((p, i) => {
+            const li = document.createElement('li');
+            li.className = 'lb-row';
+            li.innerHTML = `
+                <span>#${i+1} ${p.name}</span>
+                <span style="font-weight:900">${p.score} pts</span>
+            `;
+            list.appendChild(li);
+        });
+    }
+
+    // --- 6. MODAL UTILS ---
+    function openModal() { document.getElementById('scoreModal').style.display = 'flex'; }
+    function closeModal() { document.getElementById('scoreModal').style.display = 'none'; }
+    function reset() { location.reload(); }
+
     window.onload = init;
 
 </script>
+
 </body>
 </html>
