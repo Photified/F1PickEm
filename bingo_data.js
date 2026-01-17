@@ -1,9 +1,9 @@
-/* F1 2026 BINGO DATA - DYNAMIC TEMPLATES
-   This file generates specific outcomes for any driver/team combination.
+/* F1 2026 BINGO DATA - COMPLETE CALENDAR
+   Includes Imola, Madrid, and all Driver/Team/Chaos associations.
 */
 
 const BINGO_CONFIG = {
-    // 2026 CALENDAR
+    // 2026 CALENDAR (25 Races including Imola & Madrid)
     races: [
         {id:'aus', c:'au', n:'Australia', d:'Mar 8'},
         {id:'chn', c:'cn', n:'China', d:'Mar 15'},
@@ -11,20 +11,21 @@ const BINGO_CONFIG = {
         {id:'bhr', c:'bh', n:'Bahrain', d:'Apr 12'},
         {id:'sau', c:'sa', n:'Saudi Arabia', d:'Apr 19'},
         {id:'mia', c:'us', n:'Miami', d:'May 3'},
-        {id:'can', c:'ca', n:'Canada', d:'May 24'},
-        {id:'mon', c:'mc', n:'Monaco', d:'Jun 7'},
-        {id:'esp', c:'es', n:'Barcelona', d:'Jun 14'},
+        {id:'imo', c:'it', n:'Imola', d:'May 17'}, // ADDED
+        {id:'mon', c:'mc', n:'Monaco', d:'May 24'},
+        {id:'can', c:'ca', n:'Canada', d:'Jun 7'},
+        {id:'esp', c:'es', n:'Barcelona', d:'Jun 21'},
         {id:'aut', c:'at', n:'Austria', d:'Jun 28'},
         {id:'gbr', c:'gb', n:'Silverstone', d:'Jul 5'},
         {id:'bel', c:'be', n:'Spa', d:'Jul 19'},
         {id:'hun', c:'hu', n:'Hungary', d:'Jul 26'},
         {id:'ned', c:'nl', n:'Zandvoort', d:'Aug 23'},
         {id:'ita', c:'it', n:'Monza', d:'Sep 6'},
-        {id:'mad', c:'es', n:'Madrid', d:'Sep 13'},
+        {id:'mad', c:'es', n:'Madrid', d:'Sep 13'}, // NEW
         {id:'aze', c:'az', n:'Baku', d:'Sep 27'},
-        {id:'sin', c:'sg', n:'Singapore', d:'Oct 11'},
-        {id:'usa', c:'us', n:'Austin', d:'Oct 25'},
-        {id:'mex', c:'mx', n:'Mexico', d:'Nov 1'},
+        {id:'sin', c:'sg', n:'Singapore', d:'Oct 4'},
+        {id:'usa', c:'us', n:'Austin', d:'Oct 18'},
+        {id:'mex', c:'mx', n:'Mexico', d:'Oct 25'},
         {id:'bra', c:'br', n:'Brazil', d:'Nov 8'},
         {id:'lvg', c:'us', n:'Las Vegas', d:'Nov 21'},
         {id:'qat', c:'qa', n:'Qatar', d:'Nov 29'},
@@ -62,7 +63,7 @@ const BINGO_CONFIG = {
         driver: [
             "Win", "Podium", "Pole Position", "Fastest Lap", "Top 5", "Top 10", 
             "Points Finish", "Q1 Exit", "Crash / DNF", "Beats Teammate", 
-            "Driver of the Day", "5s Penalty"
+            "Driver of the Day", "5s Penalty", "Stalls at Start"
         ],
         team: [
             "Double Podium", "1-2 Finish", "Double Points", "Double DNF", 
