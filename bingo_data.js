@@ -30,7 +30,7 @@ const BINGO_CONFIG = {
 
     // DRIVER ROSTER
     drivers: [
-        { name: "Race Control", team: "FIA", color: "#333333" }, // Holds the FIA events
+        { name: "Race Control", team: "FIA", color: "#333333" }, 
         { name: "Max Verstappen", team: "Red Bull", color: "#3671C6" },
         { name: "Isack Hadjar", team: "Red Bull", color: "#3671C6" },
         { name: "Lando Norris", team: "McLaren", color: "#FF8000" },
@@ -74,12 +74,17 @@ const BINGO_CONFIG = {
             "Pit Stop Error (>4s)", "Strategy Error", "Engine Failure"
         ],
         
-        // NEW FIA EVENTS (Replaces Chaos)
+        // MASSIVE FIA EXPANSION
         fia: [
             "Safety Car Deployed", "Green Flag Race (No SC)", "Virtual Safety Car", 
             "Red Flag Suspends Race", "Rain / Wet Track", "All Cars Finish (No DNF)",
             "Blue Flags Shown", "Black & White Flag", "Turn 1 Incident", 
-            "Unsafe Release Investigation", "Track Limits Penalty"
+            "Unsafe Release Investigation", "Track Limits Penalty", 
+            "Yellow Flag Sector 1", "Yellow Flag Sector 2", "Yellow Flag Sector 3",
+            "Debris on Track", "DRS Disabled", "Medical Car Deployed",
+            "5s Penalty Issued", "10s Penalty Issued", "Grid Drop Penalty",
+            "Race Control: No Investigation", "Formation Lap Issue", 
+            "Standing Start Restart", "Rolling Start Restart"
         ]
     }
 };
