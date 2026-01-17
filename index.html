@@ -75,7 +75,7 @@
         .view-game { width: 100%; height: 100%; display: flex; flex-direction: column; }
         .bingo-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; width: 100%; aspect-ratio: 1/1; margin: 0 auto; max-height: 550px; }
         
-        /* SLOT STYLING - COLOR LOCKS RESTORED */
+        /* SLOT STYLING - COLOR LOCKS */
         .slot { 
             background: #fafafa; border: 2px dashed #ddd; border-radius: 8px; 
             display: flex; align-items: center; justify-content: center; text-align: center; 
@@ -190,7 +190,7 @@
     // --- INIT ---
     window.onload = function() {
         if (typeof BINGO_CONFIG === 'undefined') {
-            alert("Error: bingo_data.js is missing! Ensure both files are in the same folder.");
+            alert("Error: bingo_data.js is missing! Please make sure it is in the same folder.");
             return;
         }
         
@@ -214,7 +214,7 @@
         document.getElementById('connectionDot').style.background = "#e10600"; // Offline color
 
         // Mock Leaderboard
-        renderLeaderboard([{name: name, score: 0}, {name: "Max V.", score: 150}, {name: "Lewis H.", score: 140}]);
+        renderLeaderboard([{name: name, score: 0}, {name: "Max V.", score: 150}]);
 
         checkLocalGrid();
     }
@@ -394,7 +394,7 @@
             if(i === 12) { score += 10; return; }
             if(item && verifiedResults.includes(item.text)) score += 10;
         });
-        document.getElementById('scoreDisplay').innerText = `Score: ${score}`;
+        document.getElementById('scoreDisplay').innerText = `Race Score: ${score} pts`;
     }
 
     function saveLocal() {
