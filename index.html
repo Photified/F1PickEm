@@ -10,6 +10,8 @@
     <style>
         :root {
             --brand-red: #e10600; --brand-dark: #15151e; --bg-body: #f4f4f8;
+            --card-shadow: 0 4px 15px rgba(0,0,0,0.08);
+            /* Category Colors */
             --c-driver: #ff9500; --c-team: #00d2be; --c-tech: #0070ff; --c-chaos: #e10600;
             --score-win: #39ff14; 
         }
@@ -19,7 +21,7 @@
         /* HEADER */
         header { background: white; border-bottom: 3px solid var(--brand-red); padding: 10px 25px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 4px 10px rgba(0,0,0,0.05); z-index: 20; flex-shrink: 0; }
         .header-title { font-weight:900; font-style:italic; font-size:24px; cursor: pointer; user-select: none; }
-        .user-profile { font-weight: 700; font-size: 14px; }
+        .user-profile { font-weight: 700; display: flex; align-items: center; gap: 10px; font-size: 14px; }
 
         /* RACE BAR */
         .race-bar { background: #fff; padding: 0; display: flex; overflow-x: auto; border-bottom: 1px solid #ddd; scrollbar-width: thin; height: 90px; flex-shrink: 0; }
@@ -40,18 +42,16 @@
         .driver-header { padding: 12px 15px; display: flex; align-items: center; gap: 15px; cursor: pointer; background: linear-gradient(90deg, transparent 95%, #fafafa); transition: 0.2s; }
         .driver-header:hover { background: #f0f0f0; }
         
-        /* CSS HELMET ICON */
         .helmet-icon {
             width: 28px; height: 28px; 
             background: var(--team-color);
-            border-radius: 50% 50% 10% 10%; /* Dome top, flat bottom */
+            border-radius: 50% 50% 10% 10%;
             border: 2px solid #333; position: relative;
             box-shadow: 0 2px 4px rgba(0,0,0,0.2);
         }
         .helmet-icon::after {
-            content: ''; position: absolute; 
-            top: 8px; left: 2px; right: 2px; height: 8px;
-            background: rgba(0,0,0,0.6); border-radius: 2px; /* Visor */
+            content: ''; position: absolute; top: 8px; left: 2px; right: 2px; height: 8px;
+            background: rgba(0,0,0,0.6); border-radius: 2px;
         }
 
         .driver-name { font-weight: 800; font-size: 14px; color: #333; }
@@ -60,17 +60,20 @@
         /* PREDICTIONS ACCORDION */
         .predictions-container { 
             display: none; padding: 10px; background: #f9f9f9; border-top: 1px solid #eee; 
-            grid-template-columns: 1fr 1fr; gap: 6px;
+            grid-template-columns: 1fr; gap: 6px; max-height: 300px; overflow-y: auto;
         }
         .driver-row.open .predictions-container { display: grid; }
         .driver-row.open .driver-header { background: #eee; border-bottom: 1px solid #ddd; }
+
+        /* SEPARATORS */
+        .pred-sep { font-size:10px; font-weight:900; color:#aaa; margin-top:5px; text-transform:uppercase; letter-spacing:1px; }
 
         .chip {
             padding: 8px; background: white; border: 1px solid #ddd; border-radius: 4px;
             font-size: 11px; font-weight: 700; cursor: grab; text-align: center;
             border-left: 4px solid #ccc; transition: 0.1s;
         }
-        .chip:hover { transform: translateY(-2px); box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+        .chip:hover { transform: translateX(3px); box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
         .chip.driver { border-left-color: var(--c-driver); }
         .chip.team { border-left-color: var(--c-team); }
         .chip.tech { border-left-color: var(--c-tech); }
@@ -87,7 +90,6 @@
             padding: 5px; font-size: 11px; font-weight: 700; position: relative; user-select: none;
             transition: 0.2s;
         }
-        /* Color Locks */
         .slot[data-req="driver"] { background: #fff8e6; border-color: var(--c-driver); color: var(--c-driver); opacity: 0.8; }
         .slot[data-req="team"] { background: #e0fbf8; border-color: var(--c-team); color: var(--c-team); opacity: 0.8; }
         .slot[data-req="tech"] { background: #e8f4ff; border-color: var(--c-tech); color: var(--c-tech); opacity: 0.8; }
@@ -98,7 +100,6 @@
             color: #333 !important; opacity: 1; box-shadow: 0 4px 8px rgba(0,0,0,0.1);
             font-size: 12px; line-height: 1.2;
         }
-        /* Filled Slot Border */
         .slot.filled[data-type="driver"] { border-left: 4px solid var(--c-driver) !important; }
         .slot.filled[data-type="team"] { border-left: 4px solid var(--c-team) !important; }
         .slot.filled[data-type="tech"] { border-left: 4px solid var(--c-tech) !important; }
@@ -107,7 +108,7 @@
         .slot.center { background: #222 !important; color: white !important; border: none !important; font-size: 14px; text-transform: uppercase; }
         .slot.matched { opacity: 1; box-shadow: inset 0 0 0 5px var(--score-win); transform: scale(1.02); z-index: 5; }
 
-        /* LOGIN & STRATEGY */
+        /* VIEWS */
         .view-login, .view-strategy { text-align: center; width: 100%; }
         .login-input { padding: 15px; width: 100%; margin-top: 15px; text-align: center; border: 2px solid #eee; border-radius: 8px; font-weight: bold; font-size: 16px; }
         .login-btn { padding: 15px; width: 100%; margin-top: 15px; background: var(--brand-red); color: white; border: none; font-weight: 900; cursor: pointer; border-radius: 8px; font-size: 16px; }
@@ -207,7 +208,6 @@
     <div class="panel">
         <div class="panel-header">Standings</div>
         <div style="padding:20px; text-align:center; font-size:24px; font-weight:800;" id="scoreDisplay">0 PTS</div>
-        <div class="leaderboard" id="leaderboardList"></div>
     </div>
 </div>
 
@@ -228,7 +228,7 @@
         renderRaces();
         buildDriverMarket();
         
-        // Auto-login if grid exists
+        // Auto-login
         const savedName = localStorage.getItem('f1_team_name');
         if(savedName) document.getElementById('teamNameInput').value = savedName;
         
@@ -254,21 +254,36 @@
             
             const predContainer = row.querySelector('.predictions-container');
             
-            // Generate Color-Coded Chips
-            // 1. Driver Events (Orange)
-            BINGO_CONFIG.templates.driver.forEach(t => createChip(predContainer, `${d.name} ${t}`, 'driver'));
-            // 2. Team Events (Teal)
-            BINGO_CONFIG.templates.team.forEach(t => createChip(predContainer, `${d.team} ${t}`, 'team'));
-            // 3. Tech (Blue)
-            BINGO_CONFIG.templates.tech.forEach(t => createChip(predContainer, t, 'tech'));
-            // 4. Chaos (Red)
-            BINGO_CONFIG.templates.chaos.forEach(t => createChip(predContainer, t, 'chaos'));
+            // 1. FINISH (Exclusive - Orange)
+            const lbl1 = document.createElement('div'); lbl1.className = 'pred-sep'; lbl1.innerText = "FINISH POS (Max 1)";
+            predContainer.appendChild(lbl1);
+            BINGO_CONFIG.templates.driver_finish.forEach(t => createChip(predContainer, `${d.name} ${t}`, 'driver', true, d.name));
+
+            // 2. EXTRAS (Non-exclusive - Orange)
+            const lbl2 = document.createElement('div'); lbl2.className = 'pred-sep'; lbl2.innerText = "EXTRAS";
+            predContainer.appendChild(lbl2);
+            BINGO_CONFIG.templates.driver_misc.forEach(t => createChip(predContainer, `${d.name} ${t}`, 'driver', false, d.name));
+
+            // 3. TEAM (Teal)
+            const lbl3 = document.createElement('div'); lbl3.className = 'pred-sep'; lbl3.innerText = "TEAM";
+            predContainer.appendChild(lbl3);
+            BINGO_CONFIG.templates.team.forEach(t => createChip(predContainer, `${d.team} ${t}`, 'team', false));
+            
+            // 4. TECH (Blue)
+            const lbl4 = document.createElement('div'); lbl4.className = 'pred-sep'; lbl4.innerText = "TECH";
+            predContainer.appendChild(lbl4);
+            BINGO_CONFIG.templates.tech.forEach(t => createChip(predContainer, t, 'tech', false));
+
+            // 5. CHAOS (Red)
+            const lbl5 = document.createElement('div'); lbl5.className = 'pred-sep'; lbl5.innerText = "CHAOS";
+            predContainer.appendChild(lbl5);
+            BINGO_CONFIG.templates.chaos.forEach(t => createChip(predContainer, t, 'chaos', false));
 
             container.appendChild(row);
         });
     }
 
-    function createChip(container, text, type) {
+    function createChip(container, text, type, isExclusive, driverName = null) {
         const chip = document.createElement('div');
         chip.className = `chip ${type}`;
         chip.innerText = text;
@@ -276,6 +291,8 @@
         chip.ondragstart = e => {
             e.dataTransfer.setData('text', text);
             e.dataTransfer.setData('type', type);
+            if(isExclusive) e.dataTransfer.setData('exclusive', 'yes');
+            if(driverName) e.dataTransfer.setData('driver', driverName);
         };
         container.appendChild(chip);
     }
@@ -311,7 +328,6 @@
     function confirmStrategy(type) {
         currentGrid = templates[type].map(t => t === 'FREE' ? {text:'FREE', type:'FREE'} : null);
         
-        // Render Empty Slots
         const grid = document.getElementById('grid');
         grid.innerHTML = '';
         templates[type].forEach((reqType, i) => {
@@ -337,10 +353,30 @@
         e.preventDefault();
         const text = e.dataTransfer.getData('text');
         const type = e.dataTransfer.getData('type');
-        
+        const isExclusive = e.dataTransfer.getData('exclusive') === 'yes';
+        const driverName = e.dataTransfer.getData('driver');
+
+        // 1. Check Slot Type
         if(type !== reqType) return; 
+
+        // 2. CHECK EXCLUSIVE (One Finish per Driver)
+        if (isExclusive && driverName) {
+            const alreadyHasFinish = currentGrid.some(item => 
+                item && item.exclusive && item.driver === driverName
+            );
+            if (alreadyHasFinish) {
+                alert(`Cannot add: ${driverName} already has a Finish Prediction on this board.`);
+                return;
+            }
+        }
         
-        currentGrid[index] = { text, type };
+        // Save Metadata
+        currentGrid[index] = { 
+            text, type, 
+            exclusive: isExclusive, 
+            driver: driverName 
+        };
+        
         renderGrid();
         saveLocal();
     }
@@ -364,7 +400,6 @@
                 s.classList.remove('matched');
             }
         });
-        
         const center = document.querySelector('.slot.center');
         if(center) center.classList.add('matched');
         updateScore();
@@ -389,7 +424,7 @@
     function toggleAdmin() {
         const p = document.getElementById('adminPanel');
         p.style.display = p.style.display === 'flex' ? 'none' : 'flex';
-        if(p.style.display === 'flex') {
+        if (p.style.display === 'flex') {
             const list = document.getElementById('adminList');
             list.innerHTML = '';
             let items = currentGrid.filter(x => x && x.type !== 'FREE').map(x => x.text);
@@ -420,8 +455,9 @@
     function updateScore() {
         let score = 0;
         currentGrid.forEach((item, i) => {
-            if(i === 12) { score += 10; return; }
-            if(item && verifiedResults.includes(item.text)) score += 10;
+            if (!item) return;
+            if (i === 12) { score += 10; return; }
+            if (verifiedResults.includes(item.text)) score += 10;
         });
         document.getElementById('scoreDisplay').innerText = `${score} PTS`;
     }

@@ -1,9 +1,12 @@
-/* F1 2026 BINGO DATA - COMPLETE CALENDAR
-   Includes Imola, Madrid, and all Driver/Team/Chaos associations.
+/* F1 2026 BINGO DATA - COMPLETE & VERIFIED
+   Contains:
+   1. Full 25-Race Calendar
+   2. 2026 Driver Lineup with Team Colors
+   3. Smart Prediction Templates (Exclusive vs Stackable)
 */
 
 const BINGO_CONFIG = {
-    // 2026 CALENDAR (25 Races including Imola & Madrid)
+    // 2026 CALENDAR (25 Races)
     races: [
         {id:'aus', c:'au', n:'Australia', d:'Mar 8'},
         {id:'chn', c:'cn', n:'China', d:'Mar 15'},
@@ -11,7 +14,7 @@ const BINGO_CONFIG = {
         {id:'bhr', c:'bh', n:'Bahrain', d:'Apr 12'},
         {id:'sau', c:'sa', n:'Saudi Arabia', d:'Apr 19'},
         {id:'mia', c:'us', n:'Miami', d:'May 3'},
-        {id:'imo', c:'it', n:'Imola', d:'May 17'}, // ADDED
+        {id:'imo', c:'it', n:'Imola', d:'May 17'},
         {id:'mon', c:'mc', n:'Monaco', d:'May 24'},
         {id:'can', c:'ca', n:'Canada', d:'Jun 7'},
         {id:'esp', c:'es', n:'Barcelona', d:'Jun 21'},
@@ -21,7 +24,7 @@ const BINGO_CONFIG = {
         {id:'hun', c:'hu', n:'Hungary', d:'Jul 26'},
         {id:'ned', c:'nl', n:'Zandvoort', d:'Aug 23'},
         {id:'ita', c:'it', n:'Monza', d:'Sep 6'},
-        {id:'mad', c:'es', n:'Madrid', d:'Sep 13'}, // NEW
+        {id:'mad', c:'es', n:'Madrid', d:'Sep 13'},
         {id:'aze', c:'az', n:'Baku', d:'Sep 27'},
         {id:'sin', c:'sg', n:'Singapore', d:'Oct 4'},
         {id:'usa', c:'us', n:'Austin', d:'Oct 18'},
@@ -32,7 +35,7 @@ const BINGO_CONFIG = {
         {id:'abu', c:'ae', n:'Abu Dhabi', d:'Dec 6'}
     ],
 
-    // DRIVER ROSTER (2026 Confirmed)
+    // DRIVER ROSTER (With Team Colors)
     drivers: [
         { name: "Max Verstappen", team: "Red Bull", color: "#3671C6" },
         { name: "Isack Hadjar", team: "Red Bull", color: "#3671C6" },
@@ -58,22 +61,34 @@ const BINGO_CONFIG = {
         { name: "Sergio Perez", team: "Cadillac", color: "#FFD700" }
     ],
 
-    // TEMPLATES (Used to generate chips)
+    // PREDICTION TEMPLATES
     templates: {
-        driver: [
-            "Win", "Podium", "Pole Position", "Fastest Lap", "Top 5", "Top 10", 
-            "Points Finish", "Q1 Exit", "Crash / DNF", "Beats Teammate", 
-            "Driver of the Day", "5s Penalty", "Stalls at Start"
+        // EXCLUSIVE: Logic prevents adding more than 1 of these per driver
+        driver_finish: [
+            "Win", "Podium", "Top 5", "Top 10", "Points Finish", 
+            "Q1 Exit", "Q2 Exit", "Crash / DNF", "11th-20th Finish"
         ],
+        
+        // STACKABLE: You can add these even if you have a finish position
+        driver_misc: [
+            "Pole Position", "Fastest Lap", "Beats Teammate", 
+            "Driver of the Day", "5s Penalty", "Leads a Lap", "Stalls at Start"
+        ],
+        
+        // TEAM EVENTS
         team: [
             "Double Podium", "1-2 Finish", "Double Points", "Double DNF", 
             "Pit Stop Error (>4s)", "Strategy Error", "Engine Failure", "Mechanical DNF"
         ],
+        
+        // TECH EVENTS
         tech: [
             "MOM (Manual Override) Pass", "X-Mode Stuck", "Z-Mode Fail",
             "MGU-K Clipping", "Underweight Car", "Fuel Flow Breach",
             "Narrow Tyre Lock-up", "Active Aero Damage", "Newey Trick Spotted"
         ],
+        
+        // CHAOS EVENTS
         chaos: [
             "Safety Car", "Virtual SC", "Red Flag", "Rain", "Turn 1 Pile-up",
             "Start Aborted", "Track Limits Warning", "Animal on Track", "Safety Car Finish"
