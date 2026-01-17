@@ -14,7 +14,7 @@
             /* Colors */
             --c-driver: #ff9500; 
             --c-team: #00d2be; 
-            --c-chaos: #e10600; /* Maps to FIA events */
+            --c-chaos: #e10600; 
             --score-win: #39ff14; 
         }
         body { font-family: 'Titillium Web', sans-serif; background: var(--bg-body); color: var(--brand-dark); margin: 0; height: 100vh; display: flex; flex-direction: column; overflow: hidden; }
@@ -37,14 +37,18 @@
         .main-stage { flex: 1; display: grid; grid-template-columns: 360px 1fr 300px; padding: 20px; gap: 20px; overflow: hidden; height: 100%; }
         .panel { background: white; border-radius: 12px; box-shadow: var(--card-shadow); overflow: hidden; display: flex; flex-direction: column; border: 1px solid #e0e0e0; height: 100%; }
         
-        /* SHARED TAB HEADERS */
-        .tab-header { display: flex; border-bottom: 1px solid #eee; background: #f9f9f9; flex-shrink: 0; }
+        /* UNIFIED TAB HEADER (Left & Right) */
+        .tab-header { display: flex; border-bottom: 1px solid #eee; background: #f9f9f9; flex-shrink: 0; height: 42px; }
         .tab-btn { 
-            flex: 1; padding: 12px; text-align: center; font-weight: 800; font-size: 12px; 
-            cursor: pointer; color: #888; border-bottom: 3px solid transparent; transition: 0.2s;
+            flex: 1; display: flex; align-items: center; justify-content: center;
+            font-weight: 800; font-size: 12px; cursor: pointer; color: #888; 
+            border-bottom: 3px solid transparent; transition: 0.2s; letter-spacing: 0.5px;
         }
         .tab-btn:hover { background: #f0f0f0; }
         .tab-btn.active { color: #000; border-bottom-color: var(--brand-red); background: white; }
+        
+        /* Static Title for Left Panel (Matches Tab Style) */
+        .static-tab { flex: 1; display: flex; align-items: center; justify-content: center; font-weight: 900; font-size: 13px; color: #333; background: #f9f9f9; border-bottom: 1px solid #eee; letter-spacing: 1px; }
 
         /* DRIVER MARKET */
         .driver-list { flex: 1; overflow-y: auto; padding: 10px; background: #f4f4f8; }
@@ -100,35 +104,48 @@
         .slot.matched { opacity: 1; box-shadow: inset 0 0 0 5px var(--score-win); transform: scale(1.02); z-index: 5; }
         .slot.matched::after { content: '✓'; position: absolute; top: -8px; right: -8px; background: var(--score-win); color: black; border-radius: 50%; width: 20px; height: 20px; display: flex; align-items: center; justify-content: center; font-weight: 900; font-size: 14px; box-shadow: 0 2px 5px rgba(0,0,0,0.3); }
 
-        /* RIGHT PANEL (STANDINGS & RULES) */
+        /* RIGHT PANEL */
         .right-content { flex: 1; overflow-y: auto; padding: 15px; display: none; }
         .right-content.active { display: block; }
-
         .score-box { text-align: center; margin-bottom: 20px; padding: 20px; background: #fafafa; border-radius: 8px; border: 1px solid #eee; }
         .score-val { font-size: 36px; font-weight: 900; color: var(--brand-dark); line-height: 1; }
         .score-lbl { font-size: 12px; font-weight: 700; color: #888; text-transform: uppercase; margin-top: 5px; }
-        
         .bonus-pill { display: inline-block; padding: 4px 8px; background: var(--score-win); color: #000; border-radius: 12px; font-size: 10px; font-weight: 900; margin: 2px; }
-
         .rules-block { margin-bottom: 20px; }
         .rules-title { font-weight: 800; font-size: 14px; margin-bottom: 8px; text-transform: uppercase; color: var(--brand-red); border-bottom: 1px solid #eee; padding-bottom: 5px; }
         .rules-text { font-size: 12px; line-height: 1.5; color: #555; }
         .rules-list { padding-left: 20px; margin: 5px 0; font-size: 12px; color: #555; }
         .rules-list li { margin-bottom: 6px; }
 
-        /* VIEWS */
-        .view-login, .view-strategy { text-align: center; width: 100%; }
-        .login-input { padding: 15px; width: 100%; margin-top: 15px; text-align: center; border: 2px solid #eee; border-radius: 8px; font-weight: bold; font-size: 16px; }
-        .login-btn { padding: 15px; width: 100%; margin-top: 15px; background: var(--brand-red); color: white; border: none; font-weight: 900; cursor: pointer; border-radius: 8px; font-size: 16px; }
+        /* VIEWS & STRATEGY */
+        .view-login, .view-strategy { text-align: center; width: 100%; display: flex; flex-direction: column; align-items: center; height: 100%; }
+        .login-input { padding: 15px; width: 100%; margin-top: 15px; text-align: center; border: 2px solid #eee; border-radius: 8px; font-weight: bold; font-size: 16px; max-width: 400px; }
+        .login-btn { padding: 15px; width: 100%; margin-top: 15px; background: var(--brand-red); color: white; border: none; font-weight: 900; cursor: pointer; border-radius: 8px; font-size: 16px; max-width: 400px; }
         
-        .strat-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 30px; max-width: 600px; width: 100%; margin-left: auto; margin-right: auto; }
+        .strategy-header-container { margin-top: 20px; margin-bottom: 30px; display: flex; flex-direction: column; align-items: center; gap: 10px; }
+        .big-flag { width: 100px; height: auto; border-radius: 6px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
+        .strategy-title { font-size: 32px; font-weight: 900; font-style: italic; text-transform: uppercase; line-height: 1; }
+
+        .strat-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; max-width: 600px; width: 100%; }
         .strat-card { background: #f9f9f9; border: 2px solid #eee; border-radius: 12px; padding: 20px; cursor: pointer; display: flex; flex-direction: column; align-items: center; transition: 0.2s; }
         .strat-card:hover { border-color: var(--brand-red); background: white; transform: translateY(-3px); }
         .mini-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 2px; width: 60px; height: 60px; margin-bottom: 10px; opacity: 0.6; }
         .mg-c { background: #ddd; border-radius: 1px; }
 
-        .reset-btn { width: 100%; padding: 10px; margin-top: 20px; background: #fff; border: 1px solid #ddd; color: #888; font-weight: bold; cursor: pointer; border-radius: 6px; font-size: 11px; text-transform: uppercase; }
-        .reset-btn:hover { background: #ffebeb; color: var(--brand-red); border-color: var(--brand-red); }
+        .reset-btn { width: 100%; padding: 12px; margin-top: 20px; background: #fff; border: 1px solid #ddd; color: #e10600; font-weight: 900; cursor: pointer; border-radius: 6px; font-size: 12px; text-transform: uppercase; letter-spacing: 1px; transition: 0.2s; }
+        .reset-btn:hover { background: #fff0f0; border-color: #e10600; }
+
+        /* CUSTOM MODAL */
+        .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 5000; display: flex; align-items: center; justify-content: center; backdrop-filter: blur(2px); }
+        .modal-box { background: white; padding: 30px; border-radius: 12px; width: 400px; text-align: center; box-shadow: 0 20px 60px rgba(0,0,0,0.5); border: 2px solid #eee; }
+        .modal-title { font-size: 20px; font-weight: 900; color: var(--brand-red); text-transform: uppercase; margin-bottom: 10px; font-style: italic; }
+        .modal-text { color: #555; font-size: 14px; margin-bottom: 25px; line-height: 1.5; }
+        .modal-actions { display: flex; gap: 10px; justify-content: center; }
+        .btn-modal { padding: 10px 20px; border-radius: 6px; font-weight: 800; cursor: pointer; border: none; flex: 1; }
+        .btn-cancel { background: #eee; color: #333; }
+        .btn-cancel:hover { background: #ddd; }
+        .btn-confirm { background: var(--brand-red); color: white; }
+        .btn-confirm:hover { background: #b00; }
 
         /* ADMIN */
         #adminPanel { position: fixed; top: 60px; left: 50%; transform: translateX(-50%); background: #222; color: white; padding: 20px; border-radius: 12px; z-index: 3000; display: none; flex-direction: column; width: 500px; box-shadow: 0 20px 50px rgba(0,0,0,0.5); }
@@ -136,13 +153,21 @@
         .admin-item { padding: 10px; background: #333; cursor: pointer; font-size: 12px; display: flex; align-items: center; gap: 10px; border-radius: 4px; }
         .admin-item.checked { background: var(--brand-red); font-weight: bold; }
         
-        .leaderboard { flex: 1; overflow-y: auto; padding: 10px; }
-        .lb-row { display: flex; justify-content: space-between; padding: 10px; border-bottom: 1px solid #f0f0f0; font-size: 13px; }
-
         @keyframes fadeIn { from { opacity:0; } to { opacity:1; } }
     </style>
 </head>
 <body>
+
+<div id="resetModal" class="modal-overlay hidden">
+    <div class="modal-box">
+        <div class="modal-title">⚠ Race Control</div>
+        <div class="modal-text">Are you sure you want to retire this card? All current predictions for this race will be deleted.</div>
+        <div class="modal-actions">
+            <button class="btn-modal btn-cancel" onclick="closeModal()">Cancel</button>
+            <button class="btn-modal btn-confirm" onclick="confirmReset()">Reset Card</button>
+        </div>
+    </div>
+</div>
 
 <header>
     <div class="user-profile">
@@ -163,19 +188,26 @@
 <div class="main-stage">
     
     <div class="panel">
-        <div class="panel-header">BINGO CHIPS</div>
+        <div class="tab-header">
+            <div class="static-tab">BINGO CHIPS</div>
+        </div>
         <div id="driverList" class="driver-list"></div>
     </div>
 
     <div class="active-panel" id="mainPanel">
-        <div id="view-login" class="view-login">
+        <div id="view-login" class="view-login" style="justify-content: center;">
             <h1 style="font-style:italic; font-size:28px;">TEAM PRINCIPAL LOGIN</h1>
             <input type="text" id="teamNameInput" class="login-input" placeholder="Enter Team Name">
             <button class="login-btn" onclick="login()">ENTER PADDOCK</button>
         </div>
 
         <div id="view-strategy" class="view-strategy hidden">
-            <h2 id="stratRaceTitle" style="margin-top:20px;">SELECT STRATEGY</h2>
+            <div class="strategy-header-container">
+                <img id="stratFlag" src="" class="big-flag">
+                <div id="stratRaceTitle" class="strategy-title">RACE STRATEGY</div>
+                <div style="color:#888; font-size:12px; font-weight:700;">SELECT YOUR GRID SETUP</div>
+            </div>
+            
             <div class="strat-grid">
                 <div class="strat-card" onclick="confirmStrategy('balanced')">
                     <div class="mini-grid"><div class="mg-c" style="background:var(--c-driver)"></div><div class="mg-c" style="background:var(--c-team)"></div><div class="mg-c" style="background:var(--c-driver)"></div><div class="mg-c" style="background:var(--c-team)"></div><div class="mg-c" style="background:var(--c-chaos)"></div></div>
@@ -198,7 +230,7 @@
 
         <div id="view-game" class="view-game hidden" style="width:100%;">
             <div id="grid" class="bingo-grid"></div>
-            <button class="reset-btn" onclick="resetGrid()">Reset Card / Change Strategy</button>
+            <button class="reset-btn" onclick="showResetModal()">Reset Card / Change Strategy</button>
         </div>
     </div>
 
@@ -226,7 +258,6 @@
                     3. <strong>Limit:</strong> You may only select 1 chip per category (e.g., 1 Quali result) per driver.
                 </div>
             </div>
-
             <div class="rules-block">
                 <div class="rules-title">SCORING</div>
                 <ul class="rules-list">
@@ -237,7 +268,6 @@
                     <li><strong>+1000 PTS</strong> - FULL CARD (Blackout)</li>
                 </ul>
             </div>
-
             <div class="rules-block">
                 <div class="rules-title">COLOR GUIDE</div>
                 <ul class="rules-list">
@@ -278,10 +308,29 @@
         if(savedName && savedGrid) login();
     };
 
+    // --- NEW UI FUNCTIONS ---
+    function showResetModal() {
+        document.getElementById('resetModal').classList.remove('hidden');
+    }
+    function closeModal() {
+        document.getElementById('resetModal').classList.add('hidden');
+    }
+    function confirmReset() {
+        localStorage.removeItem(`grid_${activeRace}`);
+        currentGrid = Array(25).fill(null);
+        closeModal();
+        
+        const r = BINGO_CONFIG.races.find(r=>r.id===activeRace);
+        if(r) {
+            document.getElementById('stratRaceTitle').innerText = r.n.toUpperCase() + " STRATEGY";
+            document.getElementById('stratFlag').src = `https://flagcdn.com/w160/${r.c}.png`;
+        }
+        switchState('strategy');
+    }
+
     function switchRightTab(tabName, btn) {
         document.querySelectorAll('.right-content').forEach(el => el.classList.remove('active'));
         document.getElementById(`tab-${tabName}`).classList.add('active');
-        
         const btns = btn.parentElement.querySelectorAll('.tab-btn');
         btns.forEach(b => b.classList.remove('active'));
         btn.classList.add('active');
@@ -399,7 +448,10 @@
             renderGrid();
         } else {
             const r = BINGO_CONFIG.races.find(r=>r.id===activeRace);
-            if(r) document.getElementById('stratRaceTitle').innerText = r.n.toUpperCase();
+            if(r) {
+                document.getElementById('stratRaceTitle').innerText = r.n.toUpperCase() + " STRATEGY";
+                document.getElementById('stratFlag').src = `https://flagcdn.com/w160/${r.c}.png`;
+            }
             switchState('strategy');
         }
     }
@@ -414,15 +466,6 @@
         renderGridStructure(templates[type]);
         switchState('game');
         saveLocal();
-    }
-
-    function resetGrid() {
-        if(!confirm("Are you sure? This will clear your current card.")) return;
-        localStorage.removeItem(`grid_${activeRace}`);
-        currentGrid = Array(25).fill(null);
-        const r = BINGO_CONFIG.races.find(r=>r.id===activeRace);
-        if(r) document.getElementById('stratRaceTitle').innerText = r.n.toUpperCase();
-        switchState('strategy');
     }
 
     function renderGridStructure(pattern) {
