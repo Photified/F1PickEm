@@ -24,7 +24,8 @@
         /* HEADER */
         header { background: white; border-bottom: 3px solid var(--brand-red); padding: 5px 25px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 4px 10px rgba(0,0,0,0.05); z-index: 20; flex-shrink: 0; height: 60px; box-sizing: border-box; }
         .header-title { display: flex; align-items: center; justify-content: center; cursor: pointer; height: 100%; }
-        .header-logo { max-height: 45px; width: auto; display: block; } 
+        /* UPDATED LOGO STYLING */
+        .header-logo { max-height: 50px; width: auto; display: block; object-fit: contain; } 
         .user-profile { font-weight: 700; display: flex; align-items: center; gap: 10px; font-size: 14px; }
 
         /* RACE BAR */
@@ -39,11 +40,16 @@
         .main-stage { flex: 1; display: grid; grid-template-columns: 360px 1fr 300px; padding: 20px; gap: 20px; overflow: hidden; height: 100%; }
         .panel { background: white; border-radius: 12px; box-shadow: var(--card-shadow); overflow: hidden; display: flex; flex-direction: column; border: 1px solid #e0e0e0; height: 100%; }
         
-        /* TABS */
+        /* UNIFIED TAB HEADER */
         .tab-header { display: flex; border-bottom: 1px solid #eee; background: #f9f9f9; flex-shrink: 0; height: 42px; }
-        .tab-btn { flex: 1; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 12px; cursor: pointer; color: #888; border-bottom: 3px solid transparent; transition: 0.2s; letter-spacing: 0.5px; }
+        .tab-btn { 
+            flex: 1; display: flex; align-items: center; justify-content: center;
+            font-weight: 800; font-size: 12px; cursor: pointer; color: #888; 
+            border-bottom: 3px solid transparent; transition: 0.2s; letter-spacing: 0.5px;
+        }
         .tab-btn:hover { background: #f0f0f0; }
         .tab-btn.active { color: #000; border-bottom-color: var(--brand-red); background: white; }
+        
         .static-tab { flex: 1; display: flex; align-items: center; justify-content: center; font-weight: 900; font-size: 13px; color: #333; background: #f9f9f9; border-bottom: 1px solid #eee; letter-spacing: 1px; }
 
         /* DRIVER MARKET */
@@ -52,21 +58,53 @@
         .driver-header { padding: 10px 12px; display: flex; align-items: center; gap: 12px; cursor: pointer; background: linear-gradient(90deg, transparent 95%, #fafafa); }
         .driver-header:hover { background: #f5f5f5; }
         
-        .driver-face { width: 36px; height: 36px; object-fit: cover; border-radius: 6px; background: #eee; border: 2px solid var(--team-color); padding: 2px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+        .driver-face { 
+            width: 36px; height: 36px; object-fit: cover; 
+            border-radius: 6px; 
+            background: #eee; 
+            border: 2px solid var(--team-color);
+            padding: 2px; box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
         .driver-face[src=""] { display: none; } 
+
+        .helmet-icon { width: 36px; height: 36px; background: var(--team-color); border-radius: 6px; border: 2px solid #333; position: relative; box-shadow: 0 2px 4px rgba(0,0,0,0.2); }
+        .helmet-icon::after { content: ''; position: absolute; top: 8px; left: 2px; right: 2px; height: 8px; background: rgba(0,0,0,0.6); border-radius: 2px; }
+        .driver-header[data-team="FIA"] .helmet-icon { border-radius: 4px; background: #333; }
+        .driver-header[data-team="FIA"] .helmet-icon::after { display: none; }
+        .driver-header[data-team="FIA"] .helmet-icon::before { content: '🏁'; position: absolute; top: 5px; left: 8px; font-size: 18px; }
+
         .driver-name { font-weight: 800; font-size: 14px; color: #333; }
         .driver-team { font-size: 10px; color: #888; text-transform: uppercase; margin-top:2px; }
 
-        .driver-content { display: none; padding: 10px; background: #fff; border-top: 1px solid #eee; }
-        .driver-row.open .driver-content { display: flex; flex-direction: column; gap: 5px; }
+        /* QUICK PICK BUTTON */
+        .quick-pick-btn {
+            background: linear-gradient(135deg, #FFD700, #ffaa00);
+            color: #000;
+            padding: 8px; margin: 8px;
+            border-radius: 6px;
+            font-weight: 900; font-size: 11px;
+            text-align: center; text-transform: uppercase;
+            cursor: pointer; box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            border: 1px solid #eebb00;
+            transition: 0.1s;
+            display: flex; align-items: center; justify-content: center; gap: 5px;
+        }
+        .quick-pick-btn:hover { transform: scale(1.02); filter: brightness(1.1); }
+        .quick-pick-btn::before { content: '⚡'; }
+
+        /* NESTED ACCORDION */
+        .driver-content { display: none; padding: 5px 10px 10px 10px; background: #fff; border-top: 1px solid #eee; flex-direction: column; gap: 5px;}
+        .driver-row.open .driver-content { display: flex; }
         .driver-row.open .driver-header { background: #eee; border-bottom: 1px solid #ddd; }
 
         .sub-btn { background: #f8f9fa; padding: 10px; border: 1px solid #ddd; border-radius: 6px; font-size: 11px; font-weight: 800; text-transform: uppercase; cursor: pointer; display: flex; justify-content: space-between; align-items: center; color: #555; transition: 0.1s; border-left-width: 6px; border-left-style: solid; }
         .sub-btn:hover { background: #f0f0f0; color: #000; }
         .sub-btn.active { background: #f4f4f4; color: #000; box-shadow: inset 0 0 5px rgba(0,0,0,0.05); }
+        
         .sub-btn.driver { border-left-color: var(--c-driver); }
         .sub-btn.team { border-left-color: var(--c-team); }
         .sub-btn.fia { border-left-color: var(--c-fia); }
+
         .sub-content { display: none; grid-template-columns: 1fr; gap: 6px; padding: 8px 5px; animation: fadeIn 0.2s; }
         .sub-btn.active + .sub-content { display: grid; }
 
@@ -76,10 +114,9 @@
         .chip.team { border-left-color: var(--c-team); }
         .chip.fia { border-left-color: var(--c-fia); }
 
-        /* CENTER GRID & RACE HEADER */
+        /* CENTER GRID */
         .active-panel { background: white; border-radius: 12px; border: 1px solid #e0e0e0; padding: 0; display: flex; flex-direction: column; overflow: hidden; height: 100%; position: relative; }
         
-        /* NEW RACE DASHBOARD HEADER */
         #raceHeader { 
             padding: 15px 20px; background: #fff; border-bottom: 1px solid #eee; 
             display: flex; align-items: center; justify-content: space-between; 
@@ -97,13 +134,11 @@
         .status-locked { background: #ef4444; }
         .lock-timer { font-size: 12px; font-weight: 700; color: #555; margin-top: 4px; }
 
-        /* GRID CONTAINER */
         .grid-container { padding: 20px; flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; overflow-y: auto; }
         .bingo-grid { display: grid; grid-template-columns: repeat(5, 1fr); grid-template-rows: repeat(5, 1fr); gap: 10px; width: 100%; aspect-ratio: 1/1; max-height: 600px; }
         
-        /* LOCKED STATE */
         .grid-locked .slot { opacity: 0.7; pointer-events: none; filter: grayscale(0.5); }
-        .grid-locked .slot.filled { filter: grayscale(0); opacity: 1; } /* Keep filled slots visible */
+        .grid-locked .slot.filled { filter: grayscale(0); opacity: 1; }
 
         .slot { background: #fafafa; border: 2px dashed #ddd; border-radius: 8px; display: flex; align-items: center; justify-content: center; text-align: center; padding: 5px; font-size: 11px; font-weight: 700; position: relative; user-select: none; transition: 0.2s; width: 100%; height: 100%; box-sizing: border-box; }
         .slot[data-req="driver"] { background: #fff8e6; border-color: var(--c-driver); color: var(--c-driver); opacity: 0.8; }
@@ -217,7 +252,7 @@
     </div>
 
     <div class="active-panel" id="mainPanel">
-        <div id="view-login" class="view-login">
+        <div id="view-login" class="view-login" style="justify-content: center;">
             <h1 style="font-style:italic; font-size:28px;">TEAM PRINCIPAL LOGIN</h1>
             <input type="text" id="teamNameInput" class="login-input" placeholder="Enter Team Name">
             <button class="login-btn" onclick="login()">ENTER PADDOCK</button>
@@ -351,7 +386,6 @@
         const savedGrid = localStorage.getItem(`grid_${activeRace}`);
         if(savedName && savedGrid) login();
         
-        // Start Timer Interval
         setInterval(checkLockStatus, 1000);
     };
 
@@ -369,7 +403,6 @@
         const resetBtn = document.getElementById('resetBtn');
 
         if (diff <= 0) {
-            // LOCKED
             isGridLocked = true;
             if(statusBadge) {
                 statusBadge.innerText = "LOCKED";
@@ -379,7 +412,6 @@
             if(grid) grid.classList.add('grid-locked');
             if(resetBtn) resetBtn.style.display = 'none';
         } else {
-            // OPEN
             isGridLocked = false;
             const d = Math.floor(diff / (1000 * 60 * 60 * 24));
             const h = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
@@ -400,7 +432,7 @@
         document.getElementById('rhFlag').src = `https://flagcdn.com/w160/${r.c}.png`;
         document.getElementById('rhTitle').innerText = r.n.toUpperCase();
         document.getElementById('rhDate').innerText = r.d.toUpperCase();
-        checkLockStatus(); // Run immediately
+        checkLockStatus(); 
     }
 
     function showModal(title, text, isConfirm, callback) {
@@ -483,6 +515,13 @@
                 content.appendChild(grid);
                 BINGO_CONFIG.templates.fia.forEach(t => createChip(grid, t, 'fia', false, 'Race Control', 'fia')); 
             } else {
+                // ADD QUICK PICK BUTTON FOR DRIVERS ONLY
+                const qpBtn = document.createElement('div');
+                qpBtn.className = 'quick-pick-btn';
+                qpBtn.innerText = 'QUICK PICK FAVORITES';
+                qpBtn.onclick = (e) => { e.stopPropagation(); applyQuickPicks(d.name, d.team); };
+                content.appendChild(qpBtn);
+
                 createSubSection(content, "QUALIFYING", BINGO_CONFIG.templates.quali, `${d.name} `, 'driver', 'quali', d.name, 'driver');
                 createSubSection(content, "RACE RESULT", BINGO_CONFIG.templates.race, `${d.name} `, 'driver', 'race', d.name, 'driver');
                 createSubSection(content, "BONUS", BINGO_CONFIG.templates.bonus, `${d.name} `, 'driver', 'bonus', d.name, 'driver');
@@ -490,6 +529,45 @@
             }
             container.appendChild(row);
         });
+    }
+
+    // --- QUICK PICK LOGIC ---
+    function applyQuickPicks(driverName, teamName) {
+        if(isGridLocked) { showModal("Race Locked", "Picks closed.", false); return; }
+
+        const picks = [
+            { text: `${driverName} Race Win`, type: 'driver', subtype: 'race' },
+            { text: `${driverName} Pole Position`, type: 'driver', subtype: 'quali' },
+            { text: `${driverName} Fastest Lap`, type: 'driver', subtype: 'bonus' },
+            { text: `${teamName} Double Podium`, type: 'team', subtype: 'team' }
+        ];
+
+        let placedCount = 0;
+
+        picks.forEach(p => {
+            // Find empty slot matching requirements
+            const slotIndex = currentGrid.findIndex((slot, i) => {
+                if(slot !== null) return false;
+                const slotEl = document.querySelector(`.slot[data-index="${i}"]`);
+                return slotEl && slotEl.dataset.req === p.type;
+            });
+
+            if(slotIndex !== -1) {
+                // Check conflicts
+                const conflict = currentGrid.some(x => x && x.driver === driverName && x.subtype === p.subtype);
+                if(!conflict) {
+                    currentGrid[slotIndex] = { text: p.text, type: p.type, driver: driverName, subtype: p.subtype };
+                    placedCount++;
+                }
+            }
+        });
+
+        if(placedCount > 0) {
+            renderGrid();
+            saveLocal();
+        } else {
+            showModal("Grid Full", "Could not place picks. Grid is full or conflicts exist.", false);
+        }
     }
 
     function createSubSection(parent, title, items, prefix, type, subtype, driverName = null, colorClass = '') {
@@ -599,6 +677,15 @@
         saveLocal();
     }
 
+    function resetGrid() {
+        if(!confirm("Are you sure? This will clear your current card.")) return;
+        localStorage.removeItem(`grid_${activeRace}`);
+        currentGrid = Array(25).fill(null);
+        const r = BINGO_CONFIG.races.find(r=>r.id===activeRace);
+        if(r) document.getElementById('stratRaceTitle').innerText = r.n.toUpperCase();
+        switchState('strategy');
+    }
+
     function renderGridStructure(pattern) {
         const grid = document.getElementById('grid');
         grid.innerHTML = '';
@@ -624,11 +711,9 @@
             const idx = parseInt(s.dataset.index);
             const data = currentGrid[idx];
             if(data) {
-                // FIND IMAGE
                 const drv = BINGO_CONFIG.drivers.find(d => d.name === data.driver);
                 const imgSrc = drv ? drv.img : '';
                 
-                // PARSE TEXT
                 let mainText = data.text;
                 if(drv && mainText.startsWith(drv.name)) {
                     mainText = mainText.replace(drv.name, '').trim();
