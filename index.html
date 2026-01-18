@@ -21,7 +21,7 @@
         body { font-family: 'Titillium Web', sans-serif; background: var(--bg-body); color: var(--brand-dark); margin: 0; height: 100vh; display: flex; flex-direction: column; overflow: hidden; }
         .hidden { display: none !important; }
 
-        /* --- HEADER FIXED --- */
+        /* --- 1. HEADER (FIXED LAYOUT) --- */
         header { 
             background: white; border-bottom: 3px solid var(--brand-red); 
             height: 70px; box-sizing: border-box; 
@@ -31,25 +31,31 @@
         }
 
         .logo-area { 
-            flex-shrink: 0; padding: 0 20px; 
+            flex-shrink: 0; 
+            padding: 0 20px; 
             height: 100%; display: flex; align-items: center;
-            border-right: 1px solid #eee; cursor: pointer;
+            border-right: 1px solid #eee;
+            cursor: pointer;
         }
         .header-logo { max-height: 35px; width: auto; display: block; object-fit: contain; }
 
-        /* FORCE ROW LAYOUT FOR RACES */
+        /* SCROLL AREA FIX */
         .race-scroll-area { 
-            flex: 1; overflow-x: auto; height: 100%; 
-            display: flex; flex-direction: row; /* FORCE ROW */
+            flex: 1; 
+            display: flex; 
+            flex-direction: row; /* FORCE HORIZONTAL */
             align-items: center; 
+            overflow-x: auto; 
+            height: 100%;
             scrollbar-width: none;
-            white-space: nowrap; /* Prevent wrapping */
+            white-space: nowrap; /* PREVENT WRAPPING */
         }
         .race-scroll-area::-webkit-scrollbar { display: none; }
 
         .race-card { 
-            flex: 0 0 70px; height: 100%; 
-            display: inline-flex; /* Ensure inline behavior */
+            flex: 0 0 70px; /* FIXED WIDTH */
+            height: 100%; 
+            display: inline-flex; /* INLINE FLEX */
             flex-direction: column; align-items: center; justify-content: center;
             border-right: 1px solid #f5f5f5; cursor: pointer; opacity: 0.5; transition: 0.2s; 
         }
@@ -69,6 +75,7 @@
         .main-stage { flex: 1; display: grid; grid-template-columns: 360px 1fr 300px; padding: 20px; gap: 20px; overflow: hidden; height: 100%; }
         .panel { background: white; border-radius: 12px; box-shadow: var(--card-shadow); overflow: hidden; display: flex; flex-direction: column; border: 1px solid #e0e0e0; height: 100%; }
         
+        /* TABS */
         .tab-header { display: flex; border-bottom: 1px solid #eee; background: #f9f9f9; flex-shrink: 0; height: 42px; }
         .tab-btn { flex: 1; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 12px; cursor: pointer; color: #888; border-bottom: 3px solid transparent; transition: 0.2s; letter-spacing: 0.5px; }
         .tab-btn:hover { background: #f0f0f0; }
@@ -94,9 +101,10 @@
         .chip.fia { border-left-color: var(--c-fia); }
         .chip-cost { background: #eee; padding: 2px 6px; border-radius: 10px; font-size: 10px; font-weight: 900; color: #555; }
 
-        /* QUICK PICK LABELS & BUTTONS */
-        .menu-label { font-size: 10px; font-weight: 900; color: #888; text-transform: uppercase; margin: 8px 0 4px 5px; letter-spacing: 0.5px; }
+        /* LABELS */
+        .menu-label { font-size: 10px; font-weight: 900; color: #999; text-transform: uppercase; margin: 10px 0 5px 2px; letter-spacing: 0.5px; }
 
+        /* QUICK PICK BUTTONS */
         .qp-row { display: flex; gap: 6px; padding: 0 0 10px 0; }
         .qp-btn {
             flex: 1; padding: 8px 4px; border-radius: 4px; 
@@ -111,6 +119,7 @@
         .qp-clean { background: linear-gradient(135deg, #22c55e, #16a34a); border-color: #15803d; }
         .qp-caution { background: linear-gradient(135deg, #e10600, #b91c1c); border-color: #991b1b; }
 
+        /* NESTED ACCORDION */
         .driver-content { display: none; padding: 5px 10px 10px 10px; background: #fff; border-top: 1px solid #eee; flex-direction: column; gap: 5px;}
         .driver-row.open .driver-content { display: flex; }
         .driver-row.open .driver-header { background: #eee; border-bottom: 1px solid #ddd; }
@@ -140,8 +149,10 @@
         
         .rh-right { display: flex; align-items: center; gap: 20px; }
 
+        /* LIGHTER BUDGET HUD */
         .budget-hud {
-            background: #f4f4f8; color: #333;
+            background: #f4f4f8; /* Very Light Grey */
+            color: #333;
             padding: 8px 15px; border-radius: 8px;
             display: flex; flex-direction: column; align-items: flex-end;
             box-shadow: 0 2px 6px rgba(0,0,0,0.05);
@@ -170,6 +181,7 @@
         .slot[data-req="team"] { background: #e0fbf8; border-color: var(--c-team); color: var(--c-team); opacity: 0.8; }
         .slot[data-req="fia"] { background: #fff2f2; border-color: var(--c-fia); color: var(--c-fia); opacity: 0.8; }
 
+        /* LIGHTER GREY CARD STYLING */
         .slot.filled { 
             background: #f4f4f4 !important; 
             border: 1px solid #d0d0d0 !important; 
@@ -395,7 +407,6 @@
                     <li><strong>10 PTS</strong> - Each Correct Tile</li>
                     <li><strong>+30 PTS</strong> - Straight Line Bonus</li>
                     <li><strong>+50 PTS</strong> - 4 Corners Bonus</li>
-                    <li><strong>+150 PTS</strong> - The X Bonus</li>
                     <li><strong>+1000 PTS</strong> - Full Card Bonus</li>
                 </ul>
             </div>
@@ -783,93 +794,6 @@
         saveLocal();
         checkLockStatus();
         updateBudgetUI();
-    }
-
-    function applyQuickPicks(driverName, teamName, tier) {
-        if(isGridLocked || isUserLocked) { showModal("Card Locked", "Unlock your card to make changes.", false); return; }
-
-        let rawPicks = [];
-        if (tier === 'victory') {
-            rawPicks = [
-                { t: "Pole Position", type: 'driver', st: 'quali' },
-                { t: "Race Win", type: 'driver', st: 'race' },
-                { t: "Fastest Lap", type: 'driver', st: 'bonus' },
-                { t: "1-2 Finish", type: 'team', st: 'team' }
-            ];
-        } else if (tier === 'podium') {
-            rawPicks = [
-                { t: "Front Row Start", type: 'driver', st: 'quali' },
-                { t: "Podium Finish", type: 'driver', st: 'race' },
-                { t: "Driver of the Day", type: 'driver', st: 'bonus' },
-                { t: "Double Podium", type: 'team', st: 'team' }
-            ];
-        } else if (tier === 'points') {
-            rawPicks = [
-                { t: "Q3 Appearance", type: 'driver', st: 'quali' },
-                { t: "Points Finish", type: 'driver', st: 'race' },
-                { t: "Beats Teammate (Race)", type: 'driver', st: 'bonus' },
-                { t: "Double Points", type: 'team', st: 'team' }
-            ];
-        } else if (tier === 'clean') {
-            rawPicks = [
-                { t: 'Green Flag Race (No SC)', type: 'fia', st: 'fia' },
-                { t: 'All Cars Finish (No DNF)', type: 'fia', st: 'fia' },
-                { t: 'Race Control: No Investigation', type: 'fia', st: 'fia' },
-                { t: 'Rolling Start Restart', type: 'fia', st: 'fia' }
-            ];
-        } else if (tier === 'caution') {
-            rawPicks = [
-                { t: 'Safety Car Deployed', type: 'fia', st: 'fia' },
-                { t: 'Red Flag Suspends Race', type: 'fia', st: 'fia' },
-                { t: 'Turn 1 Incident', type: 'fia', st: 'fia' },
-                { t: 'Debris on Track', type: 'fia', st: 'fia' }
-            ];
-        }
-
-        let placedCount = 0;
-        let tempGrid = [...currentGrid];
-        let tempCost = calculateTotalCost();
-
-        rawPicks.forEach(p => {
-            let fullText = p.t;
-            let dName = 'Race Control';
-            
-            if(p.type === 'driver') { fullText = `${driverName} ${p.t}`; dName = driverName; }
-            if(p.type === 'team') { fullText = `${teamName} ${p.t}`; dName = driverName; } 
-            
-            const cost = getChipCost(dName, p.type, p.t);
-
-            const slotIndex = tempGrid.findIndex((slot, i) => {
-                if(slot !== null && slot.text === fullText) return true; 
-                if(slot !== null) return false;
-                const slotEl = document.querySelector(`.slot[data-index="${i}"]`);
-                return slotEl && slotEl.dataset.req === p.type;
-            });
-
-            if(slotIndex !== -1 && tempGrid[slotIndex]?.text !== fullText) {
-                if (tempCost + cost <= BUDGET_CAP) {
-                    let conflict = false;
-                    if(p.type === 'driver') {
-                        conflict = tempGrid.some(x => x && x.driver === driverName && x.subtype === p.st);
-                    }
-                    if(!conflict) {
-                        tempGrid[slotIndex] = { text: fullText, type: p.type, driver: dName, subtype: p.st, cost: cost };
-                        tempCost += cost;
-                        placedCount++;
-                    }
-                }
-            }
-        });
-
-        if(placedCount > 0) {
-            currentGrid = tempGrid;
-            renderGrid();
-            saveLocal();
-            checkLockStatus();
-            updateBudgetUI();
-        } else {
-            showModal("Not Applied", "Could not place picks (Budget full or Grid full).", false);
-        }
     }
 
     function removePick(index) {
