@@ -24,7 +24,6 @@
         /* HEADER */
         header { background: white; border-bottom: 3px solid var(--brand-red); padding: 5px 25px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 4px 10px rgba(0,0,0,0.05); z-index: 20; flex-shrink: 0; height: 60px; box-sizing: border-box; }
         .header-title { display: flex; align-items: center; justify-content: center; cursor: pointer; height: 100%; }
-        /* UPDATED LOGO STYLING */
         .header-logo { max-height: 50px; width: auto; display: block; object-fit: contain; } 
         .user-profile { font-weight: 700; display: flex; align-items: center; gap: 10px; font-size: 14px; }
 
@@ -58,13 +57,7 @@
         .driver-header { padding: 10px 12px; display: flex; align-items: center; gap: 12px; cursor: pointer; background: linear-gradient(90deg, transparent 95%, #fafafa); }
         .driver-header:hover { background: #f5f5f5; }
         
-        .driver-face { 
-            width: 36px; height: 36px; object-fit: cover; 
-            border-radius: 6px; 
-            background: #eee; 
-            border: 2px solid var(--team-color);
-            padding: 2px; box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-        }
+        .driver-face { width: 36px; height: 36px; object-fit: cover; border-radius: 6px; background: #eee; border: 2px solid var(--team-color); padding: 2px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
         .driver-face[src=""] { display: none; } 
 
         .helmet-icon { width: 36px; height: 36px; background: var(--team-color); border-radius: 6px; border: 2px solid #333; position: relative; box-shadow: 0 2px 4px rgba(0,0,0,0.2); }
@@ -76,21 +69,19 @@
         .driver-name { font-weight: 800; font-size: 14px; color: #333; }
         .driver-team { font-size: 10px; color: #888; text-transform: uppercase; margin-top:2px; }
 
-        /* QUICK PICK BUTTON */
-        .quick-pick-btn {
-            background: linear-gradient(135deg, #FFD700, #ffaa00);
-            color: #000;
-            padding: 8px; margin: 8px;
-            border-radius: 6px;
-            font-weight: 900; font-size: 11px;
-            text-align: center; text-transform: uppercase;
-            cursor: pointer; box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-            border: 1px solid #eebb00;
-            transition: 0.1s;
-            display: flex; align-items: center; justify-content: center; gap: 5px;
+        /* QUICK PICK BUTTONS */
+        .qp-row { display: flex; gap: 6px; padding: 8px 10px 4px 10px; background: #fff; }
+        .qp-btn {
+            flex: 1; padding: 8px 4px; border-radius: 4px; 
+            font-size: 10px; font-weight: 900; text-align: center; text-transform: uppercase;
+            cursor: pointer; box-shadow: 0 2px 4px rgba(0,0,0,0.1); transition: 0.2s;
+            border: 1px solid rgba(0,0,0,0.1); color: white; text-shadow: 0 1px 1px rgba(0,0,0,0.2);
         }
-        .quick-pick-btn:hover { transform: scale(1.02); filter: brightness(1.1); }
-        .quick-pick-btn::before { content: '⚡'; }
+        .qp-btn:hover { transform: translateY(-2px); filter: brightness(1.1); }
+        
+        .qp-victory { background: linear-gradient(135deg, #FFD700, #ffaa00); color: black; text-shadow: none; border-color: #eebb00; }
+        .qp-podium { background: linear-gradient(135deg, #C0C0C0, #9aa); color: black; text-shadow: none; border-color: #999; }
+        .qp-points { background: linear-gradient(135deg, #00d2be, #009e8e); border-color: #00887a; }
 
         /* NESTED ACCORDION */
         .driver-content { display: none; padding: 5px 10px 10px 10px; background: #fff; border-top: 1px solid #eee; flex-direction: column; gap: 5px;}
@@ -176,11 +167,11 @@
         .rules-list li { margin-bottom: 6px; }
 
         /* VIEWS & STRATEGY */
-        .view-login, .view-strategy { text-align: center; width: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100%; }
+        .view-login, .view-strategy { text-align: center; width: 100%; display: flex; flex-direction: column; align-items: center; height: 100%; }
         .login-input { padding: 15px; width: 100%; margin-top: 15px; text-align: center; border: 2px solid #eee; border-radius: 8px; font-weight: bold; font-size: 16px; max-width: 400px; }
         .login-btn { padding: 15px; width: 100%; margin-top: 15px; background: var(--brand-red); color: white; border: none; font-weight: 900; cursor: pointer; border-radius: 8px; font-size: 16px; max-width: 400px; }
         
-        .strategy-header-container { margin-bottom: 30px; display: flex; flex-direction: column; align-items: center; gap: 10px; }
+        .strategy-header-container { margin-top: 20px; margin-bottom: 30px; display: flex; flex-direction: column; align-items: center; gap: 10px; }
         .big-flag { width: 100px; height: auto; border-radius: 6px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
         .strategy-title { font-size: 32px; font-weight: 900; font-style: italic; text-transform: uppercase; line-height: 1; }
 
@@ -515,12 +506,23 @@
                 content.appendChild(grid);
                 BINGO_CONFIG.templates.fia.forEach(t => createChip(grid, t, 'fia', false, 'Race Control', 'fia')); 
             } else {
-                // ADD QUICK PICK BUTTON FOR DRIVERS ONLY
-                const qpBtn = document.createElement('div');
-                qpBtn.className = 'quick-pick-btn';
-                qpBtn.innerText = 'QUICK PICK FAVORITES';
-                qpBtn.onclick = (e) => { e.stopPropagation(); applyQuickPicks(d.name, d.team); };
-                content.appendChild(qpBtn);
+                // QUICK PICK BUTTONS ROW
+                const qpContainer = document.createElement('div');
+                qpContainer.className = 'qp-row';
+                
+                const qpVic = document.createElement('div'); qpVic.className = 'qp-btn qp-victory'; qpVic.innerText = 'VICTORY';
+                qpVic.onclick = (e) => { e.stopPropagation(); applyQuickPicks(d.name, d.team, 'victory'); };
+                
+                const qpPod = document.createElement('div'); qpPod.className = 'qp-btn qp-podium'; qpPod.innerText = 'PODIUM';
+                qpPod.onclick = (e) => { e.stopPropagation(); applyQuickPicks(d.name, d.team, 'podium'); };
+                
+                const qpPts = document.createElement('div'); qpPts.className = 'qp-btn qp-points'; qpPts.innerText = 'POINTS';
+                qpPts.onclick = (e) => { e.stopPropagation(); applyQuickPicks(d.name, d.team, 'points'); };
+
+                qpContainer.appendChild(qpVic);
+                qpContainer.appendChild(qpPod);
+                qpContainer.appendChild(qpPts);
+                content.appendChild(qpContainer);
 
                 createSubSection(content, "QUALIFYING", BINGO_CONFIG.templates.quali, `${d.name} `, 'driver', 'quali', d.name, 'driver');
                 createSubSection(content, "RACE RESULT", BINGO_CONFIG.templates.race, `${d.name} `, 'driver', 'race', d.name, 'driver');
@@ -532,20 +534,37 @@
     }
 
     // --- QUICK PICK LOGIC ---
-    function applyQuickPicks(driverName, teamName) {
+    function applyQuickPicks(driverName, teamName, tier) {
         if(isGridLocked) { showModal("Race Locked", "Picks closed.", false); return; }
 
-        const picks = [
-            { text: `${driverName} Race Win`, type: 'driver', subtype: 'race' },
-            { text: `${driverName} Pole Position`, type: 'driver', subtype: 'quali' },
-            { text: `${driverName} Fastest Lap`, type: 'driver', subtype: 'bonus' },
-            { text: `${teamName} Double Podium`, type: 'team', subtype: 'team' }
-        ];
+        let picks = [];
+
+        if (tier === 'victory') {
+            picks = [
+                { text: `${driverName} Pole Position`, type: 'driver', subtype: 'quali' },
+                { text: `${driverName} Race Win`, type: 'driver', subtype: 'race' },
+                { text: `${driverName} Fastest Lap`, type: 'driver', subtype: 'bonus' },
+                { text: `${teamName} 1-2 Finish`, type: 'team', subtype: 'team' }
+            ];
+        } else if (tier === 'podium') {
+            picks = [
+                { text: `${driverName} Front Row Start`, type: 'driver', subtype: 'quali' },
+                { text: `${driverName} Podium Finish`, type: 'driver', subtype: 'race' },
+                { text: `${driverName} Driver of the Day`, type: 'driver', subtype: 'bonus' },
+                { text: `${teamName} Double Podium`, type: 'team', subtype: 'team' }
+            ];
+        } else if (tier === 'points') {
+            picks = [
+                { text: `${driverName} Q3 Appearance`, type: 'driver', subtype: 'quali' },
+                { text: `${driverName} Points Finish`, type: 'driver', subtype: 'race' },
+                { text: `${driverName} Beats Teammate (Race)`, type: 'driver', subtype: 'bonus' },
+                { text: `${teamName} Double Points`, type: 'team', subtype: 'team' }
+            ];
+        }
 
         let placedCount = 0;
 
         picks.forEach(p => {
-            // Find empty slot matching requirements
             const slotIndex = currentGrid.findIndex((slot, i) => {
                 if(slot !== null) return false;
                 const slotEl = document.querySelector(`.slot[data-index="${i}"]`);
@@ -553,7 +572,6 @@
             });
 
             if(slotIndex !== -1) {
-                // Check conflicts
                 const conflict = currentGrid.some(x => x && x.driver === driverName && x.subtype === p.subtype);
                 if(!conflict) {
                     currentGrid[slotIndex] = { text: p.text, type: p.type, driver: driverName, subtype: p.subtype };
@@ -566,7 +584,7 @@
             renderGrid();
             saveLocal();
         } else {
-            showModal("Grid Full", "Could not place picks. Grid is full or conflicts exist.", false);
+            showModal("Grid Full / Conflicts", "Could not place all picks. Check if grid is full or driver already has predictions.", false);
         }
     }
 
