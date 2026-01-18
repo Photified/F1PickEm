@@ -1,8 +1,7 @@
 /* F1 2026 PICK 'EM DATA
    - 25 Races
    - Budget Logic: PAY FOR SAFETY
-   - High Probability = High Cost
-   - Low Probability = Low Cost
+   - Driver Prices Increased for Top Tier
 */
 
 const BINGO_CONFIG = {
@@ -35,31 +34,31 @@ const BINGO_CONFIG = {
         {id:'abu', c:'ae', n:'Abu Dhabi', d:'Dec 6'}
     ],
 
-    // DRIVER ROSTER
+    // DRIVER ROSTER - PRICES ADJUSTED (Top Tier Expensive)
     drivers: [
         { name: "Race Control", team: "FIA", color: "#333333", img: "images/fia.png", price: 0 }, 
-        { name: "Max Verstappen", team: "Red Bull", color: "#3671C6", img: "images/max.png", price: 15 },
+        { name: "Max Verstappen", team: "Red Bull", color: "#3671C6", img: "images/max.png", price: 25 },
         { name: "Isack Hadjar", team: "Red Bull", color: "#3671C6", img: "images/hadjar.png", price: 5 },
-        { name: "Lando Norris", team: "McLaren", color: "#FF8000", img: "images/lando.png", price: 14 },
-        { name: "Oscar Piastri", team: "McLaren", color: "#FF8000", img: "images/oscar.png", price: 12 },
-        { name: "Lewis Hamilton", team: "Ferrari", color: "#E80020", img: "images/lewis.png", price: 12 },
-        { name: "Charles Leclerc", team: "Ferrari", color: "#E80020", img: "images/charles.png", price: 13 },
-        { name: "George Russell", team: "Mercedes", color: "#27F4D2", img: "images/george.png", price: 11 },
-        { name: "Kimi Antonelli", team: "Mercedes", color: "#27F4D2", img: "images/kimi.png", price: 6 },
-        { name: "Fernando Alonso", team: "Aston Martin", color: "#229971", img: "images/alonso.png", price: 9 },
-        { name: "Lance Stroll", team: "Aston Martin", color: "#229971", img: "images/lance.png", price: 5 },
-        { name: "Pierre Gasly", team: "Alpine", color: "#FF87BC", img: "images/gasly.png", price: 6 },
-        { name: "Franco Colapinto", team: "Alpine", color: "#FF87BC", img: "images/franco.png", price: 5 },
-        { name: "Alex Albon", team: "Williams", color: "#64C4FF", img: "images/albon.png", price: 7 },
-        { name: "Carlos Sainz", team: "Williams", color: "#64C4FF", img: "images/sainz.png", price: 8 },
-        { name: "Liam Lawson", team: "VCARB", color: "#6692FF", img: "images/lawson.png", price: 5 },
+        { name: "Lando Norris", team: "McLaren", color: "#FF8000", img: "images/lando.png", price: 22 },
+        { name: "Oscar Piastri", team: "McLaren", color: "#FF8000", img: "images/oscar.png", price: 18 },
+        { name: "Lewis Hamilton", team: "Ferrari", color: "#E80020", img: "images/lewis.png", price: 20 },
+        { name: "Charles Leclerc", team: "Ferrari", color: "#E80020", img: "images/charles.png", price: 20 },
+        { name: "George Russell", team: "Mercedes", color: "#27F4D2", img: "images/george.png", price: 18 },
+        { name: "Kimi Antonelli", team: "Mercedes", color: "#27F4D2", img: "images/kimi.png", price: 8 },
+        { name: "Fernando Alonso", team: "Aston Martin", color: "#229971", img: "images/alonso.png", price: 12 },
+        { name: "Lance Stroll", team: "Aston Martin", color: "#229971", img: "images/lance.png", price: 6 },
+        { name: "Pierre Gasly", team: "Alpine", color: "#FF87BC", img: "images/gasly.png", price: 7 },
+        { name: "Franco Colapinto", team: "Alpine", color: "#FF87BC", img: "images/franco.png", price: 6 },
+        { name: "Alex Albon", team: "Williams", color: "#64C4FF", img: "images/albon.png", price: 8 },
+        { name: "Carlos Sainz", team: "Williams", color: "#64C4FF", img: "images/sainz.png", price: 9 },
+        { name: "Liam Lawson", team: "VCARB", color: "#6692FF", img: "images/lawson.png", price: 6 },
         { name: "Arvid Lindblad", team: "VCARB", color: "#6692FF", img: "images/lindblad.png", price: 4 },
-        { name: "Esteban Ocon", team: "Haas", color: "#B6BABD", img: "images/ocon.png", price: 5 },
-        { name: "Ollie Bearman", team: "Haas", color: "#B6BABD", img: "images/bearman.png", price: 4 },
+        { name: "Esteban Ocon", team: "Haas", color: "#B6BABD", img: "images/ocon.png", price: 6 },
+        { name: "Ollie Bearman", team: "Haas", color: "#B6BABD", img: "images/bearman.png", price: 5 },
         { name: "Nico Hulkenberg", team: "Audi", color: "#F2F2F2", img: "images/hulk.png", price: 5 },
         { name: "Gabriel Bortoleto", team: "Audi", color: "#F2F2F2", img: "images/gabriel.png", price: 4 },
         { name: "Valtteri Bottas", team: "Cadillac", color: "#FFD700", img: "images/bottas.png", price: 5 },
-        { name: "Sergio Perez", team: "Cadillac", color: "#FFD700", img: "images/checo.png", price: 6 }
+        { name: "Sergio Perez", team: "Cadillac", color: "#FFD700", img: "images/checo.png", price: 7 }
     ],
 
     // EVENT COSTS (INVERTED: Safe = Expensive, Risky = Cheap)

@@ -21,52 +21,34 @@
         body { font-family: 'Titillium Web', sans-serif; background: var(--bg-body); color: var(--brand-dark); margin: 0; height: 100vh; display: flex; flex-direction: column; overflow: hidden; }
         .hidden { display: none !important; }
 
-        /* --- 1. NEW COMPACT HEADER --- */
-        header { 
-            background: white; border-bottom: 3px solid var(--brand-red); 
-            height: 70px; box-sizing: border-box; 
-            display: flex; align-items: center; 
-            padding: 0 0 0 20px; /* Padding left only */
-            box-shadow: 0 4px 10px rgba(0,0,0,0.05); z-index: 20; flex-shrink: 0; 
-        }
+        /* HEADER */
+        header { background: white; border-bottom: 3px solid var(--brand-red); padding: 5px 25px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 4px 10px rgba(0,0,0,0.05); z-index: 20; flex-shrink: 0; height: 60px; box-sizing: border-box; }
+        .header-title { display: flex; align-items: center; justify-content: center; cursor: pointer; height: 100%; }
+        .header-logo { max-height: 50px; width: auto; display: block; object-fit: contain; } 
+        .user-profile { font-weight: 700; display: flex; align-items: center; gap: 10px; font-size: 14px; }
 
-        /* Logo Area (Left) */
-        .logo-area { 
-            flex-shrink: 0; margin-right: 20px; 
-            border-right: 1px solid #eee; padding-right: 20px; height: 40px; display: flex; align-items: center;
-        }
-        .header-logo { max-height: 40px; width: auto; display: block; object-fit: contain; cursor: pointer; }
-
-        /* Race Scroll Area (Middle/Right) */
-        .race-scroll-area { 
-            flex: 1; overflow-x: auto; height: 100%; 
-            display: flex; align-items: center; 
-            scrollbar-width: none; /* Hide scrollbar Firefox */
-        }
-        .race-scroll-area::-webkit-scrollbar { display: none; } /* Hide scrollbar Chrome */
-
-        .race-card { 
-            flex: 0 0 70px; height: 100%; 
-            display: flex; flex-direction: column; align-items: center; justify-content: center;
-            border-right: 1px solid #f5f5f5; cursor: pointer; opacity: 0.5; transition: 0.2s; 
-        }
+        /* RACE BAR */
+        .race-bar { background: #fff; padding: 0; display: flex; overflow-x: auto; border-bottom: 1px solid #ddd; scrollbar-width: thin; height: 90px; flex-shrink: 0; }
+        .race-card { flex: 0 0 85px; padding: 10px 5px; text-align: center; border-right: 1px solid #f0f0f0; cursor: pointer; opacity: 0.6; transition: 0.2s; display: flex; flex-direction: column; align-items: center; justify-content: center; }
         .race-card:hover { opacity: 1; background: #f9f9f9; }
-        .race-card.active { opacity: 1; background: #fff; border-bottom: 4px solid var(--brand-red); }
-        .race-flag-img { width: 30px; height: 20px; object-fit: cover; border-radius: 2px; margin-bottom: 4px; }
-        .race-name { font-size: 10px; font-weight: 800; text-transform: uppercase; line-height: 1; }
-
-        /* User Profile (Far Right) */
-        .user-area { padding: 0 20px; font-weight: 800; font-size: 13px; border-left: 1px solid #eee; height: 100%; display: flex; align-items: center; }
+        .race-card.active { opacity: 1; border-bottom: 4px solid var(--brand-red); background: #fff; }
+        .race-flag-img { width: 36px; height: 26px; object-fit: cover; border-radius: 3px; margin-bottom: 6px; }
+        .race-name { font-size: 11px; font-weight: 800; text-transform: uppercase; line-height: 1; }
 
         /* MAIN LAYOUT */
         .main-stage { flex: 1; display: grid; grid-template-columns: 360px 1fr 300px; padding: 20px; gap: 20px; overflow: hidden; height: 100%; }
         .panel { background: white; border-radius: 12px; box-shadow: var(--card-shadow); overflow: hidden; display: flex; flex-direction: column; border: 1px solid #e0e0e0; height: 100%; }
         
-        /* TABS */
+        /* UNIFIED TAB HEADER */
         .tab-header { display: flex; border-bottom: 1px solid #eee; background: #f9f9f9; flex-shrink: 0; height: 42px; }
-        .tab-btn { flex: 1; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 12px; cursor: pointer; color: #888; border-bottom: 3px solid transparent; transition: 0.2s; letter-spacing: 0.5px; }
+        .tab-btn { 
+            flex: 1; display: flex; align-items: center; justify-content: center;
+            font-weight: 800; font-size: 12px; cursor: pointer; color: #888; 
+            border-bottom: 3px solid transparent; transition: 0.2s; letter-spacing: 0.5px;
+        }
         .tab-btn:hover { background: #f0f0f0; }
         .tab-btn.active { color: #000; border-bottom-color: var(--brand-red); background: white; }
+        
         .static-tab { flex: 1; display: flex; align-items: center; justify-content: center; font-weight: 900; font-size: 13px; color: #333; background: #f9f9f9; border-bottom: 1px solid #eee; letter-spacing: 1px; }
 
         /* DRIVER MARKET */
@@ -75,18 +57,23 @@
         .driver-header { padding: 10px 12px; display: flex; align-items: center; gap: 12px; cursor: pointer; background: linear-gradient(90deg, transparent 95%, #fafafa); }
         .driver-header:hover { background: #f5f5f5; }
         
-        .driver-face { width: 36px; height: 36px; object-fit: cover; border-radius: 6px; background: #eee; border: 2px solid var(--team-color); padding: 2px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+        .driver-face { 
+            width: 36px; height: 36px; object-fit: cover; 
+            border-radius: 6px; 
+            background: #eee; 
+            border: 2px solid var(--team-color);
+            padding: 2px; box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
         .driver-face[src=""] { display: none; } 
+
+        .helmet-icon { width: 36px; height: 36px; background: var(--team-color); border-radius: 6px; border: 2px solid #333; position: relative; box-shadow: 0 2px 4px rgba(0,0,0,0.2); }
+        .helmet-icon::after { content: ''; position: absolute; top: 8px; left: 2px; right: 2px; height: 8px; background: rgba(0,0,0,0.6); border-radius: 2px; }
+        .driver-header[data-team="FIA"] .helmet-icon { border-radius: 4px; background: #333; }
+        .driver-header[data-team="FIA"] .helmet-icon::after { display: none; }
+        .driver-header[data-team="FIA"] .helmet-icon::before { content: '🏁'; position: absolute; top: 5px; left: 8px; font-size: 18px; }
+
         .driver-name { font-weight: 800; font-size: 14px; color: #333; }
         .driver-team { font-size: 10px; color: #888; text-transform: uppercase; margin-top:2px; }
-
-        /* CHIPS WITH PRICE TAGS */
-        .chip { padding: 8px 10px; background: white; border: 1px solid #ddd; border-radius: 4px; font-size: 11px; font-weight: 700; cursor: grab; text-align: left; border-left-width: 5px; border-left-style: solid; transition: 0.1s; display: flex; justify-content: space-between; align-items: center; }
-        .chip:hover { transform: translateX(3px); box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
-        .chip.driver { border-left-color: var(--c-driver); }
-        .chip.team { border-left-color: var(--c-team); }
-        .chip.fia { border-left-color: var(--c-fia); }
-        .chip-cost { background: #eee; padding: 2px 6px; border-radius: 10px; font-size: 10px; font-weight: 900; color: #555; }
 
         /* QUICK PICK BUTTONS */
         .qp-row { display: flex; gap: 6px; padding: 8px 10px 4px 10px; background: #fff; }
@@ -117,10 +104,16 @@
         .sub-content { display: none; grid-template-columns: 1fr; gap: 6px; padding: 8px 5px; animation: fadeIn 0.2s; }
         .sub-btn.active + .sub-content { display: grid; }
 
+        .chip { padding: 8px 10px; background: white; border: 1px solid #ddd; border-radius: 4px; font-size: 11px; font-weight: 700; cursor: grab; text-align: left; border-left-width: 5px; border-left-style: solid; transition: 0.1s; display: flex; justify-content: space-between; align-items: center; }
+        .chip:hover { transform: translateX(3px); box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+        .chip.driver { border-left-color: var(--c-driver); }
+        .chip.team { border-left-color: var(--c-team); }
+        .chip.fia { border-left-color: var(--c-fia); }
+        .chip-cost { background: #eee; padding: 2px 6px; border-radius: 10px; font-size: 10px; font-weight: 900; color: #555; }
+
         /* CENTER GRID */
         .active-panel { background: white; border-radius: 12px; border: 1px solid #e0e0e0; padding: 0; display: flex; flex-direction: column; overflow: hidden; height: 100%; position: relative; }
         
-        /* --- 2. RACE DASHBOARD & BUDGET HUD --- */
         #raceHeader { 
             padding: 15px 25px; background: #fff; border-bottom: 1px solid #eee; 
             display: flex; align-items: center; justify-content: space-between; 
@@ -134,9 +127,10 @@
         
         .rh-right { display: flex; align-items: center; gap: 20px; }
 
-        /* NEW BUDGET HUD (POP) */
+        /* NEW BUDGET HUD (LIGHTER GREY) */
         .budget-hud {
-            background: #111; color: white;
+            background: #333; /* Lighter than #111 */
+            color: white;
             padding: 8px 15px; border-radius: 8px;
             display: flex; flex-direction: column; align-items: flex-end;
             box-shadow: 0 4px 10px rgba(0,0,0,0.2);
@@ -144,7 +138,7 @@
         }
         .budget-hud-label { font-size: 9px; font-weight: 700; opacity: 0.7; letter-spacing: 1px; }
         .budget-hud-val { font-size: 16px; font-weight: 900; color: #22c55e; }
-        .budget-hud-bar-bg { width: 100px; height: 4px; background: #333; margin-top: 4px; border-radius: 2px; }
+        .budget-hud-bar-bg { width: 100px; height: 4px; background: #555; margin-top: 4px; border-radius: 2px; }
         .budget-hud-bar-fill { height: 100%; background: #22c55e; width: 50%; border-radius: 2px; transition: 0.3s; }
 
         .lock-container { text-align: right; }
@@ -164,10 +158,10 @@
         .slot[data-req="team"] { background: #e0fbf8; border-color: var(--c-team); color: var(--c-team); opacity: 0.8; }
         .slot[data-req="fia"] { background: #fff2f2; border-color: var(--c-fia); color: var(--c-fia); opacity: 0.8; }
 
-        /* DARK CARD STYLING */
+        /* LIGHTER GREY CARD STYLING */
         .slot.filled { 
-            background: #2B2B33 !important; 
-            border: 1px solid #444 !important; 
+            background: #45454d !important; /* Lighter Grey */
+            border: 1px solid #555 !important; 
             color: white !important; 
             box-shadow: 0 4px 10px rgba(0,0,0,0.3); 
             opacity: 1; padding: 0; overflow: hidden; 
@@ -198,10 +192,9 @@
         }
         .remove-pick-btn:hover { background: #333; opacity: 1; }
 
-        /* --- 3. PRICE TAG ON CARD --- */
         .slot-img-container { 
             width: 35%; flex-shrink: 0; 
-            display: flex; flex-direction: column; align-items: center; justify-content: center; /* Changed to Column */
+            display: flex; flex-direction: column; align-items: center; justify-content: center; 
             border-right: 1px solid rgba(255,255,255,0.1);
             background-color: var(--team-color-hex); 
             position: relative;
@@ -220,10 +213,11 @@
 
         .slot.filled[data-type="fia"] .slot-img { filter: brightness(0) invert(1); }
 
+        /* LIGHTER GREY RIGHT SIDE */
         .slot-text-container { 
             flex: 1; display: flex; flex-direction: column; justify-content: center; 
             padding: 4px 15px; min-width: 0;
-            background-color: #2B2B33;
+            background-color: #45454d; /* Matches .slot.filled */
             background-image:
                 linear-gradient(45deg, rgba(0,0,0,0.2) 25%, transparent 25%, transparent 75%, rgba(0,0,0,0.2) 75%, rgba(0,0,0,0.2)),
                 linear-gradient(45deg, rgba(0,0,0,0.2) 25%, transparent 25%, transparent 75%, rgba(0,0,0,0.2) 75%, rgba(0,0,0,0.2));
@@ -305,14 +299,17 @@
 </div>
 
 <header>
-    <div class="logo-area" ondblclick="toggleAdmin()">
+    <div class="user-profile">
+        <span id="displayTeamName">GUEST</span>
+    </div>
+    <div class="header-title" ondblclick="toggleAdmin()">
         <img src="images/logotop.png" class="header-logo" alt="F1 Pick Em">
     </div>
-    
-    <div class="race-scroll-area" id="raceBar"></div>
-
-    <div class="user-area">
-        <span id="displayTeamName">GUEST</span>
+    <div class="budget-container">
+        <div class="budget-text" id="budgetText">$100M / $100M</div>
+        <div class="budget-track">
+            <div class="budget-fill" id="budgetFill" style="width:0%"></div>
+        </div>
     </div>
 </header>
 
@@ -321,6 +318,8 @@
     <div class="admin-toggle-list" id="adminList"></div>
     <button onclick="publishResults()" style="width:100%; margin-top:10px; padding:10px; background:var(--score-win); border:none; font-weight:bold; cursor:pointer;">PUBLISH</button>
 </div>
+
+<div class="race-bar" id="raceBar"></div>
 
 <div class="main-stage">
     
@@ -737,6 +736,7 @@
 
         const grid = document.createElement('div');
         grid.className = 'sub-content';
+        // Now passing raw template object {t, c} to handle cost
         items.forEach(t => createChip(grid, prefix + t.t, type, subtype, driverName, '', t.c, t.t));
         parent.appendChild(grid);
     }
