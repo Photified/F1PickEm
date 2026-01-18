@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>F1 2026: CHAMPIONSHIP BINGO</title>
+    <title>F1 2026: PICK 'EM</title>
     <link href="https://fonts.googleapis.com/css2?family=Titillium+Web:ital,wght@0,400;0,700;0,900;1,400&display=swap" rel="stylesheet">
     <script src="bingo_data.js"></script>
 
@@ -14,7 +14,7 @@
             /* Colors */
             --c-driver: #ff9500; 
             --c-team: #00d2be; 
-            --c-fia: #e10600; /* Red for FIA */
+            --c-fia: #e10600; 
             --score-win: #39ff14; 
         }
         body { font-family: 'Titillium Web', sans-serif; background: var(--bg-body); color: var(--brand-dark); margin: 0; height: 100vh; display: flex; flex-direction: column; overflow: hidden; }
@@ -22,7 +22,7 @@
 
         /* HEADER */
         header { background: white; border-bottom: 3px solid var(--brand-red); padding: 10px 25px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 4px 10px rgba(0,0,0,0.05); z-index: 20; flex-shrink: 0; }
-        .header-title { font-weight:900; font-style:italic; font-size:24px; cursor: pointer; user-select: none; }
+        .header-title { font-weight:900; font-style:italic; font-size:24px; cursor: pointer; user-select: none; letter-spacing: 1px; }
         .user-profile { font-weight: 700; display: flex; align-items: center; gap: 10px; font-size: 14px; }
 
         /* RACE BAR */
@@ -74,7 +74,6 @@
         .sub-btn:hover { background: #f0f0f0; color: #000; }
         .sub-btn.active { background: #f4f4f4; color: #000; box-shadow: inset 0 0 5px rgba(0,0,0,0.05); }
         
-        /* COLORS UPDATED FOR FIA */
         .sub-btn.driver { border-left-color: var(--c-driver); }
         .sub-btn.team { border-left-color: var(--c-team); }
         .sub-btn.fia { border-left-color: var(--c-fia); }
@@ -95,7 +94,6 @@
         
         .slot { background: #fafafa; border: 2px dashed #ddd; border-radius: 8px; display: flex; align-items: center; justify-content: center; text-align: center; padding: 5px; font-size: 11px; font-weight: 700; position: relative; user-select: none; transition: 0.2s; width: 100%; height: 100%; box-sizing: border-box; }
         
-        /* SLOT COLORS UPDATED */
         .slot[data-req="driver"] { background: #fff8e6; border-color: var(--c-driver); color: var(--c-driver); opacity: 0.8; }
         .slot[data-req="team"] { background: #e0fbf8; border-color: var(--c-team); color: var(--c-team); opacity: 0.8; }
         .slot[data-req="fia"] { background: #fff2f2; border-color: var(--c-fia); color: var(--c-fia); opacity: 0.8; }
@@ -175,7 +173,7 @@
     <div class="user-profile">
         <span id="displayTeamName">GUEST</span>
     </div>
-    <div class="header-title" ondblclick="toggleAdmin()">F1 2026 BINGO</div>
+    <div class="header-title" ondblclick="toggleAdmin()">F1 2026 PICK 'EM</div>
     <button onclick="saveLocal()" style="background:var(--brand-red); color:white; border:none; padding:8px 20px; border-radius:20px; font-weight:bold; cursor:pointer;">SAVE</button>
 </header>
 
@@ -191,7 +189,7 @@
     
     <div class="panel">
         <div class="tab-header">
-            <div class="static-tab">BINGO CHIPS</div>
+            <div class="static-tab">MY PICKS</div>
         </div>
         <div id="driverList" class="driver-list"></div>
     </div>
@@ -219,7 +217,7 @@
                     <div class="mini-grid"><div class="mg-c" style="background:var(--c-team)"></div><div class="mg-c" style="background:var(--c-team)"></div><div class="mg-c" style="background:var(--c-driver)"></div><div class="mg-c" style="background:var(--c-team)"></div><div class="mg-c" style="background:var(--c-team)"></div></div>
                     <strong>🛠️ Constructor</strong>
                 </div>
-                <div class="strat-card" onclick="confirmStrategy('fia')">
+                <div class="strat-card" onclick="confirmStrategy('chaos')">
                     <div class="mini-grid"><div class="mg-c" style="background:var(--c-fia)"></div><div class="mg-c" style="background:var(--c-fia)"></div><div class="mg-c" style="background:var(--c-driver)"></div><div class="mg-c" style="background:var(--c-fia)"></div><div class="mg-c" style="background:var(--c-fia)"></div></div>
                     <strong>🚩 FIA / Track</strong>
                 </div>
@@ -256,7 +254,7 @@
                 <div class="rules-title">HOW TO PLAY</div>
                 <div class="rules-text">
                     1. Select a <strong>Race Strategy</strong> to generate your grid layout.<br><br>
-                    2. Drag chips from the <strong>Bingo Chips</strong> menu onto matching colored slots.<br><br>
+                    2. Drag chips from the <strong>My Picks</strong> menu onto matching colored slots.<br><br>
                     3. <strong>Limit:</strong> You may only select 1 chip per category (e.g., 1 Quali result) per driver.
                 </div>
             </div>
@@ -264,10 +262,10 @@
                 <div class="rules-title">SCORING</div>
                 <ul class="rules-list">
                     <li><strong>10 PTS</strong> - Each Correct Tile</li>
-                    <li><strong>+30 PTS</strong> - Per Straight Line (Row/Col)</li>
+                    <li><strong>+30 PTS</strong> - Straight Line Bonus</li>
                     <li><strong>+50 PTS</strong> - 4 Corners Bonus</li>
-                    <li><strong>+150 PTS</strong> - The "X" (Criss-Cross)</li>
-                    <li><strong>+1000 PTS</strong> - FULL CARD (Blackout)</li>
+                    <li><strong>+150 PTS</strong> - The X Bonus</li>
+                    <li><strong>+1000 PTS</strong> - Full Card Bonus</li>
                 </ul>
             </div>
             <div class="rules-block">
@@ -288,11 +286,10 @@
     let verifiedResults = [];
     let modalCallback = null;
 
-    // UPDATED: Now uses 'fia' instead of 'chaos' for keys
     const templates = {
         balanced: ['driver','driver','team','driver','fia','driver','team','fia','driver','team','team','driver','FREE','driver','team','team','fia','driver','team','fia','driver','team','team','driver','fia'],
         team: ['team','team','driver','team','team','team','driver','team','fia','team','driver','team','FREE','team','team','driver','team','fia','team','driver','team','team','team','driver','fia'],
-        fia: ['fia','fia','driver','team','fia','fia','driver','team','fia','driver','driver','team','FREE','fia','fia','team','fia','driver','fia','driver','fia','driver','fia','team','fia'],
+        chaos: ['fia','fia','driver','team','fia','fia','driver','team','fia','driver','driver','team','FREE','fia','fia','team','fia','driver','fia','driver','fia','driver','fia','team','fia'],
         driver: ['driver','driver','driver','team','driver','driver','team','fia','driver','driver','team','driver','FREE','driver','team','driver','fia','team','driver','driver','driver','driver','team','driver','fia']
     };
 
@@ -389,7 +386,6 @@
                 content.appendChild(btn);
                 const grid = document.createElement('div'); grid.className = 'sub-content';
                 content.appendChild(grid);
-                // FIA type used here
                 BINGO_CONFIG.templates.fia.forEach(t => createChip(grid, t, 'fia', false)); 
             } else {
                 createSubSection(content, "QUALIFYING", BINGO_CONFIG.templates.quali, `${d.name} `, 'driver', 'quali', d.name, 'driver');
@@ -497,6 +493,15 @@
         saveLocal();
     }
 
+    function resetGrid() {
+        if(!confirm("Are you sure? This will clear your current card.")) return;
+        localStorage.removeItem(`grid_${activeRace}`);
+        currentGrid = Array(25).fill(null);
+        const r = BINGO_CONFIG.races.find(r=>r.id===activeRace);
+        if(r) document.getElementById('stratRaceTitle').innerText = r.n.toUpperCase();
+        switchState('strategy');
+    }
+
     function renderGridStructure(pattern) {
         const grid = document.getElementById('grid');
         grid.innerHTML = '';
@@ -508,7 +513,7 @@
             } else {
                 slot.className = 'slot'; 
                 slot.dataset.req = type; 
-                slot.innerText = type === 'fia' ? "FIA" : type.toUpperCase(); // DISPLAY TEXT FIX
+                slot.innerText = type === 'fia' ? "FIA" : type.toUpperCase();
                 slot.ondragover = e => e.preventDefault();
                 slot.ondrop = e => handleDrop(e, i, type);
             }
@@ -617,24 +622,24 @@
             for(let r=0; r<5; r++) { if(!matches[r*5 + c]) isLine = false; }
             if(isLine) { score += 30; lineCount++; }
         }
-        if(lineCount > 0) bonuses.push(`${lineCount} LINE${lineCount>1?'S':''} (+${lineCount*30})`);
+        if(lineCount > 0) bonuses.push(`${lineCount} LINE BONUS (+${lineCount*30})`);
 
         if(matches[0] && matches[4] && matches[20] && matches[24]) {
             score += 50;
-            bonuses.push("4 CORNERS (+50)");
+            bonuses.push("4 CORNERS BONUS (+50)");
         }
 
         const d1 = matches[0] && matches[6] && matches[12] && matches[18] && matches[24];
         const d2 = matches[4] && matches[8] && matches[12] && matches[16] && matches[20];
         if(d1 && d2) {
             score += 150;
-            bonuses.push("THE X (+150)");
+            bonuses.push("THE X BONUS (+150)");
         }
 
         const allMatched = matches.every(m => m === true);
         if(allMatched) {
             score += 1000;
-            bonuses.push("FULL HOUSE (+1000)");
+            bonuses.push("FULL CARD BONUS (+1000)");
         }
 
         document.getElementById('scoreDisplay').innerText = score;
