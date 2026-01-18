@@ -2,16 +2,18 @@
    - 25 Races (Full Calendar)
    - Image paths linked to 'images/' folder
    - FIA events included
+   - ADDED: lockTime (ISO format) for Team Lock feature
 */
 
 const BINGO_CONFIG = {
     // 25 RACES - FULL LIST
+    // NOTE: 'lockTime' format is YYYY-MM-DDTHH:MM:SS
     races: [
-        {id:'aus', c:'au', n:'Australia', d:'Mar 8'},
-        {id:'chn', c:'cn', n:'China', d:'Mar 15'},
-        {id:'jpn', c:'jp', n:'Japan', d:'Mar 29'},
-        {id:'bhr', c:'bh', n:'Bahrain', d:'Apr 12'},
-        {id:'sau', c:'sa', n:'Saudi Arabia', d:'Apr 19'},
+        {id:'aus', c:'au', n:'Australia', d:'Mar 8', lockTime:'2026-03-07T05:00:00'}, 
+        {id:'chn', c:'cn', n:'China', d:'Mar 15', lockTime:'2026-03-14T07:00:00'},
+        {id:'jpn', c:'jp', n:'Japan', d:'Mar 29', lockTime:'2026-03-28T06:00:00'},
+        {id:'bhr', c:'bh', n:'Bahrain', d:'Apr 12', lockTime:'2026-04-11T15:00:00'},
+        {id:'sau', c:'sa', n:'Saudi Arabia', d:'Apr 19', lockTime:'2026-04-18T17:00:00'},
         {id:'mia', c:'us', n:'Miami', d:'May 3'},
         {id:'imo', c:'it', n:'Imola', d:'May 17'},
         {id:'mon', c:'mc', n:'Monaco', d:'May 24'},

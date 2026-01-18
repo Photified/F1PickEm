@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="en" translate="no"> <head>
+<html lang="en" translate="no">
+<head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="google" content="notranslate">
-    
     <title>F1 2026: PICK 'EM</title>
     <link href="https://fonts.googleapis.com/css2?family=Titillium+Web:ital,wght@0,400;0,700;0,900;1,400&display=swap" rel="stylesheet">
     <script src="bingo_data.js"></script>
@@ -39,16 +39,11 @@
         .main-stage { flex: 1; display: grid; grid-template-columns: 360px 1fr 300px; padding: 20px; gap: 20px; overflow: hidden; height: 100%; }
         .panel { background: white; border-radius: 12px; box-shadow: var(--card-shadow); overflow: hidden; display: flex; flex-direction: column; border: 1px solid #e0e0e0; height: 100%; }
         
-        /* UNIFIED TAB HEADER */
+        /* TABS */
         .tab-header { display: flex; border-bottom: 1px solid #eee; background: #f9f9f9; flex-shrink: 0; height: 42px; }
-        .tab-btn { 
-            flex: 1; display: flex; align-items: center; justify-content: center;
-            font-weight: 800; font-size: 12px; cursor: pointer; color: #888; 
-            border-bottom: 3px solid transparent; transition: 0.2s; letter-spacing: 0.5px;
-        }
+        .tab-btn { flex: 1; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 12px; cursor: pointer; color: #888; border-bottom: 3px solid transparent; transition: 0.2s; letter-spacing: 0.5px; }
         .tab-btn:hover { background: #f0f0f0; }
         .tab-btn.active { color: #000; border-bottom-color: var(--brand-red); background: white; }
-        
         .static-tab { flex: 1; display: flex; align-items: center; justify-content: center; font-weight: 900; font-size: 13px; color: #333; background: #f9f9f9; border-bottom: 1px solid #eee; letter-spacing: 1px; }
 
         /* DRIVER MARKET */
@@ -57,25 +52,11 @@
         .driver-header { padding: 10px 12px; display: flex; align-items: center; gap: 12px; cursor: pointer; background: linear-gradient(90deg, transparent 95%, #fafafa); }
         .driver-header:hover { background: #f5f5f5; }
         
-        .driver-face { 
-            width: 36px; height: 36px; object-fit: cover; 
-            border-radius: 6px; 
-            background: #eee; 
-            border: 2px solid var(--team-color);
-            padding: 2px; box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-        }
+        .driver-face { width: 36px; height: 36px; object-fit: cover; border-radius: 6px; background: #eee; border: 2px solid var(--team-color); padding: 2px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
         .driver-face[src=""] { display: none; } 
-
-        .helmet-icon { width: 36px; height: 36px; background: var(--team-color); border-radius: 6px; border: 2px solid #333; position: relative; box-shadow: 0 2px 4px rgba(0,0,0,0.2); }
-        .helmet-icon::after { content: ''; position: absolute; top: 8px; left: 2px; right: 2px; height: 8px; background: rgba(0,0,0,0.6); border-radius: 2px; }
-        .driver-header[data-team="FIA"] .helmet-icon { border-radius: 4px; background: #333; }
-        .driver-header[data-team="FIA"] .helmet-icon::after { display: none; }
-        .driver-header[data-team="FIA"] .helmet-icon::before { content: '🏁'; position: absolute; top: 5px; left: 8px; font-size: 18px; }
-
         .driver-name { font-weight: 800; font-size: 14px; color: #333; }
         .driver-team { font-size: 10px; color: #888; text-transform: uppercase; margin-top:2px; }
 
-        /* NESTED ACCORDION */
         .driver-content { display: none; padding: 10px; background: #fff; border-top: 1px solid #eee; }
         .driver-row.open .driver-content { display: flex; flex-direction: column; gap: 5px; }
         .driver-row.open .driver-header { background: #eee; border-bottom: 1px solid #ddd; }
@@ -83,11 +64,9 @@
         .sub-btn { background: #f8f9fa; padding: 10px; border: 1px solid #ddd; border-radius: 6px; font-size: 11px; font-weight: 800; text-transform: uppercase; cursor: pointer; display: flex; justify-content: space-between; align-items: center; color: #555; transition: 0.1s; border-left-width: 6px; border-left-style: solid; }
         .sub-btn:hover { background: #f0f0f0; color: #000; }
         .sub-btn.active { background: #f4f4f4; color: #000; box-shadow: inset 0 0 5px rgba(0,0,0,0.05); }
-        
         .sub-btn.driver { border-left-color: var(--c-driver); }
         .sub-btn.team { border-left-color: var(--c-team); }
         .sub-btn.fia { border-left-color: var(--c-fia); }
-
         .sub-content { display: none; grid-template-columns: 1fr; gap: 6px; padding: 8px 5px; animation: fadeIn 0.2s; }
         .sub-btn.active + .sub-content { display: grid; }
 
@@ -97,58 +76,56 @@
         .chip.team { border-left-color: var(--c-team); }
         .chip.fia { border-left-color: var(--c-fia); }
 
-        /* CENTER GRID */
-        .active-panel { background: white; border-radius: 12px; border: 1px solid #e0e0e0; padding: 20px; display: flex; flex-direction: column; align-items: center; justify-content: center; position: relative; overflow: hidden; height: 100%; }
+        /* CENTER GRID & RACE HEADER */
+        .active-panel { background: white; border-radius: 12px; border: 1px solid #e0e0e0; padding: 0; display: flex; flex-direction: column; overflow: hidden; height: 100%; position: relative; }
+        
+        /* NEW RACE DASHBOARD HEADER */
+        #raceHeader { 
+            padding: 15px 20px; background: #fff; border-bottom: 1px solid #eee; 
+            display: flex; align-items: center; justify-content: space-between; 
+            flex-shrink: 0; height: 80px; box-sizing: border-box;
+        }
+        .rh-left { display: flex; align-items: center; gap: 15px; }
+        .rh-flag { width: 60px; height: auto; border-radius: 4px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+        .rh-info { display: flex; flex-direction: column; }
+        .rh-title { font-size: 20px; font-weight: 900; font-style: italic; text-transform: uppercase; line-height: 1; }
+        .rh-date { font-size: 12px; color: #888; font-weight: 700; margin-top: 4px; }
+        
+        .rh-right { text-align: right; }
+        .status-badge { display: inline-block; padding: 5px 10px; border-radius: 4px; color: white; font-weight: 800; font-size: 11px; text-transform: uppercase; }
+        .status-open { background: #22c55e; }
+        .status-locked { background: #ef4444; }
+        .lock-timer { font-size: 12px; font-weight: 700; color: #555; margin-top: 4px; }
+
+        /* GRID CONTAINER */
+        .grid-container { padding: 20px; flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; overflow-y: auto; }
         .bingo-grid { display: grid; grid-template-columns: repeat(5, 1fr); grid-template-rows: repeat(5, 1fr); gap: 10px; width: 100%; aspect-ratio: 1/1; max-height: 600px; }
         
+        /* LOCKED STATE */
+        .grid-locked .slot { opacity: 0.7; pointer-events: none; filter: grayscale(0.5); }
+        .grid-locked .slot.filled { filter: grayscale(0); opacity: 1; } /* Keep filled slots visible */
+
         .slot { background: #fafafa; border: 2px dashed #ddd; border-radius: 8px; display: flex; align-items: center; justify-content: center; text-align: center; padding: 5px; font-size: 11px; font-weight: 700; position: relative; user-select: none; transition: 0.2s; width: 100%; height: 100%; box-sizing: border-box; }
         .slot[data-req="driver"] { background: #fff8e6; border-color: var(--c-driver); color: var(--c-driver); opacity: 0.8; }
         .slot[data-req="team"] { background: #e0fbf8; border-color: var(--c-team); color: var(--c-team); opacity: 0.8; }
         .slot[data-req="fia"] { background: #fff2f2; border-color: var(--c-fia); color: var(--c-fia); opacity: 0.8; }
 
-        .slot.filled { 
-            border: none !important; color: white !important; 
-            box-shadow: 0 4px 10px rgba(0,0,0,0.2); 
-            opacity: 1; padding: 0; overflow: hidden;
-            display: flex; flex-direction: row; align-items: stretch;
-            text-align: left;
-        }
+        .slot.filled { border: none !important; color: white !important; box-shadow: 0 4px 10px rgba(0,0,0,0.2); opacity: 1; padding: 0; overflow: hidden; display: flex; flex-direction: row; align-items: stretch; text-align: left; }
         .slot.filled[data-type="driver"] { background: linear-gradient(135deg, #ff9500, #d17a00) !important; }
         .slot.filled[data-type="team"] { background: linear-gradient(135deg, #00d2be, #009e8e) !important; }
         .slot.filled[data-type="fia"] { background: linear-gradient(135deg, #e10600, #a30000) !important; }
 
-        /* 3X Size Image Side */
-        .slot-img-container {
-            width: 90px; flex-shrink: 0; background: rgba(0,0,0,0.1);
-            display: flex; align-items: center; justify-content: center;
-            border-right: 1px solid rgba(255,255,255,0.2);
-        }
-        .slot-img {
-            width: 80px; height: 80px; object-fit: contain; 
-            border-radius: 6px; 
-            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
-        }
+        .slot-img-container { width: 90px; flex-shrink: 0; background: rgba(0,0,0,0.1); display: flex; align-items: center; justify-content: center; border-right: 1px solid rgba(255,255,255,0.2); }
+        .slot-img { width: 80px; height: 80px; object-fit: contain; border-radius: 6px; box-shadow: 0 2px 4px rgba(0,0,0,0.2); }
+        .slot.filled[data-type="fia"] .slot-img { filter: brightness(0) invert(1); }
 
-        /* INVERT FIA LOGO TO WHITE */
-        .slot.filled[data-type="fia"] .slot-img {
-            filter: brightness(0) invert(1);
-        }
-
-        .slot-text-container {
-            flex: 1; display: flex; flex-direction: column; justify-content: center;
-            padding: 4px 10px; min-width: 0;
-        }
-        .slot-sub { 
-            font-size: 10px; text-transform: uppercase; opacity: 0.85; font-weight: 800; letter-spacing: 0.5px; margin-bottom: 3px;
-        }
-        .slot-main {
-            font-size: 12px; font-weight: 700; line-height: 1.2; 
-            word-wrap: break-word; overflow: hidden;
-        }
+        .slot-text-container { flex: 1; display: flex; flex-direction: column; justify-content: center; padding: 4px 10px; min-width: 0; }
+        .slot-sub { font-size: 10px; text-transform: uppercase; opacity: 0.85; font-weight: 800; letter-spacing: 0.5px; margin-bottom: 3px; }
+        .slot-main { font-size: 12px; font-weight: 700; line-height: 1.2; word-wrap: break-word; overflow: hidden; }
 
         .slot.center { background: #222 !important; color: white !important; border: none !important; font-size: 16px; text-transform: uppercase; }
         .slot.matched { opacity: 1; box-shadow: inset 0 0 0 5px var(--score-win); transform: scale(1.02); z-index: 5; }
-        .slot.matched::after { content: '✓'; position: absolute; top: -8px; right: -8px; background: var(--score-win); color: black; border-radius: 50%; width: 20px; height: 20px; display: flex; align-items: center; justify-content: center; font-weight: 900; font-size: 14px; box-shadow: 0 2px 5px rgba(0,0,0,0.3); }
+        .slot.matched::after { content: '✓'; position: absolute; top: -8px; right: -8px; background: var(--score-win); color: black; border-radius: 50%; width: 22px; height: 22px; display: flex; align-items: center; justify-content: center; font-weight: 900; font-size: 14px; box-shadow: 0 2px 5px rgba(0,0,0,0.3); }
 
         /* RIGHT PANEL */
         .right-content { flex: 1; overflow-y: auto; padding: 15px; display: none; }
@@ -164,11 +141,11 @@
         .rules-list li { margin-bottom: 6px; }
 
         /* VIEWS & STRATEGY */
-        .view-login, .view-strategy { text-align: center; width: 100%; display: flex; flex-direction: column; align-items: center; height: 100%; }
+        .view-login, .view-strategy { text-align: center; width: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100%; }
         .login-input { padding: 15px; width: 100%; margin-top: 15px; text-align: center; border: 2px solid #eee; border-radius: 8px; font-weight: bold; font-size: 16px; max-width: 400px; }
         .login-btn { padding: 15px; width: 100%; margin-top: 15px; background: var(--brand-red); color: white; border: none; font-weight: 900; cursor: pointer; border-radius: 8px; font-size: 16px; max-width: 400px; }
         
-        .strategy-header-container { margin-top: 20px; margin-bottom: 30px; display: flex; flex-direction: column; align-items: center; gap: 10px; }
+        .strategy-header-container { margin-bottom: 30px; display: flex; flex-direction: column; align-items: center; gap: 10px; }
         .big-flag { width: 100px; height: auto; border-radius: 6px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
         .strategy-title { font-size: 32px; font-weight: 900; font-style: italic; text-transform: uppercase; line-height: 1; }
 
@@ -217,7 +194,7 @@
         <span id="displayTeamName">GUEST</span>
     </div>
     <div class="header-title" ondblclick="toggleAdmin()">
-        <img src="images/f1pickembannerlogo.png" class="header-logo" alt="F1 Pick Em">
+        <img src="images/logotop.png" class="header-logo" alt="F1 Pick Em">
     </div>
     <button onclick="saveLocal()" style="background:var(--brand-red); color:white; border:none; padding:8px 20px; border-radius:20px; font-weight:bold; cursor:pointer;">SAVE</button>
 </header>
@@ -240,7 +217,7 @@
     </div>
 
     <div class="active-panel" id="mainPanel">
-        <div id="view-login" class="view-login" style="justify-content: center;">
+        <div id="view-login" class="view-login">
             <h1 style="font-style:italic; font-size:28px;">TEAM PRINCIPAL LOGIN</h1>
             <input type="text" id="teamNameInput" class="login-input" placeholder="Enter Team Name">
             <button class="login-btn" onclick="login()">ENTER PADDOCK</button>
@@ -274,8 +251,27 @@
         </div>
 
         <div id="view-game" class="view-game hidden" style="width:100%;">
-            <div id="grid" class="bingo-grid"></div>
-            <button class="reset-btn" onclick="triggerReset()">Reset Card / Change Strategy</button>
+            <div id="raceHeader">
+                <div class="rh-left">
+                    <img id="rhFlag" src="" class="rh-flag">
+                    <div class="rh-info">
+                        <div id="rhTitle" class="rh-title">RACE NAME</div>
+                        <div id="rhDate" class="rh-date">DATE</div>
+                    </div>
+                </div>
+                <div class="rh-right">
+                    <div id="rhStatus" class="status-badge status-open">OPEN</div>
+                    <div id="rhTimer" class="lock-timer">LOCKS IN: --</div>
+                </div>
+            </div>
+
+            <div class="grid-container">
+                <div id="grid" class="bingo-grid"></div>
+            </div>
+            
+            <div style="padding: 10px; width: 100%; box-sizing: border-box;">
+                <button id="resetBtn" class="reset-btn" onclick="triggerReset()">Reset Card / Change Strategy</button>
+            </div>
         </div>
     </div>
 
@@ -300,7 +296,8 @@
                 <div class="rules-text">
                     1. Select a <strong>Race Strategy</strong> to generate your grid layout.<br><br>
                     2. Drag chips from the <strong>My Picks</strong> menu onto matching colored slots.<br><br>
-                    3. <strong>Limit:</strong> You may only select 1 chip per category (e.g., 1 Quali result) per driver.
+                    3. <strong>Limit:</strong> You may only select 1 chip per category (e.g., 1 Quali result) per driver.<br><br>
+                    4. <strong>TEAM LOCK:</strong> Picks lock at the start of Qualifying.
                 </div>
             </div>
             <div class="rules-block">
@@ -330,6 +327,7 @@
     let currentGrid = Array(25).fill(null);
     let verifiedResults = [];
     let modalCallback = null;
+    let isGridLocked = false;
 
     const templates = {
         balanced: ['driver','driver','team','driver','fia','driver','team','fia','driver','team','team','driver','FREE','driver','team','team','fia','driver','team','fia','driver','team','team','driver','fia'],
@@ -352,7 +350,58 @@
         
         const savedGrid = localStorage.getItem(`grid_${activeRace}`);
         if(savedName && savedGrid) login();
+        
+        // Start Timer Interval
+        setInterval(checkLockStatus, 1000);
     };
+
+    function checkLockStatus() {
+        const r = BINGO_CONFIG.races.find(x => x.id === activeRace);
+        if(!r || !r.lockTime) return;
+
+        const now = new Date();
+        const lockTime = new Date(r.lockTime);
+        const diff = lockTime - now;
+
+        const statusBadge = document.getElementById('rhStatus');
+        const timerDisplay = document.getElementById('rhTimer');
+        const grid = document.getElementById('grid');
+        const resetBtn = document.getElementById('resetBtn');
+
+        if (diff <= 0) {
+            // LOCKED
+            isGridLocked = true;
+            if(statusBadge) {
+                statusBadge.innerText = "LOCKED";
+                statusBadge.className = "status-badge status-locked";
+            }
+            if(timerDisplay) timerDisplay.innerText = "Picks Closed";
+            if(grid) grid.classList.add('grid-locked');
+            if(resetBtn) resetBtn.style.display = 'none';
+        } else {
+            // OPEN
+            isGridLocked = false;
+            const d = Math.floor(diff / (1000 * 60 * 60 * 24));
+            const h = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            
+            if(statusBadge) {
+                statusBadge.innerText = "OPEN";
+                statusBadge.className = "status-badge status-open";
+            }
+            if(timerDisplay) timerDisplay.innerText = `LOCKS IN: ${d}D ${h}H`;
+            if(grid) grid.classList.remove('grid-locked');
+            if(resetBtn) resetBtn.style.display = 'block';
+        }
+    }
+
+    function renderRaceHeader() {
+        const r = BINGO_CONFIG.races.find(x => x.id === activeRace);
+        if(!r) return;
+        document.getElementById('rhFlag').src = `https://flagcdn.com/w160/${r.c}.png`;
+        document.getElementById('rhTitle').innerText = r.n.toUpperCase();
+        document.getElementById('rhDate').innerText = r.d.toUpperCase();
+        checkLockStatus(); // Run immediately
+    }
 
     function showModal(title, text, isConfirm, callback) {
         document.getElementById('modalTitle').innerText = title;
@@ -383,6 +432,7 @@
     }
 
     function triggerReset() {
+        if(isGridLocked) return;
         showModal("Race Control", "Are you sure you want to retire this card? All current predictions for this race will be deleted.", true, performReset);
     }
 
@@ -431,7 +481,6 @@
                 content.appendChild(btn);
                 const grid = document.createElement('div'); grid.className = 'sub-content';
                 content.appendChild(grid);
-                // PASS 'Race Control' and 'fia' correctly
                 BINGO_CONFIG.templates.fia.forEach(t => createChip(grid, t, 'fia', false, 'Race Control', 'fia')); 
             } else {
                 createSubSection(content, "QUALIFYING", BINGO_CONFIG.templates.quali, `${d.name} `, 'driver', 'quali', d.name, 'driver');
@@ -468,6 +517,10 @@
         chip.innerText = text;
         chip.draggable = true;
         chip.ondragstart = e => {
+            if(isGridLocked) {
+                e.preventDefault();
+                return false;
+            }
             e.dataTransfer.setData('text', text);
             e.dataTransfer.setData('type', type);
             if(driverName) e.dataTransfer.setData('exclusive_driver', driverName);
@@ -478,6 +531,12 @@
 
     function handleDrop(e, index, reqType) {
         e.preventDefault();
+        
+        if(isGridLocked) {
+            showModal("Race Locked", "Picks for this race are closed.", false);
+            return;
+        }
+
         const text = e.dataTransfer.getData('text');
         const type = e.dataTransfer.getData('type');
         const driverName = e.dataTransfer.getData('exclusive_driver');
@@ -530,6 +589,7 @@
     function switchState(view) {
         document.querySelectorAll('.view-login, .view-strategy, .view-game').forEach(e => e.classList.add('hidden'));
         document.getElementById(`view-${view}`).classList.remove('hidden');
+        if(view === 'game') renderRaceHeader();
     }
 
     function confirmStrategy(type) {
@@ -537,15 +597,6 @@
         renderGridStructure(templates[type]);
         switchState('game');
         saveLocal();
-    }
-
-    function resetGrid() {
-        if(!confirm("Are you sure? This will clear your current card.")) return;
-        localStorage.removeItem(`grid_${activeRace}`);
-        currentGrid = Array(25).fill(null);
-        const r = BINGO_CONFIG.races.find(r=>r.id===activeRace);
-        if(r) document.getElementById('stratRaceTitle').innerText = r.n.toUpperCase();
-        switchState('strategy');
     }
 
     function renderGridStructure(pattern) {
@@ -577,7 +628,7 @@
                 const drv = BINGO_CONFIG.drivers.find(d => d.name === data.driver);
                 const imgSrc = drv ? drv.img : '';
                 
-                // PARSE TEXT FOR CLEAN LOOK
+                // PARSE TEXT
                 let mainText = data.text;
                 if(drv && mainText.startsWith(drv.name)) {
                     mainText = mainText.replace(drv.name, '').trim();
@@ -585,7 +636,6 @@
                     mainText = mainText.replace(drv.team, '').trim();
                 }
 
-                // HEADER TEXT
                 let subText = data.subtype ? data.subtype.toUpperCase() : "EVENT";
                 if(subText === 'FIA') subText = 'TRACK';
 
@@ -604,7 +654,7 @@
                 else s.classList.remove('matched');
             } else {
                 const req = s.dataset.req;
-                s.innerText = req === 'fia' ? "FIA" : req.toUpperCase();
+                s.innerHTML = req === 'fia' ? "FIA" : req.toUpperCase();
                 s.className = 'slot';
                 delete s.dataset.type;
                 s.classList.remove('matched');
