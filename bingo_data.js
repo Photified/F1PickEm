@@ -1,13 +1,7 @@
-/* F1 2026 PICK 'EM DATA
-   - 25 Races (Full Calendar)
-   - Image paths linked to 'images/' folder
-   - FIA events included
-   - ADDED: lockTime (ISO format) for Team Lock feature
-*/
+/* F1 2026 PICK 'EM DATA */
 
 const BINGO_CONFIG = {
-    // 25 RACES - FULL LIST
-    // NOTE: 'lockTime' format is YYYY-MM-DDTHH:MM:SS (Adjust to real quali times)
+    // 25 RACES
     races: [
         {id:'aus', c:'au', n:'Australia', d:'Mar 8', lockTime:'2026-03-07T05:00:00'}, 
         {id:'chn', c:'cn', n:'China', d:'Mar 15', lockTime:'2026-03-14T07:00:00'},
@@ -36,7 +30,7 @@ const BINGO_CONFIG = {
         {id:'abu', c:'ae', n:'Abu Dhabi', d:'Dec 6'}
     ],
 
-    // DRIVER ROSTER & IMAGE PATHS
+    // DRIVER ROSTER (Colapinto Fixed to Alpine Pink)
     drivers: [
         { name: "Race Control", team: "FIA", color: "#333333", img: "images/fia.png" }, 
         { name: "Max Verstappen", team: "Red Bull", color: "#3671C6", img: "images/max.png" },
@@ -50,7 +44,7 @@ const BINGO_CONFIG = {
         { name: "Fernando Alonso", team: "Aston Martin", color: "#229971", img: "images/alonso.png" },
         { name: "Lance Stroll", team: "Aston Martin", color: "#229971", img: "images/lance.png" },
         { name: "Pierre Gasly", team: "Alpine", color: "#FF87BC", img: "images/gasly.png" },
-        { name: "Franco Colapinto", team: "Alpine", color: "#0093CC", img: "images/franco.png" },
+        { name: "Franco Colapinto", team: "Alpine", color: "#FF87BC", img: "images/franco.png" }, // FIXED PINK
         { name: "Alex Albon", team: "Williams", color: "#64C4FF", img: "images/albon.png" },
         { name: "Carlos Sainz", team: "Williams", color: "#64C4FF", img: "images/sainz.png" },
         { name: "Liam Lawson", team: "VCARB", color: "#6692FF", img: "images/lawson.png" },

@@ -78,7 +78,6 @@
             border: 1px solid rgba(0,0,0,0.1); color: white; text-shadow: 0 1px 1px rgba(0,0,0,0.2);
         }
         .qp-btn:hover { transform: translateY(-2px); filter: brightness(1.1); }
-        
         .qp-victory { background: linear-gradient(135deg, #FFD700, #ffaa00); color: black; text-shadow: none; border-color: #eebb00; }
         .qp-podium { background: linear-gradient(135deg, #C0C0C0, #9aa); color: black; text-shadow: none; border-color: #999; }
         .qp-points { background: linear-gradient(135deg, #00d2be, #009e8e); border-color: #00887a; }
@@ -96,7 +95,6 @@
         .sub-btn.driver { border-left-color: var(--c-driver); }
         .sub-btn.team { border-left-color: var(--c-team); }
         .sub-btn.fia { border-left-color: var(--c-fia); }
-
         .sub-content { display: none; grid-template-columns: 1fr; gap: 6px; padding: 8px 5px; animation: fadeIn 0.2s; }
         .sub-btn.active + .sub-content { display: grid; }
 
@@ -109,17 +107,12 @@
         /* CENTER GRID */
         .active-panel { background: white; border-radius: 12px; border: 1px solid #e0e0e0; padding: 0; display: flex; flex-direction: column; overflow: hidden; height: 100%; position: relative; }
         
-        #raceHeader { 
-            padding: 15px 20px; background: #fff; border-bottom: 1px solid #eee; 
-            display: flex; align-items: center; justify-content: space-between; 
-            flex-shrink: 0; height: 80px; box-sizing: border-box;
-        }
+        #raceHeader { padding: 15px 20px; background: #fff; border-bottom: 1px solid #eee; display: flex; align-items: center; justify-content: space-between; flex-shrink: 0; height: 80px; box-sizing: border-box; }
         .rh-left { display: flex; align-items: center; gap: 15px; }
         .rh-flag { width: 60px; height: auto; border-radius: 4px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
         .rh-info { display: flex; flex-direction: column; }
         .rh-title { font-size: 20px; font-weight: 900; font-style: italic; text-transform: uppercase; line-height: 1; }
         .rh-date { font-size: 12px; color: #888; font-weight: 700; margin-top: 4px; }
-        
         .rh-right { text-align: right; }
         .status-badge { display: inline-block; padding: 5px 10px; border-radius: 4px; color: white; font-weight: 800; font-size: 11px; text-transform: uppercase; }
         .status-open { background: #22c55e; }
@@ -129,7 +122,6 @@
         .grid-container { padding: 20px; flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; overflow-y: auto; }
         .bingo-grid { display: grid; grid-template-columns: repeat(5, 1fr); grid-template-rows: repeat(5, 1fr); gap: 10px; width: 100%; aspect-ratio: 1/1; max-height: 600px; }
         
-        /* LOCKED STATE (Manual or Time) */
         .grid-locked .slot { opacity: 0.7; pointer-events: none; filter: grayscale(0.5); }
         .grid-locked .slot.filled { filter: grayscale(0); opacity: 1; }
 
@@ -139,17 +131,45 @@
         .slot[data-req="fia"] { background: #fff2f2; border-color: var(--c-fia); color: var(--c-fia); opacity: 0.8; }
 
         .slot.filled { border: none !important; color: white !important; box-shadow: 0 4px 10px rgba(0,0,0,0.2); opacity: 1; padding: 0; overflow: hidden; display: flex; flex-direction: row; align-items: stretch; text-align: left; }
-        .slot.filled[data-type="driver"] { background: linear-gradient(135deg, #ff9500, #d17a00) !important; }
-        .slot.filled[data-type="team"] { background: linear-gradient(135deg, #00d2be, #009e8e) !important; }
+        
+        /* UPDATED: Dynamic Background Colors (Set by JS) */
+        .slot.filled[data-type="driver"] { background: var(--bg-fill); } 
+        .slot.filled[data-type="team"] { background: var(--bg-fill); }
+        /* FIA stays red */
         .slot.filled[data-type="fia"] { background: linear-gradient(135deg, #e10600, #a30000) !important; }
 
-        .slot-img-container { width: 90px; flex-shrink: 0; background: rgba(0,0,0,0.1); display: flex; align-items: center; justify-content: center; border-right: 1px solid rgba(255,255,255,0.2); }
+        /* Left Side (Image) - Team Color */
+        .slot-img-container { 
+            width: 90px; flex-shrink: 0; 
+            display: flex; align-items: center; justify-content: center; 
+            border-right: 1px solid rgba(255,255,255,0.2);
+            /* This will be colored by JS */
+            background-color: var(--team-color-hex); 
+        }
+        
         .slot-img { width: 80px; height: 80px; object-fit: contain; border-radius: 6px; box-shadow: 0 2px 4px rgba(0,0,0,0.2); }
         .slot.filled[data-type="fia"] .slot-img { filter: brightness(0) invert(1); }
 
-        .slot-text-container { flex: 1; display: flex; flex-direction: column; justify-content: center; padding: 4px 10px; min-width: 0; }
+        /* Right Side (Text) - Muted Category Color */
+        .slot-text-container { 
+            flex: 1; display: flex; flex-direction: column; justify-content: center; 
+            padding: 4px 10px; min-width: 0;
+            background: var(--bg-cat-fill); /* Muted Orange/Teal/Red */
+        }
+        
         .slot-sub { font-size: 10px; text-transform: uppercase; opacity: 0.85; font-weight: 800; letter-spacing: 0.5px; margin-bottom: 3px; }
         .slot-main { font-size: 12px; font-weight: 700; line-height: 1.2; word-wrap: break-word; overflow: hidden; }
+
+        /* REMOVE BUTTON */
+        .remove-pick-btn {
+            position: absolute; top: 2px; right: 2px;
+            width: 16px; height: 16px; background: rgba(0,0,0,0.3);
+            color: white; border-radius: 50%; text-align: center;
+            line-height: 16px; font-size: 10px; font-weight: bold;
+            cursor: pointer; display: none; z-index: 10;
+        }
+        .remove-pick-btn:hover { background: red; }
+        .slot.filled:hover .remove-pick-btn { display: block; }
 
         .slot.center { background: #222 !important; color: white !important; border: none !important; font-size: 16px; text-transform: uppercase; }
         .slot.matched { opacity: 1; box-shadow: inset 0 0 0 5px var(--score-win); transform: scale(1.02); z-index: 5; }
@@ -160,7 +180,7 @@
         .btn-action { flex: 1; padding: 12px; border: 1px solid #ddd; border-radius: 6px; font-weight: 900; font-size: 12px; text-transform: uppercase; cursor: pointer; transition: 0.2s; }
         .btn-reset { background: #fff; color: #e10600; }
         .btn-reset:hover { background: #fff0f0; }
-        .btn-lock { background: #22c55e; color: white; border-color: #16a34a; display: none; } /* Hidden by default */
+        .btn-lock { background: #22c55e; color: white; border-color: #16a34a; display: none; } 
         .btn-lock:hover { background: #16a34a; }
         .btn-unlock { background: #e10600; color: white; border-color: #b91c1c; display: none; }
 
@@ -332,7 +352,7 @@
                 <div class="rules-text">
                     1. Select a <strong>Race Strategy</strong> to generate your grid layout.<br><br>
                     2. Drag chips from the <strong>My Picks</strong> menu onto matching colored slots.<br><br>
-                    3. <strong>Limit:</strong> You may only select 1 chip per category per driver.<br><br>
+                    3. <strong>Limit:</strong> You may only select 1 chip per category (e.g., 1 Quali result) per driver.<br><br>
                     4. <strong>LOCK:</strong> You must manually Lock your card when full. You can Unlock to edit until the deadline.
                 </div>
             </div>
@@ -363,8 +383,8 @@
     let currentGrid = Array(25).fill(null);
     let verifiedResults = [];
     let modalCallback = null;
-    let isGridLocked = false; // Time lock
-    let isUserLocked = false; // Manual lock
+    let isGridLocked = false;
+    let isUserLocked = false;
 
     const templates = {
         balanced: ['driver','driver','team','driver','fia','driver','team','fia','driver','team','team','driver','FREE','driver','team','team','fia','driver','team','fia','driver','team','team','driver','fia'],
@@ -407,7 +427,6 @@
         const timerDisplay = document.getElementById('rhTimer');
         const grid = document.getElementById('grid');
         
-        // Time Lock Override
         if (diff <= 0) {
             isGridLocked = true;
             if(statusBadge) { statusBadge.innerText = "LOCKED"; statusBadge.className = "status-badge status-locked"; }
@@ -416,7 +435,6 @@
             return;
         } 
         
-        // Timer Running
         isGridLocked = false;
         const d = Math.floor(diff / (1000 * 60 * 60 * 24));
         const h = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
@@ -436,23 +454,19 @@
         const unlockBtn = document.getElementById('unlockBtn');
         const grid = document.getElementById('grid');
 
-        // Check if grid is full (ignore center free space)
         const isFull = currentGrid.every((slot, i) => i === 12 || slot !== null);
 
         if(isGridLocked) {
-            // PERMANENT LOCK
             grid.classList.add('grid-locked');
             resetBtn.style.display = 'none';
             lockBtn.style.display = 'none';
             unlockBtn.style.display = 'none';
         } else if(isUserLocked) {
-            // MANUAL LOCK (Editable)
             grid.classList.add('grid-locked');
             resetBtn.style.display = 'none';
             lockBtn.style.display = 'none';
             unlockBtn.style.display = 'block';
         } else {
-            // OPEN
             grid.classList.remove('grid-locked');
             resetBtn.style.display = 'block';
             unlockBtn.style.display = 'none';
@@ -468,8 +482,6 @@
         checkLockStatus();
     }
 
-    // --- EXISTING FUNCTIONS (Render, DragDrop, etc.) ---
-    
     function renderRaceHeader() {
         const r = BINGO_CONFIG.races.find(x => x.id === activeRace);
         if(!r) return;
@@ -597,7 +609,7 @@
     }
 
     function applyQuickPicks(driverName, teamName, tier) {
-        if(isGridLocked || isUserLocked) { showModal("Card Locked", "Cannot modify picks.", false); return; }
+        if(isGridLocked || isUserLocked) { showModal("Card Locked", "Unlock your card to make changes.", false); return; }
 
         let picks = [];
 
@@ -663,7 +675,7 @@
         if(placedCount > 0) {
             renderGrid();
             saveLocal();
-            checkLockStatus(); // Update buttons
+            checkLockStatus();
         } else {
             showModal("Grid Full / Conflicts", "Could not place all picks. Check if grid is full or driver already has predictions.", false);
         }
@@ -734,7 +746,15 @@
         currentGrid[index] = { text, type, driver: driverName, subtype: subType };
         renderGrid();
         saveLocal();
-        checkLockStatus(); // Update buttons
+        checkLockStatus();
+    }
+
+    function removePick(index) {
+        if(isGridLocked || isUserLocked) return;
+        currentGrid[index] = null;
+        renderGrid();
+        saveLocal();
+        checkLockStatus();
     }
 
     function login() {
@@ -777,6 +797,15 @@
         saveLocal();
     }
 
+    function resetGrid() {
+        if(!confirm("Are you sure? This will clear your current card.")) return;
+        localStorage.removeItem(`grid_${activeRace}`);
+        currentGrid = Array(25).fill(null);
+        const r = BINGO_CONFIG.races.find(r=>r.id===activeRace);
+        if(r) document.getElementById('stratRaceTitle').innerText = r.n.toUpperCase();
+        switchState('strategy');
+    }
+
     function renderGridStructure(pattern) {
         const grid = document.getElementById('grid');
         grid.innerHTML = '';
@@ -804,6 +833,7 @@
             if(data) {
                 const drv = BINGO_CONFIG.drivers.find(d => d.name === data.driver);
                 const imgSrc = drv ? drv.img : '';
+                const teamColor = drv ? drv.color : '#333';
                 
                 let mainText = data.text;
                 if(drv && mainText.startsWith(drv.name)) {
@@ -815,12 +845,23 @@
                 let subText = data.subtype ? data.subtype.toUpperCase() : "EVENT";
                 if(subText === 'FIA') subText = 'TRACK';
 
+                // SET CSS VARIABLES FOR COLORS
+                s.style.setProperty('--team-color-hex', teamColor);
+                
+                // Muted BG Colors for text side
+                let catColor = '#ffe8cc'; // default orange
+                if(data.type === 'team') catColor = '#ccfbf7'; // teal
+                if(data.type === 'fia') catColor = '#ffe5e5'; // red
+
+                s.style.setProperty('--bg-cat-fill', catColor);
+
                 s.innerHTML = `
+                    <div class="remove-pick-btn" onclick="removePick(${idx})">×</div>
                     <div class="slot-img-container">
                         <img src="${imgSrc}" class="slot-img" onerror="this.style.display='none'">
                     </div>
                     <div class="slot-text-container">
-                        <div class="slot-sub">${subText}</div>
+                        <div class="slot-sub" style="color:${teamColor}">${subText}</div>
                         <div class="slot-main">${mainText}</div>
                     </div>
                 `;
@@ -832,6 +873,7 @@
                 const req = s.dataset.req;
                 s.innerHTML = req === 'fia' ? "FIA" : req.toUpperCase();
                 s.className = 'slot';
+                s.removeAttribute('style'); // Clear dynamic colors
                 delete s.dataset.type;
                 s.classList.remove('matched');
             }
