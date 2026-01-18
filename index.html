@@ -21,7 +21,7 @@
         body { font-family: 'Titillium Web', sans-serif; background: var(--bg-body); color: var(--brand-dark); margin: 0; height: 100vh; display: flex; flex-direction: column; overflow: hidden; }
         .hidden { display: none !important; }
 
-        /* --- 1. HEADER (FIXED LAYOUT) --- */
+        /* HEADER */
         header { 
             background: white; border-bottom: 3px solid var(--brand-red); 
             height: 70px; box-sizing: border-box; 
@@ -31,32 +31,23 @@
         }
 
         .logo-area { 
-            flex-shrink: 0; 
-            padding: 0 20px; 
+            flex-shrink: 0; padding: 0 20px; 
             height: 100%; display: flex; align-items: center;
-            border-right: 1px solid #eee;
-            cursor: pointer;
+            border-right: 1px solid #eee; cursor: pointer;
         }
         .header-logo { max-height: 35px; width: auto; display: block; object-fit: contain; }
 
-        /* SCROLL AREA FIX */
+        /* RACE SCROLL */
         .race-scroll-area { 
-            flex: 1; 
-            display: flex; 
-            flex-direction: row; 
-            align-items: center; 
-            overflow-x: auto; 
-            height: 100%;
-            scrollbar-width: none;
-            white-space: nowrap; 
+            flex: 1; display: flex; flex-direction: row; 
+            align-items: center; overflow-x: auto; height: 100%;
+            scrollbar-width: none; white-space: nowrap; 
         }
         .race-scroll-area::-webkit-scrollbar { display: none; }
 
         .race-card { 
-            flex: 0 0 70px; 
-            height: 100%; 
-            display: inline-flex; 
-            flex-direction: column; align-items: center; justify-content: center;
+            flex: 0 0 70px; height: 100%; 
+            display: inline-flex; flex-direction: column; align-items: center; justify-content: center;
             border-right: 1px solid #f5f5f5; cursor: pointer; opacity: 0.5; transition: 0.2s; 
         }
         .race-card:hover { opacity: 1; background: #f9f9f9; }
@@ -75,23 +66,22 @@
         .main-stage { flex: 1; display: grid; grid-template-columns: 360px 1fr 300px; padding: 20px; gap: 20px; overflow: hidden; height: 100%; }
         .panel { background: white; border-radius: 12px; box-shadow: var(--card-shadow); overflow: hidden; display: flex; flex-direction: column; border: 1px solid #e0e0e0; height: 100%; }
         
-        /* TABS */
+        /* DRIVER MARKET */
         .tab-header { display: flex; border-bottom: 1px solid #eee; background: #f9f9f9; flex-shrink: 0; height: 42px; }
-        .tab-btn { flex: 1; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 12px; cursor: pointer; color: #888; border-bottom: 3px solid transparent; transition: 0.2s; letter-spacing: 0.5px; }
-        .tab-btn:hover { background: #f0f0f0; }
-        .tab-btn.active { color: #000; border-bottom-color: var(--brand-red); background: white; }
         .static-tab { flex: 1; display: flex; align-items: center; justify-content: center; font-weight: 900; font-size: 13px; color: #333; background: #f9f9f9; border-bottom: 1px solid #eee; letter-spacing: 1px; }
 
-        /* DRIVER MARKET */
         .driver-list { flex: 1; overflow-y: auto; padding: 10px; background: #f4f4f8; }
         .driver-row { background: white; border-radius: 8px; margin-bottom: 8px; border: 1px solid #eee; overflow: hidden; transition: 0.2s; }
         .driver-header { padding: 10px 12px; display: flex; align-items: center; gap: 12px; cursor: pointer; background: linear-gradient(90deg, transparent 95%, #fafafa); }
         .driver-header:hover { background: #f5f5f5; }
-        
         .driver-face { width: 36px; height: 36px; object-fit: cover; border-radius: 6px; background: #eee; border: 2px solid var(--team-color); padding: 2px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
         .driver-face[src=""] { display: none; } 
         .driver-name { font-weight: 800; font-size: 14px; color: #333; }
         .driver-team { font-size: 10px; color: #888; text-transform: uppercase; margin-top:2px; }
+
+        .driver-content { display: none; padding: 5px 10px 10px 10px; background: #fff; border-top: 1px solid #eee; flex-direction: column; gap: 5px;}
+        .driver-row.open .driver-content { display: flex; }
+        .driver-row.open .driver-header { background: #eee; border-bottom: 1px solid #ddd; }
 
         /* CHIPS */
         .chip { padding: 8px 10px; background: white; border: 1px solid #ddd; border-radius: 4px; font-size: 11px; font-weight: 700; cursor: grab; text-align: left; border-left-width: 5px; border-left-style: solid; transition: 0.1s; display: flex; justify-content: space-between; align-items: center; }
@@ -101,28 +91,23 @@
         .chip.fia { border-left-color: var(--c-fia); }
         .chip-cost { background: #eee; padding: 2px 6px; border-radius: 10px; font-size: 10px; font-weight: 900; color: #555; }
 
-        /* LABELS */
-        .menu-label { font-size: 10px; font-weight: 900; color: #999; text-transform: uppercase; margin: 12px 0 6px 4px; letter-spacing: 0.5px; border-bottom: 1px solid #eee; padding-bottom: 2px; }
-
-        /* QUICK PICK BUTTONS */
-        .qp-row { display: flex; gap: 6px; padding: 0 0 5px 0; }
-        .qp-btn {
-            flex: 1; padding: 8px 4px; border-radius: 4px; 
-            font-size: 10px; font-weight: 900; text-align: center; text-transform: uppercase;
-            cursor: pointer; box-shadow: 0 2px 4px rgba(0,0,0,0.1); transition: 0.2s;
-            border: 1px solid rgba(0,0,0,0.1); color: white; text-shadow: 0 1px 1px rgba(0,0,0,0.2);
+        /* NEW SINGLE QUICK PICK BUTTON */
+        .qp-container { padding: 5px 0 15px 0; border-bottom: 1px solid #eee; margin-bottom: 5px; }
+        .qp-full-btn {
+            width: 100%; padding: 12px;
+            background: linear-gradient(135deg, #FFD700, #ffaa00);
+            color: #000; font-weight: 900; font-size: 14px;
+            text-transform: uppercase; text-align: center;
+            border-radius: 6px; cursor: pointer;
+            box-shadow: 0 3px 8px rgba(0,0,0,0.1);
+            border: 1px solid #eebb00;
+            display: flex; align-items: center; justify-content: center; gap: 8px;
+            transition: 0.2s;
         }
-        .qp-btn:hover { transform: translateY(-2px); filter: brightness(1.1); }
-        .qp-victory { background: linear-gradient(135deg, #FFD700, #ffaa00); color: black; text-shadow: none; border-color: #eebb00; }
-        .qp-podium { background: linear-gradient(135deg, #C0C0C0, #9aa); color: black; text-shadow: none; border-color: #999; }
-        .qp-points { background: linear-gradient(135deg, #00d2be, #009e8e); border-color: #00887a; }
-        .qp-clean { background: linear-gradient(135deg, #22c55e, #16a34a); border-color: #15803d; }
-        .qp-caution { background: linear-gradient(135deg, #e10600, #b91c1c); border-color: #991b1b; }
+        .qp-full-btn:hover { transform: translateY(-2px); filter: brightness(1.1); box-shadow: 0 5px 12px rgba(0,0,0,0.15); }
+        .qp-full-btn::before { content: '⚡'; }
 
-        /* NESTED ACCORDION */
-        .driver-content { display: none; padding: 5px 10px 10px 10px; background: #fff; border-top: 1px solid #eee; flex-direction: column; gap: 5px;}
-        .driver-row.open .driver-content { display: flex; }
-        .driver-row.open .driver-header { background: #eee; border-bottom: 1px solid #ddd; }
+        .menu-label { font-size: 10px; font-weight: 900; color: #999; text-transform: uppercase; margin: 12px 0 6px 4px; letter-spacing: 0.5px; }
 
         .sub-btn { background: #f8f9fa; padding: 10px; border: 1px solid #ddd; border-radius: 6px; font-size: 11px; font-weight: 800; text-transform: uppercase; cursor: pointer; display: flex; justify-content: space-between; align-items: center; color: #555; transition: 0.1s; border-left-width: 6px; border-left-style: solid; }
         .sub-btn:hover { background: #f0f0f0; color: #000; }
@@ -136,23 +121,16 @@
         /* CENTER GRID */
         .active-panel { background: white; border-radius: 12px; border: 1px solid #e0e0e0; padding: 0; display: flex; flex-direction: column; overflow: hidden; height: 100%; position: relative; }
         
-        #raceHeader { 
-            padding: 15px 25px; background: #fff; border-bottom: 1px solid #eee; 
-            display: flex; align-items: center; justify-content: space-between; 
-            flex-shrink: 0; height: 90px; box-sizing: border-box;
-        }
+        #raceHeader { padding: 15px 25px; background: #fff; border-bottom: 1px solid #eee; display: flex; align-items: center; justify-content: space-between; flex-shrink: 0; height: 90px; box-sizing: border-box; }
         .rh-left { display: flex; align-items: center; gap: 15px; }
         .rh-flag { width: 70px; height: auto; border-radius: 4px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
         .rh-info { display: flex; flex-direction: column; }
         .rh-title { font-size: 24px; font-weight: 900; font-style: italic; text-transform: uppercase; line-height: 1; }
         .rh-date { font-size: 12px; color: #888; font-weight: 700; margin-top: 4px; }
-        
         .rh-right { display: flex; align-items: center; gap: 20px; }
 
-        /* BUDGET HUD (LIGHTER GREY) */
         .budget-hud {
-            background: #f4f4f8; 
-            color: #333;
+            background: #f4f4f8; color: #333;
             padding: 8px 15px; border-radius: 8px;
             display: flex; flex-direction: column; align-items: flex-end;
             box-shadow: 0 2px 6px rgba(0,0,0,0.05);
@@ -182,85 +160,25 @@
         .slot[data-req="fia"] { background: #fff2f2; border-color: var(--c-fia); color: var(--c-fia); opacity: 0.8; }
 
         /* LIGHTER GREY CARD STYLING */
-        .slot.filled { 
-            background: #f4f4f4 !important; 
-            border: 1px solid #d0d0d0 !important; 
-            color: #333 !important; 
-            box-shadow: 0 4px 10px rgba(0,0,0,0.08); 
-            opacity: 1; padding: 0; overflow: hidden; 
-            display: flex; flex-direction: row; align-items: stretch; text-align: left;
-            position: relative;
-        }
-
+        .slot.filled { background: #f4f4f4 !important; border: 1px solid #d0d0d0 !important; color: #333 !important; box-shadow: 0 4px 10px rgba(0,0,0,0.08); opacity: 1; padding: 0; overflow: hidden; display: flex; flex-direction: row; align-items: stretch; text-align: left; position: relative; }
         .slot.filled::before { content: ''; position: absolute; top: 0; left: 0; width: 0; height: 0; border-style: solid; border-width: 16px 16px 0 0; z-index: 5; }
         .slot.filled[data-type="driver"]::before { border-color: var(--c-driver) transparent transparent transparent; }
         .slot.filled[data-type="team"]::before { border-color: var(--c-team) transparent transparent transparent; }
         .slot.filled[data-type="fia"]::before { border-color: var(--c-fia) transparent transparent transparent; }
 
-        .remove-pick-btn {
-            position: absolute; top: 0; right: 0;
-            width: 24px; height: 24px; 
-            background: #000; color: #fff;
-            font-weight: 900; font-size: 14px; line-height: 18px;
-            display: flex; align-items: center; justify-content: center;
-            cursor: pointer; z-index: 10;
-            border-bottom-left-radius: 4px;
-            opacity: 0.8; transition: 0.2s;
-        }
+        .remove-pick-btn { position: absolute; top: 0; right: 0; width: 24px; height: 24px; background: #000; color: #fff; font-weight: 900; font-size: 14px; line-height: 18px; display: flex; align-items: center; justify-content: center; cursor: pointer; z-index: 10; border-bottom-left-radius: 4px; opacity: 0.8; transition: 0.2s; }
         .remove-pick-btn:hover { background: #333; opacity: 1; }
 
-        .slot-img-container { 
-            width: 35%; flex-shrink: 0; 
-            display: flex; flex-direction: column; align-items: center; justify-content: center; 
-            border-right: 1px solid rgba(255,255,255,0.1);
-            background-color: var(--team-color-hex); 
-            position: relative;
-        }
-        .slot-img { 
-            width: 70%; height: 70%; object-fit: contain; 
-            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3));
-            margin-bottom: 2px;
-        }
-        .slot-price-tag {
-            background: rgba(0,0,0,0.4); color: white;
-            font-size: 12px; font-weight: 900;
-            padding: 2px 6px; border-radius: 4px;
-            margin-top: 4px;
-        }
-
+        .slot-img-container { width: 35%; flex-shrink: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; border-right: 1px solid rgba(255,255,255,0.1); background-color: var(--team-color-hex); position: relative; }
+        .slot-img { width: 70%; height: 70%; object-fit: contain; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3)); margin-bottom: 2px; }
+        .slot-price-tag { background: rgba(0,0,0,0.4); color: white; font-size: 12px; font-weight: 900; padding: 2px 6px; border-radius: 4px; margin-top: 4px; }
         .slot.filled[data-type="fia"] .slot-img { filter: brightness(0) invert(1); }
 
-        /* LIGHTER RIGHT SIDE (Subtle Gradient) */
-        .slot-text-container { 
-            flex: 1; display: flex; flex-direction: column; justify-content: center; 
-            padding: 4px 15px; min-width: 0;
-            background-color: #f4f4f4; 
-            background-image:
-                linear-gradient(45deg, #eee 25%, transparent 25%, transparent 75%, #eee 75%, #eee),
-                linear-gradient(45deg, #eee 25%, transparent 25%, transparent 75%, #eee 75%, #eee);
-            background-position: 0 0, 10px 10px;
-            background-size: 20px 20px;
-        }
-        
-        .slot-sub { 
-            font-size: 13px; text-transform: uppercase; font-weight: 800; letter-spacing: 0.5px; margin-bottom: 5px;
-            color: var(--cat-text-color); 
-        }
+        .slot-text-container { flex: 1; display: flex; flex-direction: column; justify-content: center; padding: 4px 15px; min-width: 0; background-color: #f4f4f4; background-image: linear-gradient(45deg, #eee 25%, transparent 25%, transparent 75%, #eee 75%, #eee), linear-gradient(45deg, #eee 25%, transparent 25%, transparent 75%, #eee 75%, #eee); background-position: 0 0, 10px 10px; background-size: 20px 20px; }
+        .slot-sub { font-size: 13px; text-transform: uppercase; font-weight: 800; letter-spacing: 0.5px; margin-bottom: 5px; color: var(--cat-text-color); }
         .slot-main { font-size: 18px; font-weight: 800; line-height: 1.1; word-wrap: break-word; overflow: hidden; color: #222; }
 
-        /* FREE SPACE */
-        .slot.center { 
-            background-color: #ddd !important; 
-            border: 2px solid #ccc !important; 
-            color: #444 !important; 
-            font-size: 24px; text-transform: uppercase; 
-            background-image:
-                linear-gradient(45deg, #ccc 25%, transparent 25%, transparent 75%, #ccc 75%, #ccc),
-                linear-gradient(45deg, #ccc 25%, transparent 25%, transparent 75%, #ccc 75%, #ccc) !important;
-            background-position: 0 0, 10px 10px !important;
-            background-size: 20px 20px !important;
-            box-shadow: inset 0 0 20px rgba(0,0,0,0.05) !important; 
-        }
+        .slot.center { background-color: #ddd !important; border: 2px solid #ccc !important; color: #444 !important; font-size: 24px; text-transform: uppercase; background-image: linear-gradient(45deg, #ccc 25%, transparent 25%, transparent 75%, #ccc 75%, #ccc), linear-gradient(45deg, #ccc 25%, transparent 25%, transparent 75%, #ccc 75%, #ccc) !important; background-position: 0 0, 10px 10px !important; background-size: 20px 20px !important; box-shadow: inset 0 0 20px rgba(0,0,0,0.05) !important; }
         .slot.matched { opacity: 1; box-shadow: inset 0 0 0 5px var(--score-win); transform: scale(1.02); z-index: 5; }
         .slot.matched::after { content: '✓'; position: absolute; bottom: 5px; right: 5px; background: var(--score-win); color: black; border-radius: 50%; width: 28px; height: 28px; display: flex; align-items: center; justify-content: center; font-weight: 900; font-size: 18px; box-shadow: 0 2px 5px rgba(0,0,0,0.3); }
 
@@ -475,14 +393,13 @@
 
 <script>
     let activeRace = 'aus';
-    let currentGrid = Array(9).fill(null); // 3x3
+    let currentGrid = Array(9).fill(null); 
     let verifiedResults = [];
     let modalCallback = null;
     let isGridLocked = false;
     let isUserLocked = false;
     const BUDGET_CAP = 100;
 
-    // Corrected Balanced Template
     const templates = {
         balanced: ['driver','team','driver','team','FREE','fia','driver','fia','team'],
         team:     ['team','team','driver','team','FREE','team','driver','team','fia'],
@@ -709,17 +626,17 @@
             const content = row.querySelector('.driver-content');
             
             if(d.team === "FIA") {
+                const qpDiv = document.createElement('div'); qpDiv.className = 'qp-container';
                 const label = document.createElement('div'); label.className = 'menu-label'; label.innerText = 'QUICK PICKS';
-                content.appendChild(label);
-
+                qpDiv.appendChild(label);
                 const qpRow = document.createElement('div'); qpRow.className = 'qp-row';
                 const qpClean = document.createElement('div'); qpClean.className = 'qp-btn qp-clean'; qpClean.innerText = 'CLEAN RACE';
                 qpClean.onclick = (e) => { e.stopPropagation(); applyQuickPicks(d.name, d.team, 'clean'); };
                 const qpCaution = document.createElement('div'); qpCaution.className = 'qp-btn qp-caution'; qpCaution.innerText = 'CAUTION';
                 qpCaution.onclick = (e) => { e.stopPropagation(); applyQuickPicks(d.name, d.team, 'caution'); };
-                
                 qpRow.appendChild(qpClean); qpRow.appendChild(qpCaution);
-                content.appendChild(qpRow);
+                qpDiv.appendChild(qpRow);
+                content.appendChild(qpDiv);
 
                 const label2 = document.createElement('div'); label2.className = 'menu-label'; label2.innerText = 'MANUAL SELECTION';
                 content.appendChild(label2);
@@ -731,25 +648,13 @@
                 content.appendChild(grid);
                 BINGO_CONFIG.templates.fia.forEach(t => createChip(grid, t.t, 'fia', false, 'Race Control', 'fia', t.c)); 
             } else {
+                const qpDiv = document.createElement('div'); qpDiv.className = 'qp-container';
                 const label = document.createElement('div'); label.className = 'menu-label'; label.innerText = 'QUICK PICKS';
-                content.appendChild(label);
-
-                const qpContainer = document.createElement('div');
-                qpContainer.className = 'qp-row';
-                
-                const qpVic = document.createElement('div'); qpVic.className = 'qp-btn qp-victory'; qpVic.innerText = 'VICTORY';
-                qpVic.onclick = (e) => { e.stopPropagation(); applyQuickPicks(d.name, d.team, 'victory'); };
-                
-                const qpPod = document.createElement('div'); qpPod.className = 'qp-btn qp-podium'; qpPod.innerText = 'PODIUM';
-                qpPod.onclick = (e) => { e.stopPropagation(); applyQuickPicks(d.name, d.team, 'podium'); };
-                
-                const qpPts = document.createElement('div'); qpPts.className = 'qp-btn qp-points'; qpPts.innerText = 'POINTS';
-                qpPts.onclick = (e) => { e.stopPropagation(); applyQuickPicks(d.name, d.team, 'points'); };
-
-                qpContainer.appendChild(qpVic);
-                qpContainer.appendChild(qpPod);
-                qpContainer.appendChild(qpPts);
-                content.appendChild(qpContainer);
+                qpDiv.appendChild(label);
+                const qpBtn = document.createElement('div'); qpBtn.className = 'qp-full-btn'; qpBtn.innerText = 'MAXIMIZE POINTS';
+                qpBtn.onclick = (e) => { e.stopPropagation(); applyQuickPicks(d.name, d.team, 'maximize'); };
+                qpDiv.appendChild(qpBtn);
+                content.appendChild(qpDiv);
 
                 const label2 = document.createElement('div'); label2.className = 'menu-label'; label2.innerText = 'MANUAL SELECTION';
                 content.appendChild(label2);
@@ -772,7 +677,6 @@
 
         const grid = document.createElement('div');
         grid.className = 'sub-content';
-        // Now passing raw template object {t, c} to handle cost
         items.forEach(t => createChip(grid, prefix + t.t, type, subtype, driverName, '', t.c, t.t));
         parent.appendChild(grid);
     }
@@ -849,40 +753,37 @@
         updateBudgetUI();
     }
 
-    function applyQuickPicks(driverName, teamName, tier) {
+    // --- REVISED SINGLE-BUTTON QUICK PICK ---
+    function applyQuickPicks(driverName, teamName, mode) {
         if(isGridLocked || isUserLocked) { showModal("Card Locked", "Unlock your card to make changes.", false); return; }
 
-        let rawPicks = [];
-        if (tier === 'victory') {
-            rawPicks = [
-                { t: "Pole Position", type: 'driver', st: 'quali' },
+        // Define Priority List for "Maximize Points" (Win, Pole, etc.)
+        // This list covers both driver and team events
+        let priorities = [];
+        
+        if (mode === 'maximize') {
+            priorities = [
                 { t: "Race Win", type: 'driver', st: 'race' },
+                { t: "Pole Position", type: 'driver', st: 'quali' },
+                { t: "1-2 Finish", type: 'team', st: 'team' },
                 { t: "Fastest Lap", type: 'driver', st: 'bonus' },
-                { t: "1-2 Finish", type: 'team', st: 'team' }
-            ];
-        } else if (tier === 'podium') {
-            rawPicks = [
-                { t: "Front Row Start", type: 'driver', st: 'quali' },
+                { t: "Double Podium", type: 'team', st: 'team' },
                 { t: "Podium Finish", type: 'driver', st: 'race' },
+                { t: "Front Row Start", type: 'driver', st: 'quali' },
                 { t: "Driver of the Day", type: 'driver', st: 'bonus' },
-                { t: "Double Podium", type: 'team', st: 'team' }
-            ];
-        } else if (tier === 'points') {
-            rawPicks = [
-                { t: "Q3 Appearance", type: 'driver', st: 'quali' },
+                { t: "Double Points", type: 'team', st: 'team' },
                 { t: "Points Finish", type: 'driver', st: 'race' },
-                { t: "Beats Teammate (Race)", type: 'driver', st: 'bonus' },
-                { t: "Double Points", type: 'team', st: 'team' }
+                { t: "Q3 Appearance", type: 'driver', st: 'quali' }
             ];
-        } else if (tier === 'clean') {
-            rawPicks = [
+        } else if (mode === 'clean') {
+             priorities = [
                 { t: 'Green Flag Race (No SC)', type: 'fia', st: 'fia' },
                 { t: 'All Cars Finish (No DNF)', type: 'fia', st: 'fia' },
                 { t: 'Race Control: No Investigation', type: 'fia', st: 'fia' },
                 { t: 'Rolling Start Restart', type: 'fia', st: 'fia' }
             ];
-        } else if (tier === 'caution') {
-            rawPicks = [
+        } else if (mode === 'caution') {
+             priorities = [
                 { t: 'Safety Car Deployed', type: 'fia', st: 'fia' },
                 { t: 'Red Flag Suspends Race', type: 'fia', st: 'fia' },
                 { t: 'Turn 1 Incident', type: 'fia', st: 'fia' },
@@ -890,49 +791,65 @@
             ];
         }
 
-        let placedCount = 0;
         let tempGrid = [...currentGrid];
-        let tempCost = calculateTotalCost();
+        let tempCost = calculateTotalCost(); // Current cost
+        let addedCount = 0;
 
-        rawPicks.forEach(p => {
-            let fullText = p.t;
-            let dName = 'Race Control';
+        // Iterate through empty slots and try to fill them based on priority
+        for (let i = 0; i < 9; i++) {
+            if (i === 4) continue; // Skip FREE space
             
-            if(p.type === 'driver') { fullText = `${driverName} ${p.t}`; dName = driverName; }
-            if(p.type === 'team') { fullText = `${teamName} ${p.t}`; dName = driverName; } 
-            
-            const cost = getChipCost(dName, p.type, p.t);
+            // Only try to fill if empty or we want to overwrite? (Let's fill empty only for safety)
+            if (tempGrid[i] !== null) continue;
 
-            const slotIndex = tempGrid.findIndex((slot, i) => {
-                if(slot !== null && slot.text === fullText) return true; 
-                if(slot !== null) return false;
-                const slotEl = document.querySelector(`.slot[data-index="${i}"]`);
-                return slotEl && slotEl.dataset.req === p.type;
-            });
+            const slotEl = document.querySelector(`.slot[data-index="${i}"]`);
+            if (!slotEl) continue;
+            const reqType = slotEl.dataset.req; // 'driver', 'team', 'fia'
 
-            if(slotIndex !== -1 && tempGrid[slotIndex]?.text !== fullText) {
-                if (tempCost + cost <= BUDGET_CAP) {
-                    let conflict = false;
-                    if(p.type === 'driver') {
-                        conflict = tempGrid.some(x => x && x.driver === driverName && x.subtype === p.st);
-                    }
-                    if(!conflict) {
-                        tempGrid[slotIndex] = { text: fullText, type: p.type, driver: dName, subtype: p.st, cost: cost };
+            // Find best available pick for this slot type
+            for (let p of priorities) {
+                if (p.type !== reqType) continue; // Must match slot type
+
+                // Determine full text and cost
+                let fullText = p.t;
+                let dName = 'Race Control';
+                let st = p.st;
+
+                if (p.type === 'driver') { fullText = `${driverName} ${p.t}`; dName = driverName; }
+                if (p.type === 'team') { fullText = `${teamName} ${p.t}`; dName = driverName; } // Use driver name for team image logic
+
+                // Check for duplicates/conflicts in tempGrid
+                // Conflict: Same driver, same subtype (e.g. 2 race results for Max)
+                let conflict = false;
+                if (p.type === 'driver' || p.type === 'team') {
+                     conflict = tempGrid.some(x => x && x.driver === dName && x.subtype === st);
+                }
+                
+                // If pick is already on board (exact match), skip
+                const alreadyExists = tempGrid.some(x => x && x.text === fullText);
+
+                if (!conflict && !alreadyExists) {
+                    const cost = getChipCost(dName, p.type, p.t);
+                    
+                    if (tempCost + cost <= BUDGET_CAP) {
+                        // Place it
+                        tempGrid[i] = { text: fullText, type: p.type, driver: dName, subtype: st, cost: cost };
                         tempCost += cost;
-                        placedCount++;
+                        addedCount++;
+                        break; // Move to next slot
                     }
                 }
             }
-        });
+        }
 
-        if(placedCount > 0) {
+        if (addedCount > 0) {
             currentGrid = tempGrid;
             renderGrid();
             saveLocal();
             checkLockStatus();
             updateBudgetUI();
         } else {
-            showModal("Not Applied", "Could not place picks (Budget full or Grid full).", false);
+            showModal("Fill Failed", "Could not add any picks. Check budget or open slots.", false);
         }
     }
 
@@ -1151,13 +1068,6 @@
         if(matches[0] && matches[2] && matches[6] && matches[8]) {
             score += 50;
             bonuses.push("4 CORNERS BONUS (+50)");
-        }
-
-        const d1 = matches[0] && matches[4] && matches[8];
-        const d2 = matches[2] && matches[4] && matches[6];
-        if(d1 && d2) {
-            score += 150;
-            bonuses.push("THE X BONUS (+150)");
         }
 
         const allMatched = matches.every(m => m === true);
