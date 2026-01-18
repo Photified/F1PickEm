@@ -660,7 +660,7 @@
             const label = document.createElement('div'); label.className = 'menu-label'; label.innerText = 'QUICK PICKS';
             content.appendChild(label);
 
-            const qpBtn = document.createElement('div'); qpBtn.className = 'qp-red-btn'; qpBtn.innerText = '⚡ QUICK PICK FAVORITES';
+            const qpBtn = document.createElement('div'); qpBtn.className = 'qp-red-btn'; qpBtn.innerText = 'DRIVER QUICK PICKS';
             qpBtn.onclick = (e) => { e.stopPropagation(); applyQuickPicks(d.name, d.team, 'maximize_driver'); };
             content.appendChild(qpBtn);
 
@@ -727,7 +727,7 @@
         
         const content = row.querySelector('.driver-content');
         
-        const qpBtn = document.createElement('div'); qpBtn.className = 'qp-red-btn'; qpBtn.innerText = 'FIA QUICK PICK';
+        const qpBtn = document.createElement('div'); qpBtn.className = 'qp-red-btn'; qpBtn.innerText = 'FIA QUICK PICKS';
         qpBtn.onclick = (e) => { e.stopPropagation(); applyQuickPicks(null, null, 'random_fia'); };
         content.appendChild(qpBtn);
 
