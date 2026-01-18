@@ -82,6 +82,9 @@
         .qp-victory { background: linear-gradient(135deg, #FFD700, #ffaa00); color: black; text-shadow: none; border-color: #eebb00; }
         .qp-podium { background: linear-gradient(135deg, #C0C0C0, #9aa); color: black; text-shadow: none; border-color: #999; }
         .qp-points { background: linear-gradient(135deg, #00d2be, #009e8e); border-color: #00887a; }
+        
+        .qp-clean { background: linear-gradient(135deg, #22c55e, #16a34a); border-color: #15803d; }
+        .qp-caution { background: linear-gradient(135deg, #e10600, #b91c1c); border-color: #991b1b; }
 
         /* NESTED ACCORDION */
         .driver-content { display: none; padding: 5px 10px 10px 10px; background: #fff; border-top: 1px solid #eee; flex-direction: column; gap: 5px;}
@@ -91,7 +94,6 @@
         .sub-btn { background: #f8f9fa; padding: 10px; border: 1px solid #ddd; border-radius: 6px; font-size: 11px; font-weight: 800; text-transform: uppercase; cursor: pointer; display: flex; justify-content: space-between; align-items: center; color: #555; transition: 0.1s; border-left-width: 6px; border-left-style: solid; }
         .sub-btn:hover { background: #f0f0f0; color: #000; }
         .sub-btn.active { background: #f4f4f4; color: #000; box-shadow: inset 0 0 5px rgba(0,0,0,0.05); }
-        
         .sub-btn.driver { border-left-color: var(--c-driver); }
         .sub-btn.team { border-left-color: var(--c-team); }
         .sub-btn.fia { border-left-color: var(--c-fia); }
@@ -499,6 +501,15 @@
             const content = row.querySelector('.driver-content');
             
             if(d.team === "FIA") {
+                const qpRow = document.createElement('div'); qpRow.className = 'qp-row';
+                const qpClean = document.createElement('div'); qpClean.className = 'qp-btn qp-clean'; qpClean.innerText = 'CLEAN RACE';
+                qpClean.onclick = (e) => { e.stopPropagation(); applyQuickPicks(d.name, d.team, 'clean'); };
+                const qpCaution = document.createElement('div'); qpCaution.className = 'qp-btn qp-caution'; qpCaution.innerText = 'CAUTION';
+                qpCaution.onclick = (e) => { e.stopPropagation(); applyQuickPicks(d.name, d.team, 'caution'); };
+                
+                qpRow.appendChild(qpClean); qpRow.appendChild(qpCaution);
+                content.appendChild(qpRow);
+
                 const btn = document.createElement('div'); btn.className = 'sub-btn fia'; btn.innerText = "FIA / TRACK EVENTS";
                 btn.onclick = () => btn.classList.toggle('active');
                 content.appendChild(btn);
@@ -506,7 +517,6 @@
                 content.appendChild(grid);
                 BINGO_CONFIG.templates.fia.forEach(t => createChip(grid, t, 'fia', false, 'Race Control', 'fia')); 
             } else {
-                // QUICK PICK BUTTONS ROW
                 const qpContainer = document.createElement('div');
                 qpContainer.className = 'qp-row';
                 
@@ -560,6 +570,20 @@
                 { text: `${driverName} Beats Teammate (Race)`, type: 'driver', subtype: 'bonus' },
                 { text: `${teamName} Double Points`, type: 'team', subtype: 'team' }
             ];
+        } else if (tier === 'clean') {
+            picks = [
+                { text: 'Green Flag Race (No SC)', type: 'fia', subtype: 'fia' },
+                { text: 'All Cars Finish (No DNF)', type: 'fia', subtype: 'fia' },
+                { text: 'Race Control: No Investigation', type: 'fia', subtype: 'fia' },
+                { text: 'Rolling Start Restart', type: 'fia', subtype: 'fia' }
+            ];
+        } else if (tier === 'caution') {
+            picks = [
+                { text: 'Safety Car Deployed', type: 'fia', subtype: 'fia' },
+                { text: 'Red Flag Suspends Race', type: 'fia', subtype: 'fia' },
+                { text: 'Turn 1 Incident', type: 'fia', subtype: 'fia' },
+                { text: 'Debris on Track', type: 'fia', subtype: 'fia' }
+            ];
         }
 
         let placedCount = 0;
@@ -568,11 +592,17 @@
             const slotIndex = currentGrid.findIndex((slot, i) => {
                 if(slot !== null) return false;
                 const slotEl = document.querySelector(`.slot[data-index="${i}"]`);
+                // Match type (driver/team/fia)
                 return slotEl && slotEl.dataset.req === p.type;
             });
 
             if(slotIndex !== -1) {
-                const conflict = currentGrid.some(x => x && x.driver === driverName && x.subtype === p.subtype);
+                // Check conflicts (only relevant for Driver bets, FIA can dup)
+                let conflict = false;
+                if(p.type === 'driver') {
+                    conflict = currentGrid.some(x => x && x.driver === driverName && x.subtype === p.subtype);
+                }
+                
                 if(!conflict) {
                     currentGrid[slotIndex] = { text: p.text, type: p.type, driver: driverName, subtype: p.subtype };
                     placedCount++;
@@ -650,6 +680,8 @@
             }
         }
         
+        // Parse Text for clean display
+        // Drop logic: store driverName for image lookup
         currentGrid[index] = { text, type, driver: driverName, subtype: subType };
         renderGrid();
         saveLocal();
@@ -729,9 +761,11 @@
             const idx = parseInt(s.dataset.index);
             const data = currentGrid[idx];
             if(data) {
+                // FIND IMAGE
                 const drv = BINGO_CONFIG.drivers.find(d => d.name === data.driver);
                 const imgSrc = drv ? drv.img : '';
                 
+                // PARSE TEXT FOR CLEAN LOOK
                 let mainText = data.text;
                 if(drv && mainText.startsWith(drv.name)) {
                     mainText = mainText.replace(drv.name, '').trim();
@@ -739,6 +773,7 @@
                     mainText = mainText.replace(drv.team, '').trim();
                 }
 
+                // HEADER TEXT
                 let subText = data.subtype ? data.subtype.toUpperCase() : "EVENT";
                 if(subText === 'FIA') subText = 'TRACK';
 
