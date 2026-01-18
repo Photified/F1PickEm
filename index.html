@@ -78,8 +78,18 @@
         .driver-header { padding: 10px 12px; display: flex; align-items: center; gap: 12px; cursor: pointer; background: linear-gradient(90deg, transparent 95%, #fafafa); }
         .driver-header:hover { background: #f5f5f5; }
         
-        .driver-face { width: 36px; height: 36px; object-fit: cover; border-radius: 6px; background: #eee; border: 2px solid var(--team-color); padding: 2px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+        /* Standard Driver Face (Square) */
+        .driver-face { width: 36px; height: 36px; object-fit: cover; border-radius: 6px; background: #eee; border: 2px solid var(--team-color); padding: 2px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); flex-shrink: 0; }
         .driver-face[src=""] { display: none; } 
+
+        /* SPECIAL CAR FACE (Wide) for Team Tab */
+        .driver-face.car-face {
+            width: 70px; height: 36px;
+            object-fit: contain;
+            border-radius: 4px;
+            background: white; /* Cars look better on white */
+        }
+
         .driver-name { font-weight: 800; font-size: 14px; color: #333; }
         .driver-team { font-size: 10px; color: #888; text-transform: uppercase; margin-top:2px; }
 
@@ -153,7 +163,17 @@
         .remove-pick-btn:hover { background: #333; opacity: 1; }
 
         .slot-img-container { width: 35%; flex-shrink: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; border-right: 1px solid rgba(255,255,255,0.1); background-color: var(--team-color-hex); position: relative; }
+        
+        /* CARD CAR IMAGES */
         .slot-img { width: 70%; height: 70%; object-fit: contain; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3)); margin-bottom: 2px; }
+        
+        /* ADJUSTMENT FOR CARS ON CARDS */
+        .slot.filled[data-type="team"] .slot-img {
+            width: 90%; /* Wider for cars */
+            height: auto; 
+            margin-top: 10px; /* Push down slightly */
+        }
+
         .slot-price-tag { background: rgba(0,0,0,0.4); color: white; font-size: 12px; font-weight: 900; padding: 2px 6px; border-radius: 4px; margin-top: 4px; }
         .slot.filled[data-type="fia"] .slot-img { filter: brightness(0) invert(1); }
 
@@ -280,19 +300,19 @@
             
             <div class="strat-grid">
                 <div class="strat-card" onclick="confirmStrategy('balanced')">
-                    <div class="mini-grid"><div class="mg-c" style="background:var(--c-driver)"></div><div class="mg-c" style="background:var(--c-team)"></div><div class="mg-c" style="background:var(--c-driver)"></div><div class="mg-c" style="background:var(--c-team)"></div><div class="mg-c" style="background:var(--c-driver)"></div><div class="mg-c" style="background:var(--c-fia)"></div><div class="mg-c" style="background:var(--c-driver)"></div><div class="mg-c" style="background:var(--c-fia)"></div><div class="mg-c" style="background:var(--c-team)"></div></div>
+                    <div class="mini-grid"><div class="mg-c" style="background:var(--c-driver)"></div><div class="mg-c" style="background:var(--c-team)"></div><div class="mg-c" style="background:var(--c-driver)"></div><div class="mg-c" style="background:var(--c-team)"></div><div class="mg-c" style="background:#222"></div><div class="mg-c" style="background:var(--c-fia)"></div><div class="mg-c" style="background:var(--c-driver)"></div><div class="mg-c" style="background:var(--c-fia)"></div><div class="mg-c" style="background:var(--c-team)"></div></div>
                     <strong>⚖️ Balanced</strong>
                 </div>
                 <div class="strat-card" onclick="confirmStrategy('team')">
-                    <div class="mini-grid"><div class="mg-c" style="background:var(--c-team)"></div><div class="mg-c" style="background:var(--c-team)"></div><div class="mg-c" style="background:var(--c-driver)"></div><div class="mg-c" style="background:var(--c-team)"></div><div class="mg-c" style="background:var(--c-team)"></div><div class="mg-c" style="background:var(--c-team)"></div><div class="mg-c" style="background:var(--c-driver)"></div><div class="mg-c" style="background:var(--c-team)"></div><div class="mg-c" style="background:var(--c-fia)"></div></div>
+                    <div class="mini-grid"><div class="mg-c" style="background:var(--c-team)"></div><div class="mg-c" style="background:var(--c-team)"></div><div class="mg-c" style="background:var(--c-driver)"></div><div class="mg-c" style="background:var(--c-team)"></div><div class="mg-c" style="background:#222"></div><div class="mg-c" style="background:var(--c-team)"></div><div class="mg-c" style="background:var(--c-driver)"></div><div class="mg-c" style="background:var(--c-team)"></div><div class="mg-c" style="background:var(--c-fia)"></div></div>
                     <strong>🛠️ Constructor</strong>
                 </div>
                 <div class="strat-card" onclick="confirmStrategy('chaos')">
-                    <div class="mini-grid"><div class="mg-c" style="background:var(--c-fia)"></div><div class="mg-c" style="background:var(--c-fia)"></div><div class="mg-c" style="background:var(--c-driver)"></div><div class="mg-c" style="background:var(--c-fia)"></div><div class="mg-c" style="background:var(--c-fia)"></div><div class="mg-c" style="background:var(--c-fia)"></div><div class="mg-c" style="background:var(--c-team)"></div><div class="mg-c" style="background:var(--c-fia)"></div><div class="mg-c" style="background:var(--c-driver)"></div></div>
+                    <div class="mini-grid"><div class="mg-c" style="background:var(--c-fia)"></div><div class="mg-c" style="background:var(--c-fia)"></div><div class="mg-c" style="background:var(--c-driver)"></div><div class="mg-c" style="background:var(--c-fia)"></div><div class="mg-c" style="background:#222"></div><div class="mg-c" style="background:var(--c-fia)"></div><div class="mg-c" style="background:var(--c-team)"></div><div class="mg-c" style="background:var(--c-fia)"></div><div class="mg-c" style="background:var(--c-driver)"></div></div>
                     <strong>🚩 FIA / Track</strong>
                 </div>
                 <div class="strat-card" onclick="confirmStrategy('driver')">
-                    <div class="mini-grid"><div class="mg-c" style="background:var(--c-driver)"></div><div class="mg-c" style="background:var(--c-driver)"></div><div class="mg-c" style="background:var(--c-team)"></div><div class="mg-c" style="background:var(--c-driver)"></div><div class="mg-c" style="background:var(--c-driver)"></div><div class="mg-c" style="background:var(--c-driver)"></div><div class="mg-c" style="background:var(--c-fia)"></div><div class="mg-c" style="background:var(--c-driver)"></div><div class="mg-c" style="background:var(--c-team)"></div></div>
+                    <div class="mini-grid"><div class="mg-c" style="background:var(--c-driver)"></div><div class="mg-c" style="background:var(--c-driver)"></div><div class="mg-c" style="background:var(--c-team)"></div><div class="mg-c" style="background:var(--c-driver)"></div><div class="mg-c" style="background:#222"></div><div class="mg-c" style="background:var(--c-driver)"></div><div class="mg-c" style="background:var(--c-fia)"></div><div class="mg-c" style="background:var(--c-driver)"></div><div class="mg-c" style="background:var(--c-team)"></div></div>
                     <strong>🏎️ Driver</strong>
                 </div>
             </div>
@@ -385,19 +405,18 @@
 
 <script>
     let activeRace = 'aus';
-    let currentGrid = Array(9).fill(null); // 3x3 - All slots playable
+    let currentGrid = Array(9).fill(null); // 3x3
     let verifiedResults = [];
     let modalCallback = null;
     let isGridLocked = false;
     let isUserLocked = false;
     const BUDGET_CAP = 100;
 
-    // UPDATED TEMPLATES: Replaced 'FREE' with real categories
     const templates = {
-        balanced: ['driver','team','driver', 'team','driver','fia', 'driver','fia','team'],
-        team:     ['team','team','driver', 'team','team','team', 'driver','team','fia'],
-        chaos:    ['fia','fia','driver',   'fia','fia','fia',    'team','fia','driver'],
-        driver:   ['driver','driver','team', 'driver','driver','driver', 'fia','driver','team']
+        balanced: ['driver','team','driver','team','FREE','fia','driver','fia','team'],
+        team:     ['team','team','driver','team','FREE','team','driver','team','fia'],
+        chaos:    ['fia','fia','driver','fia','FREE','fia','team','fia','driver'],
+        driver:   ['driver','driver','team','driver','FREE','driver','fia','driver','team']
     };
 
     window.onload = () => {
@@ -475,8 +494,7 @@
         const unlockBtn = document.getElementById('unlockBtn');
         const grid = document.getElementById('grid');
 
-        // Check if full (all 9 slots must be non-null)
-        const isFull = currentGrid.every(slot => slot !== null);
+        const isFull = currentGrid.every((slot, i) => i === 4 || slot !== null);
 
         if(isGridLocked) {
             grid.classList.add('grid-locked');
@@ -545,7 +563,7 @@
              const constr = BINGO_CONFIG.constructors.find(c => c.name === driverName);
              basePrice = constr ? (constr.price || 0) : 0;
         } else if (type === 'fia') {
-             basePrice = 0; // FIA usually 0
+             basePrice = 0; 
         } else {
              const drv = BINGO_CONFIG.drivers.find(d => d.name === driverName);
              basePrice = drv ? (drv.price || 0) : 0;
@@ -623,7 +641,6 @@
     function buildDriverMarket() {
         const container = document.getElementById('driverList');
         container.innerHTML = ''; 
-        // Filter out "Race Control" from drivers tab
         const realDrivers = BINGO_CONFIG.drivers.filter(d => d.team !== 'FIA');
         
         realDrivers.forEach(d => {
@@ -665,15 +682,15 @@
     function buildTeamMarket() {
         const container = document.getElementById('teamList');
         container.innerHTML = '';
-        // Filter out 'Race Control' from constructors if it exists there
         const realTeams = BINGO_CONFIG.constructors.filter(c => c.type === 'Team');
 
         realTeams.forEach(t => {
              const row = document.createElement('div');
             row.className = 'driver-row';
+            // Use special class for wide car images
             row.innerHTML = `
                 <div class="driver-header" onclick="toggleDriver(this)" style="--team-color:${t.color}">
-                    <img src="${t.img}" class="driver-face" onerror="this.style.display='none'">
+                    <img src="${t.img}" class="driver-face car-face" onerror="this.style.display='none'">
                     <div>
                         <div class="driver-name">${t.name}</div>
                         <div class="driver-team">CONSTRUCTOR</div>
@@ -699,7 +716,7 @@
         container.innerHTML = '';
         
         const row = document.createElement('div');
-        row.className = 'driver-row open'; // Always open
+        row.className = 'driver-row open'; 
         row.innerHTML = `
             <div class="driver-header" style="--team-color:#333">
                 <img src="images/fia.png" class="driver-face" style="filter:invert(1)">
@@ -736,8 +753,6 @@
     }
 
     function toggleDriver(header) {
-        const allRows = document.querySelectorAll('.driver-row');
-        // Close others? No, lets keep independent
         header.parentElement.classList.toggle('open');
     }
 
@@ -934,7 +949,7 @@
     }
 
     function confirmStrategy(type) {
-        currentGrid = templates[type].map(t => null); // Start empty, strict structure
+        currentGrid = templates[type].map(t => null); 
         renderGridStructure(templates[type]);
         switchState('game');
         saveLocal();
@@ -955,7 +970,6 @@
         pattern.forEach((type, i) => {
             const slot = document.createElement('div');
             slot.dataset.index = i;
-            // No free space
             slot.className = 'slot'; 
             slot.dataset.req = type; 
             slot.innerText = type === 'fia' ? "FIA" : type.toUpperCase();

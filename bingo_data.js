@@ -1,10 +1,7 @@
-/* F1 2026 PICK 'EM DATA
-   - 25 Races
-   - Budget Logic: PAY FOR SAFETY
-   - 3x3 Grid (NO FREE SPACE)
-*/
+/* F1 2026 PICK 'EM DATA */
 
 const BINGO_CONFIG = {
+    // 25 RACES
     races: [
         {id:'aus', c:'au', n:'Australia', d:'Mar 8', lockTime:'2026-03-07T05:00:00'}, 
         {id:'chn', c:'cn', n:'China', d:'Mar 15', lockTime:'2026-03-14T07:00:00'},
@@ -33,6 +30,7 @@ const BINGO_CONFIG = {
         {id:'abu', c:'ae', n:'Abu Dhabi', d:'Dec 6'}
     ],
 
+    // DRIVER ROSTER
     drivers: [
         { name: "Max Verstappen", team: "Red Bull", color: "#3671C6", img: "images/max.png", price: 18 },
         { name: "Isack Hadjar", team: "Red Bull", color: "#3671C6", img: "images/hadjar.png", price: 4 },
@@ -58,20 +56,22 @@ const BINGO_CONFIG = {
         { name: "Sergio Perez", team: "Cadillac", color: "#FFD700", img: "images/checo.png", price: 5 }
     ],
 
+    // CONSTRUCTORS (Using CAR PNGs now)
     constructors: [
-        { name: "Red Bull", type: "Team", color: "#3671C6", img: "images/logo_rb.png", price: 10 },
-        { name: "McLaren", type: "Team", color: "#FF8000", img: "images/logo_mclaren.png", price: 9 },
-        { name: "Ferrari", type: "Team", color: "#E80020", img: "images/logo_ferrari.png", price: 9 },
-        { name: "Mercedes", type: "Team", color: "#27F4D2", img: "images/logo_merc.png", price: 8 },
-        { name: "Aston Martin", type: "Team", color: "#229971", img: "images/logo_aston.png", price: 6 },
-        { name: "Alpine", type: "Team", color: "#FF87BC", img: "images/logo_alpine.png", price: 5 },
-        { name: "Williams", type: "Team", color: "#64C4FF", img: "images/logo_williams.png", price: 5 },
-        { name: "VCARB", type: "Team", color: "#6692FF", img: "images/logo_vcarb.png", price: 4 },
-        { name: "Haas", type: "Team", color: "#B6BABD", img: "images/logo_haas.png", price: 4 },
-        { name: "Audi", type: "Team", color: "#F2F2F2", img: "images/logo_audi.png", price: 3 },
-        { name: "Cadillac", type: "Team", color: "#FFD700", img: "images/logo_cadillac.png", price: 3 }
+        { name: "Red Bull", type: "Team", color: "#3671C6", img: "images/car_rb.png", price: 10 },
+        { name: "McLaren", type: "Team", color: "#FF8000", img: "images/car_mclaren.png", price: 9 },
+        { name: "Ferrari", type: "Team", color: "#E80020", img: "images/car_ferrari.png", price: 9 },
+        { name: "Mercedes", type: "Team", color: "#27F4D2", img: "images/car_merc.png", price: 8 },
+        { name: "Aston Martin", type: "Team", color: "#229971", img: "images/car_aston.png", price: 6 },
+        { name: "Alpine", type: "Team", color: "#FF87BC", img: "images/car_alpine.png", price: 5 },
+        { name: "Williams", type: "Team", color: "#64C4FF", img: "images/car_williams.png", price: 5 },
+        { name: "VCARB", type: "Team", color: "#6692FF", img: "images/car_vcarb.png", price: 4 },
+        { name: "Haas", type: "Team", color: "#B6BABD", img: "images/car_haas.png", price: 4 },
+        { name: "Audi", type: "Team", color: "#F2F2F2", img: "images/car_audi.png", price: 3 },
+        { name: "Cadillac", type: "Team", color: "#FFD700", img: "images/car_cadillac.png", price: 3 }
     ],
 
+    // EVENT COSTS
     templates: {
         quali: [
             { t: "Pole Position", c: 3 }, 
