@@ -844,9 +844,11 @@
         if (mode !== 'random_fia') {
             // Get exact tier matches, then adjacent if needed? 
             // For simplicity, let's filter for options that match the driver's tier
-            priorities = allOptions.filter(opt => opt.tier === targetTier);
-            // If few options, fallback to all? No, keep it strict to be realistic.
-            if(priorities.length < 3) priorities = allOptions; // Fallback
+            priorities = allOptions.filter(opt => opt.tiers && opt.tiers.includes(targetTier));
+            
+            // If few options, fallback to broader logic? No, let's trust the data.
+            // Sort by cost descending (maximize points/cost efficiency)
+            priorities.sort((a,b) => b.c - a.c);
         } else {
             priorities = allOptions.slice(0, 9);
         }
@@ -856,6 +858,7 @@
         let addedCount = 0;
 
         for (let i = 0; i < 9; i++) {
+            // No free space, check all slots
             if (tempGrid[i] !== null) continue; 
 
             const slotEl = document.querySelector(`.slot[data-index="${i}"]`);
