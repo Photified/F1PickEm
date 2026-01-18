@@ -23,7 +23,7 @@
         /* HEADER */
         header { background: white; border-bottom: 3px solid var(--brand-red); padding: 5px 25px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 4px 10px rgba(0,0,0,0.05); z-index: 20; flex-shrink: 0; height: 60px; box-sizing: border-box; }
         .header-title { display: flex; align-items: center; justify-content: center; cursor: pointer; height: 100%; }
-        .header-logo { max-height: 45px; width: auto; display: block; } /* LOGO STYLING */
+        .header-logo { max-height: 45px; width: auto; display: block; } 
         .user-profile { font-weight: 700; display: flex; align-items: center; gap: 10px; font-size: 14px; }
 
         /* RACE BAR */
@@ -117,34 +117,40 @@
         .slot.filled[data-type="team"] { background: linear-gradient(135deg, #00d2be, #009e8e) !important; }
         .slot.filled[data-type="fia"] { background: linear-gradient(135deg, #e10600, #a30000) !important; }
 
-        /* Image Side (Left) */
+        /* UPDATE: 3X Size Image Side */
         .slot-img-container {
-            width: 45px; flex-shrink: 0; background: rgba(0,0,0,0.1);
+            width: 90px; /* 3X Bigger (was ~30-40) */
+            flex-shrink: 0; background: rgba(0,0,0,0.1);
             display: flex; align-items: center; justify-content: center;
             border-right: 1px solid rgba(255,255,255,0.2);
         }
         .slot-img {
-            width: 32px; height: 32px; object-fit: contain;
-            border-radius: 4px; 
+            width: 80px; height: 80px; object-fit: contain; /* Large Image */
+            border-radius: 6px; 
             box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+
+        /* UPDATE: Invert FIA Logo to White */
+        .slot.filled[data-type="fia"] .slot-img {
+            filter: brightness(0) invert(1);
         }
 
         /* Text Side (Right) */
         .slot-text-container {
             flex: 1; display: flex; flex-direction: column; justify-content: center;
-            padding: 4px 8px; min-width: 0;
+            padding: 4px 10px; min-width: 0;
         }
         .slot-sub { 
-            font-size: 9px; text-transform: uppercase; opacity: 0.8; font-weight: 800; letter-spacing: 0.5px; margin-bottom: 2px;
+            font-size: 10px; text-transform: uppercase; opacity: 0.85; font-weight: 800; letter-spacing: 0.5px; margin-bottom: 3px;
         }
         .slot-main {
-            font-size: 11px; font-weight: 700; line-height: 1.1; 
+            font-size: 12px; font-weight: 700; line-height: 1.2; 
             word-wrap: break-word; overflow: hidden;
         }
 
         .slot.center { background: #222 !important; color: white !important; border: none !important; font-size: 16px; text-transform: uppercase; }
         .slot.matched { opacity: 1; box-shadow: inset 0 0 0 5px var(--score-win); transform: scale(1.02); z-index: 5; }
-        .slot.matched::after { content: '✓'; position: absolute; top: -8px; right: -8px; background: var(--score-win); color: black; border-radius: 50%; width: 20px; height: 20px; display: flex; align-items: center; justify-content: center; font-weight: 900; font-size: 14px; box-shadow: 0 2px 5px rgba(0,0,0,0.3); }
+        .slot.matched::after { content: '✓'; position: absolute; top: -8px; right: -8px; background: var(--score-win); color: black; border-radius: 50%; width: 22px; height: 22px; display: flex; align-items: center; justify-content: center; font-weight: 900; font-size: 14px; box-shadow: 0 2px 5px rgba(0,0,0,0.3); }
 
         /* RIGHT PANEL */
         .right-content { flex: 1; overflow-y: auto; padding: 15px; display: none; }
@@ -427,6 +433,7 @@
                 content.appendChild(btn);
                 const grid = document.createElement('div'); grid.className = 'sub-content';
                 content.appendChild(grid);
+                // PASS 'Race Control' as the driver name for image lookup
                 BINGO_CONFIG.templates.fia.forEach(t => createChip(grid, t, 'fia', false, 'Race Control', 'fia')); 
             } else {
                 createSubSection(content, "QUALIFYING", BINGO_CONFIG.templates.quali, `${d.name} `, 'driver', 'quali', d.name, 'driver');
@@ -490,7 +497,8 @@
             }
         }
         
-        // Parse Text
+        // Parse Text for clean display
+        // Drop logic: store driverName for image lookup
         currentGrid[index] = { text, type, driver: driverName, subtype: subType };
         renderGrid();
         saveLocal();
