@@ -100,21 +100,26 @@ const BINGO_CONFIG = {
             { t: "Team Orders Used", c: 2, tiers: [1, 2] }
         ],
         fia: [
-            { t: "Safety Car Deployed", c: 0, tiers: [1,2,3] }, 
-            { t: "Virtual Safety Car", c: 0, tiers: [1,2,3] }, 
-            { t: "Yellow Flag", c: 0, tiers: [1,2,3] }, 
-            { t: "Red Flag", c: 0, tiers: [1,2,3] }, 
-            { t: "Green Flag Race (No SC)", c: 0, tiers: [1,2,3] }, 
-            { t: "Rain / Wet Track", c: 0, tiers: [1,2,3] }, 
-            { t: "All Cars Finish (No DNF)", c: 0, tiers: [1,2,3] },
-            { t: "Blue Flags Shown", c: 0, tiers: [1,2,3] }, 
-            { t: "Track Limits Penalty", c: 0, tiers: [1,2,3] }, 
-            { t: "Debris on Track", c: 0, tiers: [1,2,3] }, 
-            { t: "DRS Disabled", c: 0, tiers: [1,2,3] }, 
-            { t: "5s Penalty Issued", c: 0, tiers: [1,2,3] }, 
-            { t: "Grid Drop Penalty", c: 0, tiers: [1,2,3] },
-            { t: "Formation Lap Issue", c: 0, tiers: [1,2,3] }, 
-            { t: "Standing Start Restart", c: 0, tiers: [1,2,3] }
+            /* HIGH PROBABILITY (Expensive) */
+            { t: "Yellow Flag", c: 8, tiers: [1,2,3] }, 
+            { t: "Blue Flags Shown", c: 8, tiers: [1,2,3] }, 
+            { t: "Track Limits Penalty", c: 7, tiers: [1,2,3] }, 
+            { t: "Virtual Safety Car", c: 6, tiers: [1,2,3] }, 
+            { t: "Safety Car Deployed", c: 6, tiers: [1,2,3] }, 
+            { t: "5s Penalty Issued", c: 6, tiers: [1,2,3] }, 
+            
+            /* MEDIUM PROBABILITY (Moderate) */
+            { t: "Debris on Track", c: 5, tiers: [1,2,3] }, 
+            { t: "DRS Disabled", c: 5, tiers: [1,2,3] }, 
+            
+            /* LOW PROBABILITY (Cheap) */
+            { t: "Red Flag", c: 4, tiers: [1,2,3] }, 
+            { t: "Rain / Wet Track", c: 4, tiers: [1,2,3] }, 
+            { t: "Grid Drop Penalty", c: 3, tiers: [1,2,3] },
+            { t: "Standing Start Restart", c: 3, tiers: [1,2,3] }, 
+            { t: "Green Flag Race (No SC)", c: 3, tiers: [1,2,3] }, 
+            { t: "All Cars Finish (No DNF)", c: 2, tiers: [1,2,3] },
+            { t: "Formation Lap Issue", c: 2, tiers: [1,2,3] }
         ]
     }
 };

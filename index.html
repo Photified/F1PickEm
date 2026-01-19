@@ -777,34 +777,6 @@
         parent.appendChild(grid);
     }
 
-    function toggleDriver(header) {
-        header.parentElement.classList.toggle('open');
-    }
-
-    function createChip(container, text, type, subType = '', driverName = null, forceCost = '', eventCost = 0, rawTemplateText = '') {
-        const chip = document.createElement('div');
-        chip.className = `chip ${type}`; 
-        
-        const dName = driverName || 'Race Control';
-        const cost = getChipCost(dName, type, rawTemplateText || text.replace(dName + ' ', ''));
-
-        chip.innerHTML = `<span>${text}</span> <span class="chip-cost">$${cost}M</span>`;
-        chip.draggable = true;
-        
-        chip.ondragstart = e => {
-            if(isGridLocked || isUserLocked) {
-                e.preventDefault();
-                return false;
-            }
-            e.dataTransfer.setData('text', text);
-            e.dataTransfer.setData('type', type);
-            e.dataTransfer.setData('cost', cost);
-            if(driverName) e.dataTransfer.setData('exclusive_driver', driverName);
-            if(subType) e.dataTransfer.setData('subtype', subType);
-        };
-        container.appendChild(chip);
-    }
-
     function handleSlotClick(slot) {
         // Only if empty
         const idx = parseInt(slot.dataset.index);
