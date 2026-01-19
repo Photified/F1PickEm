@@ -149,7 +149,6 @@
         
         .prediction-btn { background: white; border-radius: 8px; overflow: hidden; display: flex; height: 55px; margin-bottom: 10px; cursor: pointer; box-shadow: 0 2px 5px rgba(0,0,0,0.05); border: 1px solid #ddd; transition: 0.2s; }
         .prediction-btn:active { transform: scale(0.98); }
-        /* CLICK FIX: Removed pointer-events: none */
         .prediction-btn.unaffordable { opacity: 0.7; filter: grayscale(0.8); }
         .pb-left { width: 55px; background: var(--team-color); display: flex; align-items: center; justify-content: center; }
         .pb-img { width: 40px; height: 40px; object-fit: contain; filter: drop-shadow(0 2px 2px rgba(0,0,0,0.2)); }
@@ -183,6 +182,7 @@
         .btn-lock { background: #22c55e; color: white; border: 1px solid #16a34a; }
         .btn-unlock { background: #ef4444; color: white; border: 1px solid #b91c1c; }
         .btn-change-strat { background: white; color: #555; border: 2px solid #ddd; box-shadow: none; }
+        .btn-install-manual { background: #333; color: white; display: none; }
 
         /* MODAL */
         #customModal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 5000; display: flex; align-items: center; justify-content: center; backdrop-filter: blur(3px); }
@@ -223,21 +223,59 @@
 
   // PWA Logic
   let deferredPrompt;
-  const isIos = /iphone|ipad|ipod/.test(window.navigator.userAgent.toLowerCase());
-  const isInStandaloneMode = ('standalone' in window.navigator) && (window.navigator.standalone) || window.matchMedia('(display-mode: standalone)').matches;
+  
+  // Check if running as a PWA
+  function isPWA() {
+      return (window.matchMedia('(display-mode: standalone)').matches) || (window.navigator.standalone === true);
+  }
 
   window.addEventListener('beforeinstallprompt', (e) => {
     e.preventDefault();
     deferredPrompt = e;
     
-    // Only show popup if not dismissed before
-    if (!localStorage.getItem('installDismissed')) {
+    // Only show popup if not dismissed before AND not in PWA
+    if (!localStorage.getItem('installDismissed') && !isPWA()) {
         document.getElementById('installModal').classList.remove('hidden');
     }
     
-    // Always show manual install buttons if prompt captured
+    // Show manual buttons if we captured the prompt
     document.querySelectorAll('.manual-install-btn').forEach(b => b.style.display = 'block');
+    document.querySelector('.btn-install-manual').style.display = 'flex';
   });
+
+  // Forced logic: if prompt never fired but we are not PWA, might be iOS
+  window.onload = () => {
+      // Run normal init
+      if(typeof BINGO_CONFIG === 'undefined') return alert("Error: bingo_data.js missing.");
+      
+      const savedRace = localStorage.getItem('current_race_id');
+      if(savedRace) activeRace = savedRace;
+
+      renderRaces();
+      buildMarketGrids(); 
+      
+      const savedName = localStorage.getItem('f1_team_name');
+      const savedGrid = db.load(`grid_${activeRace}`);
+      
+      if(savedName) document.getElementById('teamNameInput').value = savedName;
+      if(savedName && savedGrid) login(true);
+      
+      setInterval(checkLockStatus, 1000);
+      updateBudgetUI();
+
+      // Install Modal Logic
+      setTimeout(() => {
+          // If not PWA and not dismissed
+          if (!isPWA() && !localStorage.getItem('installDismissed')) {
+              // If we haven't captured an event yet (likely iOS or Desktop Chrome didn't trigger yet)
+              // We can still show the modal, but the button will just show instructions.
+              if (!deferredPrompt) {
+                  // Optional: Show modal anyway for iOS/Manual instructions
+                  // document.getElementById('installModal').classList.remove('hidden');
+              }
+          }
+      }, 2000);
+  };
 
   async function triggerInstall() {
     if (deferredPrompt) {
@@ -248,11 +286,11 @@
             document.getElementById('installModal').classList.add('hidden');
         }
     } else {
-        // Fallback instructions
+        const isIos = /iphone|ipad|ipod/.test(window.navigator.userAgent.toLowerCase());
         if(isIos) {
-            alert("To install: Tap the Share Button (Square with Arrow), then 'Add to Home Screen'.");
+            alert("To install: Tap the Share Button (Square with Arrow), then scroll down to 'Add to Home Screen'.");
         } else {
-            alert("To install: Tap the 3 dots menu -> Install App.");
+            alert("To install: Tap the 3 dots in your browser menu -> Install App.");
         }
         document.getElementById('installModal').classList.add('hidden');
     }
@@ -346,6 +384,7 @@
                 <button id="lockBtn" class="btn-action btn-lock" onclick="toggleUserLock()">🔒 LOCK CARD</button>
                 <button id="unlockBtn" class="btn-action btn-unlock" onclick="toggleUserLock()">🔓 UNLOCK CARD</button>
                 <button class="btn-action btn-change-strat" onclick="changeStrategy()">⚙ SETUP</button>
+                <button class="btn-action btn-install-manual" onclick="triggerInstall()">⬇ INSTALL APP</button>
             </div>
         </div>
         
@@ -419,23 +458,7 @@
         driver:   ['driver','driver','team', 'driver','driver','driver', 'fia','driver','team']
     };
 
-    window.onload = () => {
-        if(typeof BINGO_CONFIG === 'undefined') return alert("Error: bingo_data.js missing.");
-        const savedRace = localStorage.getItem('current_race_id');
-        if(savedRace) activeRace = savedRace;
-
-        renderRaces();
-        buildMarketGrids(); 
-        
-        const savedName = localStorage.getItem('f1_team_name');
-        const savedGrid = db.load(`grid_${activeRace}`);
-        
-        if(savedName) document.getElementById('teamNameInput').value = savedName;
-        if(savedName && savedGrid) login(true);
-        
-        setInterval(checkLockStatus, 1000);
-        updateBudgetUI();
-    };
+    // (Window.onload was merged above, removed duplicate)
 
     function switchMobileView(view, btn) {
         ['game','standings','rules','strategy','login'].forEach(v => document.getElementById(`view-${v}`).classList.add('hidden'));
