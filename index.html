@@ -66,16 +66,22 @@
         .budget-hud-bar-bg { width: 80px; height: 5px; background: #e0e0e0; margin-top: 4px; border-radius: 3px; }
         .budget-hud-bar-fill { height: 100%; background: #22c55e; width: 50%; border-radius: 3px; transition: 0.3s; }
 
-        /* GRID */
-        .grid-container { padding: 15px; flex: 1; overflow-y: auto; display: flex; flex-direction: column; align-items: center; justify-content: center; }
-        .bingo-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; width: 100%; max-width: 600px; }
+        /* GRID - ADJUSTED FOR SCREEN WIDTH */
+        .grid-container { padding: 10px; flex: 1; overflow-y: auto; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+        .bingo-grid { 
+            display: grid; 
+            grid-template-columns: repeat(3, 1fr); 
+            gap: 8px; /* Slightly tighter gap */
+            width: 100%; 
+            max-width: 600px; 
+        }
         
-        /* EMPTY SLOT - FIXED ASPECT RATIO */
+        /* Empty Slot */
         .slot { 
-            aspect-ratio: 3/4; /* Keeps them taller rectangles */
-            background: #fafafa; border: 2px dashed #ddd; border-radius: 12px; 
+            aspect-ratio: 3/4; 
+            background: #fafafa; border: 2px dashed #ddd; border-radius: 8px; 
             display: flex; align-items: center; justify-content: center; 
-            font-size: 11px; font-weight: 800; position: relative; 
+            font-size: 10px; font-weight: 800; position: relative; 
             cursor: pointer; user-select: none; transition: 0.2s; 
             text-transform: uppercase; color: #aaa;
         }
@@ -84,70 +90,44 @@
         .slot[data-req="team"] { background: #e0fbf8; border-color: var(--c-team); color: var(--c-team); }
         .slot[data-req="fia"] { background: #fff2f2; border-color: var(--c-fia); color: var(--c-fia); }
 
-        /* FILLED SLOT - TOP/BOTTOM LAYOUT */
+        /* Filled Slot */
         .slot.filled { 
-            aspect-ratio: 3/4; /* Lock size */
+            aspect-ratio: 3/4;
             background: white !important; border: 1px solid #ddd !important; 
             padding: 0; overflow: hidden; display: flex; flex-direction: column; 
-            text-align: left; box-shadow: 0 4px 10px rgba(0,0,0,0.08); border-radius: 12px;
+            text-align: left; box-shadow: 0 4px 10px rgba(0,0,0,0.08); border-radius: 8px;
         }
-        
-        /* Top Section: Image + Color */
+        .slot.filled::before { content: ''; position: absolute; top: 0; left: 0; width: 0; height: 0; border-style: solid; border-width: 24px 24px 0 0; z-index: 5; }
+        .slot.filled[data-type="driver"]::before { border-color: var(--c-driver) transparent transparent transparent; }
+        .slot.filled[data-type="team"]::before { border-color: var(--c-team) transparent transparent transparent; }
+        .slot.filled[data-type="fia"]::before { border-color: var(--c-fia) transparent transparent transparent; }
+
         .slot-img-container { 
-            width: 100%; height: 65%; /* 65% height for image */
+            width: 100%; height: 62%; /* Adjusted height */
             display: flex; align-items: flex-end; justify-content: center; 
             background-color: var(--team-color-hex); position: relative; overflow: hidden; 
         }
         
-        /* Image Styling logic */
         .slot-img { z-index: 2; transition: 0.2s; }
-        
-        /* Drivers: Big Zoom */
-        .slot.filled[data-type="driver"] .slot-img {
-            width: 100%; height: 110%; /* Zoom in */
-            object-fit: cover; object-position: top center;
-            margin-bottom: -5px; /* Anchor to bottom */
-        }
-        
-        /* Teams: Wide Car */
-        .slot.filled[data-type="team"] .slot-img {
-            width: 95%; height: auto; 
-            object-fit: contain; margin-bottom: 20px;
-            filter: drop-shadow(0 4px 4px rgba(0,0,0,0.2));
-        }
-        
-        /* FIA: Inverted Logo */
-        .slot.filled[data-type="fia"] .slot-img {
-            width: 50%; height: auto; margin-bottom: 25px;
-            filter: brightness(0) invert(1); opacity: 0.8;
-        }
+        .slot.filled[data-type="driver"] .slot-img { width: 100%; height: 100%; object-fit: cover; object-position: top center; margin-bottom: 0; }
+        .slot.filled[data-type="team"] .slot-img { width: 90%; height: auto; object-fit: contain; margin-bottom: 15px; }
+        .slot.filled[data-type="fia"] .slot-img { width: 50%; height: auto; margin-bottom: 20px; filter: brightness(0) invert(1); opacity: 0.8; }
 
-        /* Price Tag - Floating Top Right */
-        .slot-price-tag { 
-            background: rgba(0,0,0,0.8); color: white; font-size: 10px; font-weight: 900; 
-            padding: 3px 8px; border-radius: 12px; position: absolute; bottom: 5px; right: 5px; 
-            z-index: 10; border: 1px solid rgba(255,255,255,0.2); 
-        }
+        .slot-price-tag { background: rgba(0,0,0,0.8); color: white; font-size: 9px; font-weight: 900; padding: 2px 6px; border-radius: 12px; position: absolute; bottom: 4px; right: 4px; z-index: 10; border: 1px solid rgba(255,255,255,0.2); }
 
-        /* Bottom Section: Text */
         .slot-text-container { 
-            width: 100%; height: 35%; /* 35% height for text */
+            width: 100%; height: 38%; 
             display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center;
-            padding: 5px; background: white; border-top: 1px solid rgba(0,0,0,0.05);
+            padding: 2px 4px; background: white; border-top: 1px solid rgba(0,0,0,0.05);
         }
-        .slot-sub { font-size: 8px; text-transform: uppercase; font-weight: 900; color: var(--cat-text-color); margin-bottom: 2px; letter-spacing: 0.5px; opacity: 0.7; }
-        .slot-main { font-size: 11px; font-weight: 900; line-height: 1.1; color: #222; text-transform: uppercase; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
-        
-        /* Remove Button - Top Left Overlay */
-        .remove-pick-btn { 
-            position: absolute; top: 5px; left: 5px; width: 22px; height: 22px; 
-            background: rgba(0,0,0,0.3); color: #fff; display: flex; align-items: center; justify-content: center; 
-            z-index: 15; border-radius: 50%; font-size: 14px; font-weight: bold; cursor: pointer; backdrop-filter: blur(2px);
-        }
-        .remove-pick-btn:hover { background: #ef4444; }
+        .slot-sub { font-size: 7px; text-transform: uppercase; font-weight: 900; color: var(--cat-text-color); margin-bottom: 2px; letter-spacing: 0.5px; opacity: 0.7; }
+        /* Dynamic text sizing for main label */
+        .slot-main { font-size: 10px; font-weight: 900; line-height: 1.1; color: #222; text-transform: uppercase; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+        @media (min-width: 380px) { .slot-main { font-size: 11px; } }
 
+        .remove-pick-btn { position: absolute; top: 4px; left: 4px; width: 20px; height: 20px; background: rgba(0,0,0,0.3); color: #fff; display: flex; align-items: center; justify-content: center; z-index: 15; border-radius: 50%; font-size: 12px; font-weight: bold; cursor: pointer; backdrop-filter: blur(2px); }
         .slot.matched { opacity: 1; box-shadow: inset 0 0 0 3px var(--score-win); transform: scale(1.02); z-index: 5; }
-        .slot.matched::after { content: '✓'; position: absolute; top: 5px; right: 5px; background: var(--score-win); color: black; border-radius: 50%; width: 20px; height: 20px; display: flex; align-items: center; justify-content: center; font-weight: 900; font-size: 14px; box-shadow: 0 2px 5px rgba(0,0,0,0.2); z-index: 20; }
+        .slot.matched::after { content: '✓'; position: absolute; top: 4px; right: 4px; background: var(--score-win); color: black; border-radius: 50%; width: 18px; height: 18px; display: flex; align-items: center; justify-content: center; font-weight: 900; font-size: 12px; box-shadow: 0 2px 5px rgba(0,0,0,0.2); z-index: 20; }
 
         /* MARKET STYLES */
         .tab-header { display: flex; border-bottom: 1px solid #eee; background: #f9f9f9; flex-shrink: 0; height: 45px; }
@@ -576,20 +556,13 @@
                 if(!drv) drv = BINGO_CONFIG.constructors.find(c => c.name === data.driver);
                 if(!drv && data.type === 'fia') drv = {name:'RC', color:'#333', img:'images/fia.png'};
 
-                const color = drv ? drv.color : '#333';
-                const img = drv ? drv.img : '';
-                
-                s.style.setProperty('--team-color-hex', color);
-                let catColor = '#ff9500';
-                if(data.type === 'team') catColor = '#00d2be';
-                if(data.type === 'fia') catColor = '#e10600';
-                s.style.setProperty('--cat-text-color', catColor);
-
+                s.style.setProperty('--team-color-hex', drv.color);
+                s.style.setProperty('--cat-text-color', data.type==='driver'?'#ff9500':(data.type==='team'?'#00d2be':'#e10600'));
                 s.className = `slot filled`; s.dataset.type = data.type; s.onclick = null;
                 
                 s.innerHTML = `
                     <div class="remove-pick-btn" onclick="removePick(${idx}); event.stopPropagation();">×</div>
-                    <div class="slot-img-container"><img src="${img}" class="slot-img"><div class="slot-price-tag">$${data.cost}M</div></div>
+                    <div class="slot-img-container"><img src="${drv.img}" class="slot-img"><div class="slot-price-tag">$${data.cost}M</div></div>
                     <div class="slot-text-container"><div class="slot-sub">${data.subtype}</div><div class="slot-main">${data.text.replace(data.driver,'').trim()}</div></div>
                 `;
             } else {
