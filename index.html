@@ -83,14 +83,14 @@
 
         .slot-img-container { width: 40%; display: flex; flex-direction: column; align-items: center; justify-content: center; background-color: var(--team-color-hex); position: relative; border-right: 1px solid rgba(255,255,255,0.2); }
         .slot-img { width: 85%; height: 85%; object-fit: contain; filter: drop-shadow(0 4px 4px rgba(0,0,0,0.3)); z-index: 2; }
-        .slot.filled[data-type="team"] .slot-img { width: 95%; height: auto; }
-        .slot.filled[data-type="fia"] .slot-img { filter: brightness(0) invert(1); }
         .slot-price-tag { background: rgba(0,0,0,0.7); color: white; font-size: 10px; font-weight: 900; padding: 2px 6px; border-radius: 4px; position: absolute; bottom: 5px; z-index: 3; }
         .slot-text-container { flex: 1; display: flex; flex-direction: column; justify-content: center; padding: 5px 10px; background-color: #f9f9f9; background-image: linear-gradient(45deg, #eee 25%, transparent 25%, transparent 75%, #eee 75%, #eee), linear-gradient(45deg, #eee 25%, transparent 25%, transparent 75%, #eee 75%, #eee); background-size: 16px 16px; background-position: 0 0, 8px 8px; }
         .slot-sub { font-size: 9px; text-transform: uppercase; font-weight: 900; color: var(--cat-text-color); margin-bottom: 2px; letter-spacing: 0.5px; }
         .slot-main { font-size: 13px; font-weight: 800; line-height: 1.1; word-wrap: break-word; color: #111; }
         .remove-pick-btn { position: absolute; top: 0; right: 0; width: 24px; height: 24px; background: rgba(0,0,0,0.8); color: #fff; display: flex; align-items: center; justify-content: center; z-index: 10; border-bottom-left-radius: 6px; font-size: 14px; font-weight: bold; cursor: pointer; }
         .slot.matched::after { content: '✓'; position: absolute; bottom: 5px; right: 5px; background: var(--score-win); color: black; border-radius: 50%; width: 28px; height: 28px; display: flex; align-items: center; justify-content: center; font-weight: 900; font-size: 18px; box-shadow: 0 2px 5px rgba(0,0,0,0.3); }
+        .slot.filled[data-type="team"] .slot-img { width: 95%; height: auto; }
+        .slot.filled[data-type="fia"] .slot-img { filter: brightness(0) invert(1); }
 
         /* MARKET STYLES */
         .tab-header { display: flex; border-bottom: 1px solid #eee; background: #f9f9f9; flex-shrink: 0; height: 45px; }
@@ -126,25 +126,13 @@
         .pb-text { font-size: 12px; font-weight: 800; color: #333; text-transform: uppercase; }
         .pb-cost { background: #333; color: white; padding: 4px 8px; border-radius: 4px; font-size: 11px; font-weight: 900; }
 
-        /* LOGIN SLIDER */
-        .selection-slider { display: flex; overflow-x: auto; gap: 12px; padding: 10px 5px; width: 100%; max-width: 600px; scroll-snap-type: x mandatory; margin-bottom: 20px; scrollbar-width: none; }
-        .selection-card { flex: 0 0 100px; height: 110px; border: 1px solid #eee; border-radius: 12px; display: flex; flex-direction: column; justify-content: flex-end; align-items: center; cursor: pointer; transition: 0.2s; background: white; position: relative; scroll-snap-align: start; overflow: hidden; box-shadow: 0 4px 10px rgba(0,0,0,0.05); }
-        .selection-card.selected { border: 3px solid #22c55e; box-shadow: 0 4px 15px rgba(34, 197, 94, 0.2); transform: scale(1.02); z-index: 2; }
-        .selection-card.selected::after { content: '✓'; position: absolute; top: 5px; right: 5px; background: #22c55e; color: white; border-radius: 50%; width: 22px; height: 22px; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 12px; }
-        .selection-card-color { position: absolute; top: 0; left: 0; width: 100%; height: 6px; background: var(--team-color); }
-        .selection-img { width: 90%; height: 65%; object-fit: contain; object-position: bottom; margin-bottom: 0; z-index: 1; }
-        .selection-name { width: 100%; background: #f9f9f9; font-size: 9px; font-weight: 800; text-align: center; padding: 6px 2px; text-transform: uppercase; color: #333; border-top: 1px solid #eee; z-index: 2; }
-        .scroll-hint { height: 4px; width: 50px; background: #eee; border-radius: 2px; margin: -10px auto 20px auto; position: relative; }
-        .scroll-hint::after { content:''; position: absolute; top:0; left:0; height:100%; width: 20px; background:#ccc; border-radius: 2px; animation: scrollAnim 2s infinite; }
-        @keyframes scrollAnim { 0% { left: 0; } 50% { left: 30px; } 100% { left: 0; } }
+        /* LOGIN */
+        .view-login { width: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 25px; box-sizing: border-box; overflow-y: auto; height: 100%; }
+        .login-input { padding: 15px; width: 100%; text-align: center; border: 2px solid #eee; border-radius: 10px; font-weight: bold; font-size: 18px; max-width: 400px; margin-bottom: 25px; background: #fff; }
+        .login-btn { padding: 16px; width: 100%; max-width: 400px; margin-top: 20px; background: var(--brand-red); color: white; border: none; font-weight: 900; cursor: pointer; border-radius: 10px; font-size: 16px; box-shadow: 0 4px 10px rgba(225, 6, 0, 0.2); margin-bottom: 50px; }
 
-        /* FOOTER ACTIONS */
-        .actions-footer { padding: 15px; display: flex; gap: 10px; align-items: center; justify-content: center; width: 100%; }
-        .btn-action { flex: 1; padding: 12px; border-radius: 8px; font-weight: 900; font-size: 11px; text-transform: uppercase; cursor: pointer; border: none; display: flex; align-items: center; justify-content: center; gap: 6px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); transition: 0.2s; }
-        .btn-lock { background: #22c55e; color: white; }
-        .btn-unlock { background: #ef4444; color: white; }
-        .btn-change-strat { background: white; color: #555; border: 2px solid #ddd; }
-
+        /* STRATEGY */
+        .view-strategy { text-align: center; width: 100%; display: flex; flex-direction: column; align-items: center; height: 100%; padding: 20px; overflow-y: auto; }
         .strategy-header-container { margin-top: 20px; margin-bottom: 30px; display: flex; flex-direction: column; align-items: center; gap: 5px; }
         .big-flag { width: 100px; height: auto; border-radius: 6px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); margin-bottom: 10px; }
         .strat-race-name { font-size: 32px; font-weight: 900; font-style: italic; text-transform: uppercase; line-height: 1; color: var(--brand-dark); }
@@ -153,15 +141,25 @@
         .strat-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; max-width: 500px; width: 100%; }
         .strat-card { background: #fff; border: 2px solid #eee; border-radius: 12px; padding: 20px; cursor: pointer; display: flex; flex-direction: column; align-items: center; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
         .mini-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2px; width: 60px; height: 60px; margin-bottom: 10px; opacity: 0.8; } .mg-c { border-radius: 1px; }
+        
+        /* FOOTER ACTIONS */
+        .actions-footer { padding: 15px; display: flex; gap: 10px; align-items: center; justify-content: center; width: 100%; }
+        .btn-action { flex: 1; padding: 12px; border-radius: 8px; font-weight: 900; font-size: 11px; text-transform: uppercase; cursor: pointer; border: none; display: flex; align-items: center; justify-content: center; gap: 6px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); transition: 0.2s; }
+        .btn-lock { background: #22c55e; color: white; }
+        .btn-unlock { background: #ef4444; color: white; }
+        .btn-change-strat { background: white; color: #555; border: 2px solid #ddd; }
+
+        /* MODAL */
         #customModal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 5000; display: flex; align-items: center; justify-content: center; backdrop-filter: blur(3px); }
         .modal-box { background: white; padding: 25px; border-radius: 15px; width: 85%; max-width: 320px; text-align: center; }
         .btn-modal { padding: 12px 24px; border-radius: 8px; font-weight: 800; cursor: pointer; border: none; margin: 5px; font-size: 14px; }
         .btn-confirm { background: var(--brand-red); color: white; }
         .btn-cancel { background: #eee; color: #333; }
+
+        /* STANDINGS & RULES */
         .score-box { text-align: center; margin-bottom: 20px; padding: 25px; background: #fff; border-radius: 12px; border: 1px solid #eee; box-shadow: var(--card-shadow); }
         .score-val { font-size: 42px; font-weight: 900; color: var(--brand-dark); line-height: 1; }
-        .login-btn { padding: 16px; width: 100%; max-width: 400px; margin-top: 20px; background: var(--brand-red); color: white; border: none; font-weight: 900; cursor: pointer; border-radius: 10px; font-size: 16px; box-shadow: 0 4px 10px rgba(225, 6, 0, 0.2); margin-bottom: 50px; }
-        .login-input { padding: 15px; width: 100%; text-align: center; border: 2px solid #eee; border-radius: 10px; font-weight: bold; font-size: 18px; max-width: 400px; margin-bottom: 25px; background: #fff; }
+        .score-lbl { font-size: 12px; font-weight: 700; color: #888; text-transform: uppercase; margin-top: 5px; letter-spacing: 1px; }
         .rules-card { background: white; border: 1px solid #eee; border-radius: 12px; padding: 20px; margin-bottom: 15px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
         .rule-step { display: flex; gap: 15px; margin-bottom: 20px; align-items: flex-start; }
         .step-num { flex: 0 0 30px; height: 30px; background: var(--brand-red); color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 900; font-size: 14px; }
@@ -223,12 +221,6 @@
         <div id="view-login" class="view-login">
             <h2 style="font-style:italic; font-size:24px; margin-bottom:20px;">TEAM PRINCIPAL LOGIN</h2>
             <input type="text" id="teamNameInput" class="login-input" placeholder="Enter Team Name">
-            <div class="section-header">Select Favorite Driver</div>
-            <div id="favDriverGrid" class="selection-slider"></div>
-            <div class="scroll-hint"></div>
-            <div class="section-header">Select Favorite Team</div>
-            <div id="favTeamGrid" class="selection-slider"></div>
-            <div class="scroll-hint"></div>
             <button class="login-btn" onclick="login()">ENTER PADDOCK</button>
         </div>
 
@@ -322,7 +314,6 @@
     let isGridLocked = false;
     let isUserLocked = false;
     const BUDGET_CAP = 100;
-    let favDriver = null, favTeam = null;
     let activeMarketTab = 'drivers';
 
     const templates = {
@@ -337,7 +328,6 @@
         const savedRace = localStorage.getItem('current_race_id');
         if(savedRace) activeRace = savedRace;
 
-        buildLoginSelectionGrids();
         renderRaces();
         buildMarketGrids(); 
         
@@ -371,54 +361,11 @@
         document.getElementById(`${tab}-root`).style.display = (tab === 'fia') ? 'block' : (tab === 'teams' ? 'flex' : 'grid');
     }
 
-    function buildLoginSelectionGrids() {
-        const dGrid = document.getElementById('favDriverGrid');
-        // Sort by Tier (ascending) to show top drivers first
-        const sortedDrivers = BINGO_CONFIG.drivers.filter(d=>d.team!=='FIA').sort((a,b) => a.tier - b.tier);
-        sortedDrivers.forEach(d => {
-            const c = createSelectionCard(d, 'driver');
-            dGrid.appendChild(c);
-        });
-
-        const tGrid = document.getElementById('favTeamGrid');
-        // Sort by Tier
-        const sortedTeams = BINGO_CONFIG.constructors.filter(c=>c.type==='Team').sort((a,b) => a.tier - b.tier);
-        sortedTeams.forEach(t => {
-            const c = createSelectionCard(t, 'team');
-            tGrid.appendChild(c);
-        });
-    }
-
-    function createSelectionCard(entity, type) {
-        const div = document.createElement('div');
-        div.className = 'selection-card';
-        // Remove border logic, add top color bar
-        div.style.setProperty('--team-color', entity.color);
-        div.onclick = () => {
-            const p = div.parentElement;
-            p.querySelectorAll('.selection-card').forEach(c=>c.classList.remove('selected'));
-            div.classList.add('selected');
-            if(type==='driver') favDriver = entity.name;
-            else favTeam = entity.name;
-        };
-        div.innerHTML = `
-            <div class="selection-card-color"></div>
-            <img src="${entity.img}" class="selection-img">
-            <div class="selection-name">${entity.name}</div>
-        `;
-        return div;
-    }
-
     function login(auto) {
         const name = document.getElementById('teamNameInput').value;
         if(!auto) {
-            if(!name || !favDriver || !favTeam) return showModal("MISSING INFO", "Please enter a team name and select your favorites.", false);
+            if(!name) return showModal("MISSING INFO", "Please enter a team name.", false);
             localStorage.setItem('f1_team_name', name);
-            localStorage.setItem('f1_fav_driver', favDriver);
-            localStorage.setItem('f1_fav_team', favTeam);
-        } else {
-            favDriver = localStorage.getItem('f1_fav_driver');
-            favTeam = localStorage.getItem('f1_fav_team');
         }
         document.getElementById('displayTeamName').innerText = name.toUpperCase();
         const savedGrid = db.load(`grid_${activeRace}`);
