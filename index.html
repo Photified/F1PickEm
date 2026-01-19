@@ -38,6 +38,7 @@
         .active-panel { background: white; border-radius: 12px; border: 1px solid #e0e0e0; padding: 0; display: flex; flex-direction: column; overflow: hidden; height: 100%; position: relative; }
 
         .view-login, .view-strategy, .view-standings, .view-rules { padding-bottom: 120px !important; }
+        
         #view-game { padding-bottom: 70px !important; } 
 
         @media (max-width: 1024px) {
@@ -253,6 +254,11 @@
         .btn-modal { padding: 12px 24px; border-radius: 8px; font-weight: 800; cursor: pointer; border: none; margin: 5px; font-size: 14px; }
         .btn-confirm { background: var(--brand-red); color: white; }
         .btn-cancel { background: #eee; color: #333; }
+        #installModal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); z-index: 6000; display: flex; align-items: center; justify-content: center; backdrop-filter: blur(4px); }
+        .install-box { background: white; width: 85%; max-width: 320px; border-radius: 16px; padding: 30px 20px; text-align: center; box-shadow: 0 20px 50px rgba(0,0,0,0.3); }
+        .install-icon { width: 60px; height: 60px; background: #e10600; border-radius: 12px; margin-bottom: 15px; display: inline-flex; align-items: center; justify-content: center; color: white; font-size: 30px; font-weight: bold; }
+        .install-btn { width: 100%; padding: 14px; background: #22c55e; color: white; border: none; border-radius: 8px; font-weight: 900; font-size: 14px; margin-top: 15px; cursor: pointer; box-shadow: 0 4px 10px rgba(34, 197, 94, 0.3); }
+        .install-dismiss { width: 100%; padding: 12px; background: transparent; color: #888; border: none; font-weight: 700; font-size: 12px; margin-top: 5px; cursor: pointer; }
 
         /* STANDINGS & RULES */
         .score-box { text-align: center; margin-bottom: 20px; padding: 25px; background: #fff; border-radius: 12px; border: 1px solid #eee; box-shadow: var(--card-shadow); }
@@ -274,6 +280,16 @@
 <script>
   if ('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js');
 </script>
+
+<div id="installModal" class="hidden">
+    <div class="install-box">
+        <div class="install-icon">F1</div>
+        <h3 style="margin:0; font-style:italic; font-size:22px; color:#222;">INSTALL APP</h3>
+        <p style="font-size:13px; color:#666; margin-top:5px; line-height:1.5;">Install F1 Pick'Em for the best fullscreen experience and offline access.</p>
+        <button id="btnInstall" class="install-btn">INSTALL NOW</button>
+        <button id="btnDismiss" class="install-dismiss">CONTINUE IN BROWSER</button>
+    </div>
+</div>
 
 <div id="customModal" class="hidden">
     <div class="modal-box">
@@ -417,6 +433,26 @@
         chaos:    ['fia','fia','driver',   'fia','fia','fia',    'team','fia','driver'],
         driver:   ['driver','driver','team', 'driver','driver','driver', 'fia','driver','team']
     };
+
+    let deferredPrompt;
+    window.addEventListener('beforeinstallprompt', (e) => {
+        e.preventDefault();
+        deferredPrompt = e;
+        document.getElementById('installModal').classList.remove('hidden');
+    });
+
+    document.getElementById('btnInstall').addEventListener('click', async () => {
+        if (deferredPrompt) {
+            deferredPrompt.prompt();
+            const { outcome } = await deferredPrompt.userChoice;
+            deferredPrompt = null;
+            document.getElementById('installModal').classList.add('hidden');
+        }
+    });
+
+    document.getElementById('btnDismiss').addEventListener('click', () => {
+        document.getElementById('installModal').classList.add('hidden');
+    });
 
     window.onload = () => {
         if(typeof BINGO_CONFIG === 'undefined') return alert("Error: bingo_data.js missing.");
@@ -657,16 +693,20 @@
         }
 
         const spent = currentGrid.reduce((s,i)=>s+(i?i.cost:0),0);
-        if(spent + cost > BUDGET_CAP) return showModal("OVER BUDGET", "", false);
+        if(spent + cost > BUDGET_CAP) return showModal("OVER BUDGET", "You cannot afford this pick.", false);
         
-        if(dName && sub && type !== 'fia') {
-            if(currentGrid.some(x => x && x.driver === dName)) return showModal("ONE PER DRIVER", "You already have a pick for this driver.", false);
+        // ** LOGIC UPDATE: ALLOW MULTIPLE FIA **
+        // Check for duplicates only if type is NOT 'fia'
+        if(type !== 'fia' && driverName) {
+            const conflict = currentGrid.some(x => x && x.driver === driverName);
+            if(conflict) return showModal("RULE VIOLATION", "You can only select one pick per driver/team per race.", false);
         }
 
         currentGrid[tIdx] = { text, type, driver: dName, subtype: sub, cost };
         db.save(`grid_${activeRace}`, currentGrid);
         renderGrid();
         closeMobileMarket();
+        delete panel.dataset.targetIndex;
     }
 
     function removePick(idx) {
