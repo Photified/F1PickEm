@@ -37,8 +37,13 @@
         .panel { background: white; border-radius: 12px; box-shadow: var(--card-shadow); overflow: hidden; display: flex; flex-direction: column; border: 1px solid #e0e0e0; height: 100%; }
         .active-panel { background: white; border-radius: 12px; border: 1px solid #e0e0e0; padding: 0; display: flex; flex-direction: column; overflow: hidden; height: 100%; position: relative; }
 
+        /* SCROLL VIEW FIXES (Padding for Bottom Nav) */
+        .view-login, .view-strategy, .view-game, .view-standings, .view-rules {
+            padding-bottom: 100px !important; /* Critical fix for button cutoff */
+        }
+
         @media (max-width: 1024px) {
-            .main-stage { grid-template-columns: 1fr; padding: 10px; padding-bottom: 70px; }
+            .main-stage { grid-template-columns: 1fr; padding: 10px; padding-bottom: 0; } /* Remove outer padding */
             .panel { display: none; } 
             .panel.mobile-modal { display: flex; position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 2000; border-radius: 0; animation: slideUp 0.3s ease-out; }
             .mobile-close-btn { display: block !important; }
@@ -47,7 +52,7 @@
         .mobile-close-btn { display: none; padding: 15px; background: #333; color: white; text-align: center; font-weight: 800; cursor: pointer; text-transform: uppercase; letter-spacing: 1px; }
 
         /* NAV */
-        .mobile-nav { display: none; position: fixed; bottom: 0; left: 0; width: 100%; height: 60px; background: white; border-top: 1px solid #ddd; z-index: 1000; justify-content: space-around; align-items: center; box-shadow: 0 -2px 10px rgba(0,0,0,0.05); }
+        .mobile-nav { display: none; position: fixed; bottom: 0; left: 0; width: 100%; height: 70px; background: white; border-top: 1px solid #ddd; z-index: 1000; justify-content: space-around; align-items: center; box-shadow: 0 -2px 10px rgba(0,0,0,0.05); padding-bottom: 10px; }
         .nav-item { flex: 1; height: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; font-size: 10px; font-weight: 800; color: #888; text-transform: uppercase; cursor: pointer; }
         .nav-item.active { color: var(--brand-red); background: #fff5f5; }
         .nav-icon { font-size: 20px; margin-bottom: 2px; }
@@ -125,13 +130,37 @@
         .view-login { width: 100%; display: flex; flex-direction: column; align-items: center; padding: 25px; box-sizing: border-box; overflow-y: auto; height: 100%; }
         .login-input { padding: 15px; width: 100%; text-align: center; border: 2px solid #eee; border-radius: 10px; font-weight: bold; font-size: 18px; max-width: 400px; margin-bottom: 25px; background: #fff; }
         .section-header { font-size: 11px; font-weight: 900; color: #999; text-transform: uppercase; margin: 15px 0 10px 0; width: 100%; max-width: 600px; border-bottom: 1px solid #eee; padding-bottom: 5px; letter-spacing: 1px; }
-        .selection-grid { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; max-width: 600px; margin-bottom: 20px; width: 100%; }
-        .selection-card { width: 90px; height: 90px; border: 2px solid #eee; border-radius: 10px; display: flex; flex-direction: column; align-items: center; justify-content: center; cursor: pointer; transition: 0.2s; background: white; position: relative; }
+        
+        /* NEW SLIDER STYLE FOR SELECTION */
+        .selection-slider {
+            display: flex;
+            overflow-x: auto;
+            gap: 12px;
+            padding: 5px;
+            width: 100%;
+            max-width: 600px;
+            scroll-snap-type: x mandatory;
+            margin-bottom: 20px;
+            scrollbar-width: none; /* Hide scrollbar Firefox */
+            -webkit-overflow-scrolling: touch;
+        }
+        .selection-slider::-webkit-scrollbar { display: none; } /* Hide Chrome */
+
+        .selection-card { 
+            flex: 0 0 90px; /* Fixed width */
+            height: 100px; 
+            border: 2px solid #eee; border-radius: 10px; 
+            display: flex; flex-direction: column; align-items: center; justify-content: center; 
+            cursor: pointer; transition: 0.2s; background: white; 
+            position: relative;
+            scroll-snap-align: start;
+        }
         .selection-card.selected { border-width: 3px; background: #f0fdf4; box-shadow: 0 4px 12px rgba(0,0,0,0.1); transform: scale(1.05); z-index: 2; }
         .selection-card.selected::after { content: '✓'; position: absolute; top: 5px; right: 5px; background: #22c55e; color: white; border-radius: 50%; width: 20px; height: 20px; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 12px; }
         .selection-img { width: 60%; height: 50%; object-fit: contain; margin-bottom: 6px; pointer-events: none; }
         .selection-name { font-size: 9px; font-weight: 800; text-align: center; line-height: 1.1; pointer-events: none; padding: 0 4px; text-transform: uppercase; }
-        .login-btn { padding: 16px; width: 100%; max-width: 400px; margin-top: 20px; background: var(--brand-red); color: white; border: none; font-weight: 900; cursor: pointer; border-radius: 10px; font-size: 16px; box-shadow: 0 4px 10px rgba(225, 6, 0, 0.2); }
+        
+        .login-btn { padding: 16px; width: 100%; max-width: 400px; margin-top: 20px; background: var(--brand-red); color: white; border: none; font-weight: 900; cursor: pointer; border-radius: 10px; font-size: 16px; box-shadow: 0 4px 10px rgba(225, 6, 0, 0.2); margin-bottom: 50px; }
 
         /* STRATEGY */
         .view-strategy { text-align: center; width: 100%; display: flex; flex-direction: column; align-items: center; height: 100%; padding: 20px; overflow-y: auto; }
@@ -213,10 +242,13 @@
         <div id="view-login" class="view-login">
             <h2 style="font-style:italic; font-size:24px; margin-bottom:20px;">TEAM PRINCIPAL LOGIN</h2>
             <input type="text" id="teamNameInput" class="login-input" placeholder="Enter Team Name">
+            
             <div class="section-header">Select Favorite Driver</div>
-            <div id="favDriverGrid" class="selection-grid"></div>
+            <div id="favDriverGrid" class="selection-slider"></div>
+
             <div class="section-header">Select Favorite Team</div>
-            <div id="favTeamGrid" class="selection-grid"></div>
+            <div id="favTeamGrid" class="selection-slider"></div>
+
             <button class="login-btn" onclick="login()">ENTER PADDOCK</button>
         </div>
 
