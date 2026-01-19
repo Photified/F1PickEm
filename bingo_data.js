@@ -1,6 +1,4 @@
-/* F1 2026 PICK 'EM DATA - FORGIVING BUDGET EDITION
-   - Reductions applied to high-tier drivers and expensive event templates.
-*/
+/* F1 2026 PICK 'EM DATA - DYNAMIC PRICING EDITION */
 
 const BINGO_CONFIG = {
     races: [
@@ -119,5 +117,4 @@ const BINGO_CONFIG = {
             { t: "Standing Start Restart", c: 0, tiers: [1,2,3] }
         ]
     }
-
 };

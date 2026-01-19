@@ -78,18 +78,10 @@
         .driver-header { padding: 10px 12px; display: flex; align-items: center; gap: 12px; cursor: pointer; background: linear-gradient(90deg, transparent 95%, #fafafa); }
         .driver-header:hover { background: #f5f5f5; }
         
-        /* Standard Driver Face */
         .driver-face { width: 36px; height: 36px; object-fit: cover; border-radius: 6px; background: #eee; border: 2px solid var(--team-color); padding: 2px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); flex-shrink: 0; }
         .driver-face[src=""] { display: none; } 
         
-        /* WIDE Car Image in Sidebar */
-        .driver-face.car-face { 
-            width: 100px; /* Wider */
-            height: 36px; 
-            object-fit: contain; 
-            border-radius: 4px; 
-            background: white; 
-        }
+        .driver-face.car-face { width: 100px; height: 36px; object-fit: contain; border-radius: 4px; background: white; }
 
         .driver-name { font-weight: 800; font-size: 14px; color: #333; }
         .driver-team { font-size: 10px; color: #888; text-transform: uppercase; margin-top:2px; }
@@ -149,12 +141,13 @@
         .grid-locked .slot { opacity: 0.7; pointer-events: none; filter: grayscale(0.5); }
         .grid-locked .slot.filled { filter: grayscale(0); opacity: 1; }
 
-        .slot { background: #fafafa; border: 2px dashed #ddd; border-radius: 8px; display: flex; align-items: center; justify-content: center; text-align: center; padding: 5px; font-size: 11px; font-weight: 700; position: relative; user-select: none; transition: 0.2s; width: 100%; height: 100%; box-sizing: border-box; }
+        .slot { background: #fafafa; border: 2px dashed #ddd; border-radius: 8px; display: flex; align-items: center; justify-content: center; text-align: center; padding: 5px; font-size: 11px; font-weight: 700; position: relative; user-select: none; transition: 0.2s; width: 100%; height: 100%; box-sizing: border-box; cursor: pointer; }
+        .slot:hover { border-color: #aaa; background: #f0f0f0; }
         .slot[data-req="driver"] { background: #fff8e6; border-color: var(--c-driver); color: var(--c-driver); opacity: 0.8; }
         .slot[data-req="team"] { background: #e0fbf8; border-color: var(--c-team); color: var(--c-team); opacity: 0.8; }
         .slot[data-req="fia"] { background: #fff2f2; border-color: var(--c-fia); color: var(--c-fia); opacity: 0.8; }
 
-        .slot.filled { background: #f4f4f4 !important; border: 1px solid #d0d0d0 !important; color: #333 !important; box-shadow: 0 4px 10px rgba(0,0,0,0.08); opacity: 1; padding: 0; overflow: hidden; display: flex; flex-direction: row; align-items: stretch; text-align: left; position: relative; }
+        .slot.filled { background: #f4f4f4 !important; border: 1px solid #d0d0d0 !important; color: #333 !important; box-shadow: 0 4px 10px rgba(0,0,0,0.08); opacity: 1; padding: 0; overflow: hidden; display: flex; flex-direction: row; align-items: stretch; text-align: left; position: relative; cursor: default; }
         .slot.filled::before { content: ''; position: absolute; top: 0; left: 0; width: 0; height: 0; border-style: solid; border-width: 16px 16px 0 0; z-index: 5; }
         .slot.filled[data-type="driver"]::before { border-color: var(--c-driver) transparent transparent transparent; }
         .slot.filled[data-type="team"]::before { border-color: var(--c-team) transparent transparent transparent; }
@@ -261,9 +254,9 @@
     
     <div class="panel">
         <div class="tab-header">
-            <div class="tab-btn active" onclick="showSideTab('drivers', this)">DRIVERS</div>
-            <div class="tab-btn" onclick="showSideTab('teams', this)">TEAMS</div>
-            <div class="tab-btn" onclick="showSideTab('fia', this)">FIA</div>
+            <div class="tab-btn active" id="tabBtn-drivers" onclick="showSideTab('drivers', this)">DRIVERS</div>
+            <div class="tab-btn" id="tabBtn-teams" onclick="showSideTab('teams', this)">TEAMS</div>
+            <div class="tab-btn" id="tabBtn-fia" onclick="showSideTab('fia', this)">FIA</div>
         </div>
         
         <div id="panel-drivers" class="side-content active">
@@ -407,7 +400,6 @@
     let isUserLocked = false;
     const BUDGET_CAP = 100;
 
-    // UPDATED TEMPLATES: Replaced 'FREE' with real categories
     const templates = {
         balanced: ['driver','team','driver', 'team','driver','fia', 'driver','fia','team'],
         team:     ['team','team','driver', 'team','team','team', 'driver','team','fia'],
@@ -444,10 +436,16 @@
         document.querySelectorAll('.side-content').forEach(el => el.classList.remove('active'));
         document.getElementById(`panel-${tabName}`).classList.add('active');
         
+        // Update header buttons
+        const header = document.querySelector('.panel .tab-header');
+        header.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+        
+        // If btn provided, activate it. If not, find by ID
         if(btn) {
-            const allBtns = btn.parentElement.querySelectorAll('.tab-btn');
-            allBtns.forEach(b => b.classList.remove('active'));
             btn.classList.add('active');
+        } else {
+            const autoBtn = document.getElementById(`tabBtn-${tabName}`);
+            if(autoBtn) autoBtn.classList.add('active');
         }
     }
 
@@ -490,7 +488,6 @@
         const unlockBtn = document.getElementById('unlockBtn');
         const grid = document.getElementById('grid');
 
-        // Check if full (all 9 slots must be non-null)
         const isFull = currentGrid.every(slot => slot !== null);
 
         if(isGridLocked) {
@@ -555,27 +552,58 @@
 
     function getChipCost(driverName, type, templateText) {
         let basePrice = 0;
-        
+        let tier = 2; // Default tier
+
         if (type === 'team') {
              const constr = BINGO_CONFIG.constructors.find(c => c.name === driverName);
              basePrice = constr ? (constr.price || 0) : 0;
+             if(constr) tier = constr.tier;
         } else if (type === 'fia') {
-             basePrice = 0; // FIA usually 0
+             basePrice = 0; 
+             tier = 0;
         } else {
              const drv = BINGO_CONFIG.drivers.find(d => d.name === driverName);
              basePrice = drv ? (drv.price || 0) : 0;
+             if(drv) tier = drv.tier;
         }
 
         let eventCost = 0;
+        let foundTemplate = null;
         for (const cat in BINGO_CONFIG.templates) {
             const match = BINGO_CONFIG.templates[cat].find(t => t.t === templateText);
             if (match) {
                 eventCost = match.c;
+                foundTemplate = match.t;
                 break;
             }
         }
         
-        return basePrice + eventCost;
+        let cost = basePrice + eventCost;
+
+        // --- PROBABILITY TAX LOGIC ---
+        // Certain combos are "Too Easy" so we increase price heavily
+        
+        if (type === 'driver') {
+            // Tier 1 Tax
+            if (tier === 1) {
+                if (foundTemplate === "Points Finish") cost += 25; // Base ~12 + 5 + 25 = 42
+                if (foundTemplate === "Podium Finish") cost += 15; // Base ~12 + 4 + 15 = 31
+                if (foundTemplate === "Q3 Appearance") cost += 10;
+            }
+            // Tier 3 "Easy" Tax
+            if (tier === 3) {
+                if (foundTemplate === "11th-20th Finish") cost += 10; // Base ~4 + 3 + 10 = 17
+            }
+        }
+
+        if (type === 'team') {
+             // Tier 1 Team Tax
+             if (tier === 1) {
+                 if (foundTemplate === "Double Points") cost += 15; // Base ~8 + 4 + 15 = 27
+             }
+        }
+
+        return cost;
     }
 
     function showModal(title, text, isConfirm, callback) {
@@ -777,6 +805,17 @@
         container.appendChild(chip);
     }
 
+    function handleSlotClick(slot) {
+        // Only if empty
+        const idx = parseInt(slot.dataset.index);
+        if(currentGrid[idx]) return; // Already filled
+
+        const req = slot.dataset.req;
+        if(req === 'driver') showSideTab('drivers');
+        if(req === 'team') showSideTab('teams');
+        if(req === 'fia') showSideTab('fia');
+    }
+
     function handleDrop(e, index, reqType) {
         e.preventDefault();
         
@@ -851,12 +890,7 @@
         // Filter by Tier (if not FIA)
         let priorities = [];
         if (mode !== 'random_fia') {
-            // Get exact tier matches, then adjacent if needed? 
-            // For simplicity, let's filter for options that match the driver's tier
             priorities = allOptions.filter(opt => opt.tiers && opt.tiers.includes(targetTier));
-            
-            // If few options, fallback to broader logic? No, let's trust the data.
-            // Sort by cost descending (maximize points/cost efficiency)
             priorities.sort((a,b) => b.c - a.c);
         } else {
             priorities = allOptions.slice(0, 9);
@@ -964,15 +998,6 @@
         saveLocal();
     }
 
-    function resetGrid() {
-        if(!confirm("Are you sure? This will clear your current card.")) return;
-        localStorage.removeItem(`grid_${activeRace}`);
-        currentGrid = Array(9).fill(null); 
-        const r = BINGO_CONFIG.races.find(r=>r.id===activeRace);
-        if(r) document.getElementById('stratRaceTitle').innerText = r.n.toUpperCase();
-        switchState('strategy');
-    }
-
     function renderGridStructure(pattern) {
         const grid = document.getElementById('grid');
         grid.innerHTML = '';
@@ -982,6 +1007,9 @@
             slot.className = 'slot'; 
             slot.dataset.req = type; 
             slot.innerText = type === 'fia' ? "FIA" : type.toUpperCase();
+            
+            // Interaction:
+            slot.onclick = () => handleSlotClick(slot);
             slot.ondragover = e => e.preventDefault();
             slot.ondrop = e => handleDrop(e, i, type);
             
@@ -1018,7 +1046,7 @@
                 s.style.setProperty('--cat-text-color', catColor);
 
                 s.innerHTML = `
-                    <div class="remove-pick-btn" onclick="removePick(${idx})">×</div>
+                    <div class="remove-pick-btn" onclick="removePick(${idx}); event.stopPropagation();">×</div>
                     <div class="slot-img-container">
                         <img src="${imgSrc}" class="slot-img" onerror="this.style.display='none'">
                         <div class="slot-price-tag">$${data.cost}M</div>
@@ -1030,6 +1058,8 @@
                 `;
                 s.className = `slot filled`;
                 s.dataset.type = data.type; 
+                s.onclick = null; // Remove click to open market if filled
+                
                 if(verifiedResults.includes(data.text)) s.classList.add('matched');
                 else s.classList.remove('matched');
             } else {
@@ -1039,6 +1069,8 @@
                 s.removeAttribute('style');
                 delete s.dataset.type;
                 s.classList.remove('matched');
+                // Re-add listener if cleared
+                s.onclick = () => handleSlotClick(s);
             }
         });
         updateScore();
