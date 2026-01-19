@@ -14,10 +14,11 @@
     <style>
         :root {
             --brand-red: #e10600; --brand-dark: #15151e; --bg-body: #f8f9fa;
+            --card-shadow: 0 4px 15px rgba(0,0,0,0.08);
             --c-driver: #ff9500; --c-team: #00d2be; --c-fia: #e10600; 
         }
         * { -webkit-tap-highlight-color: transparent; box-sizing: border-box; }
-        body { font-family: 'Titillium Web', sans-serif; background: var(--bg-body); color: var(--brand-dark); margin: 0; height: 100vh; height: 100dvh; display: flex; flex-direction: column; overflow: hidden; }
+        body { font-family: 'Titillium Web', sans-serif; background: var(--bg-body); color: var(--brand-dark); margin: 0; height: 100dvh; display: flex; flex-direction: column; overflow: hidden; }
         .hidden { display: none !important; }
 
         /* HEADER */
@@ -37,6 +38,8 @@
         .active-panel { background: white; border-radius: 12px; border: 1px solid #e0e0e0; padding: 0; display: flex; flex-direction: column; overflow: hidden; height: 100%; position: relative; }
 
         .view-login, .view-strategy, .view-standings, .view-rules { padding-bottom: 120px !important; }
+        
+        #view-game { padding-bottom: 70px !important; } 
 
         @media (max-width: 1024px) {
             .main-stage { grid-template-columns: 1fr; padding: 10px; padding-bottom: 0; }
@@ -54,97 +57,56 @@
         .nav-icon { font-size: 20px; margin-bottom: 2px; }
         @media (max-width: 1024px) { .mobile-nav { display: flex; } }
 
-        /* GAME HEADER */
-        #raceHeader { padding: 15px; background: #fff; border-bottom: 1px solid #eee; display: flex; align-items: center; justify-content: space-between; flex-shrink: 0; height: 70px; }
+        /* GAME HEADER & CONTROLS */
+        #raceHeader { padding: 10px 15px; background: #fff; border-bottom: 1px solid #eee; display: flex; align-items: center; justify-content: space-between; flex-shrink: 0; height: 70px; }
         .rh-left { display: flex; align-items: center; gap: 12px; }
-        .rh-flag { width: 50px; border-radius: 4px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
-        .rh-title { font-size: 22px; font-weight: 900; font-style: italic; text-transform: uppercase; line-height: 1; }
+        .rh-flag { width: 45px; border-radius: 4px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+        .rh-title { font-size: 18px; font-weight: 900; font-style: italic; text-transform: uppercase; line-height: 1; }
         .rh-date { font-size: 11px; color: #888; font-weight: 700; margin-top: 2px; }
-        .budget-hud { background: #f4f4f8; padding: 8px 15px; border-radius: 6px; border: 1px solid #ddd; border-left: 4px solid #22c55e; display: flex; flex-direction: column; align-items: flex-end; }
-        .budget-hud-val { font-size: 16px; font-weight: 900; color: #22c55e; line-height: 1; }
-        .budget-hud-bar-bg { width: 80px; height: 5px; background: #e0e0e0; margin-top: 4px; border-radius: 3px; }
+        
+        .rh-right-group { display: flex; align-items: center; gap: 8px; }
+        
+        /* HEADER BUTTONS */
+        .header-btn { 
+            width: 36px; height: 36px; border-radius: 8px; border: none; 
+            display: flex; align-items: center; justify-content: center; 
+            font-size: 16px; cursor: pointer; box-shadow: 0 2px 5px rgba(0,0,0,0.05); transition: 0.2s;
+        }
+        .header-btn:active { transform: scale(0.95); }
+        .hb-setup { background: white; border: 1px solid #eee; color: #666; }
+        .hb-lock { background: #22c55e; color: white; display: none; }
+        .hb-unlock { background: #ef4444; color: white; display: none; }
+
+        .budget-hud { background: #f4f4f8; padding: 6px 12px; border-radius: 6px; border: 1px solid #ddd; border-left: 4px solid #22c55e; display: flex; flex-direction: column; align-items: flex-end; min-width: 70px; }
+        .budget-hud-val { font-size: 14px; font-weight: 900; color: #22c55e; line-height: 1; }
+        .budget-hud-bar-bg { width: 100%; height: 4px; background: #e0e0e0; margin-top: 4px; border-radius: 3px; }
         .budget-hud-bar-fill { height: 100%; background: #22c55e; width: 50%; border-radius: 3px; transition: 0.3s; }
 
-        /* --- THE MAIN GAME GRID --- */
-        .grid-container { 
-            flex: 1; 
-            padding: 10px; 
-            display: flex; 
-            flex-direction: column; 
-            justify-content: center; 
-            overflow: hidden; 
-        }
-        .bingo-grid { 
-            display: grid; 
-            grid-template-columns: repeat(3, 1fr); 
-            grid-template-rows: repeat(3, 1fr); /* FORCE EQUAL HEIGHT ROWS */
-            gap: 8px; 
-            width: 100%; 
-            height: 100%; 
-            max-width: 600px; 
-            margin: 0 auto;
-        }
+        /* GRID */
+        .grid-container { flex: 1; padding: 10px; display: flex; flex-direction: column; justify-content: center; overflow: hidden; }
+        .bingo-grid { display: grid; grid-template-columns: repeat(3, 1fr); grid-template-rows: repeat(3, 1fr); gap: 8px; width: 100%; height: 100%; max-width: 600px; margin: 0 auto; }
         
-        /* Empty Slot */
-        .slot { 
-            background: #fafafa; border: 2px dashed #ddd; border-radius: 8px; 
-            display: flex; align-items: center; justify-content: center; 
-            font-size: 10px; font-weight: 800; position: relative; 
-            cursor: pointer; user-select: none; transition: 0.2s; 
-            text-transform: uppercase; color: #aaa;
-            width: 100%; height: 100%;
-        }
+        .slot { background: #fafafa; border: 2px dashed #ddd; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 10px; font-weight: 800; position: relative; cursor: pointer; user-select: none; transition: 0.2s; text-transform: uppercase; color: #aaa; width: 100%; height: 100%; }
         .slot:active { transform: scale(0.98); background: #eee; }
         .slot[data-req="driver"] { background: #fff8e6; border-color: var(--c-driver); color: var(--c-driver); }
         .slot[data-req="team"] { background: #e0fbf8; border-color: var(--c-team); color: var(--c-team); }
         .slot[data-req="fia"] { background: #fff2f2; border-color: var(--c-fia); color: var(--c-fia); }
 
-        /* Filled Slot */
-        .slot.filled { 
-            background: white !important; border: 1px solid #ddd !important; 
-            padding: 0; overflow: hidden; display: flex; flex-direction: column; 
-            text-align: left; box-shadow: 0 4px 10px rgba(0,0,0,0.08); border-radius: 8px;
-        }
+        .slot.filled { background: white !important; border: 1px solid #ddd !important; padding: 0; overflow: hidden; display: flex; flex-direction: column; text-align: left; box-shadow: 0 4px 10px rgba(0,0,0,0.08); border-radius: 8px; }
         .slot.filled::before { content: ''; position: absolute; top: 0; left: 0; width: 0; height: 0; border-style: solid; border-width: 24px 24px 0 0; z-index: 5; }
         .slot.filled[data-type="driver"]::before { border-color: var(--c-driver) transparent transparent transparent; }
         .slot.filled[data-type="team"]::before { border-color: var(--c-team) transparent transparent transparent; }
         .slot.filled[data-type="fia"]::before { border-color: var(--c-fia) transparent transparent transparent; }
 
-        .slot-img-container { 
-            width: 100%; height: 60%; 
-            display: flex; align-items: flex-end; justify-content: center; 
-            background-color: var(--team-color-hex); position: relative; overflow: hidden; 
-        }
-        
+        .slot-img-container { width: 100%; height: 60%; display: flex; align-items: flex-end; justify-content: center; background-color: var(--team-color-hex); position: relative; overflow: hidden; }
         .slot-img { z-index: 2; transition: 0.2s; }
-        
-        /* DRIVER IMAGE - ZOOMED AND CENTERED */
-        .slot.filled[data-type="driver"] .slot-img { 
-            width: 100%; height: 120%; /* Zoom */
-            object-fit: cover; object-position: top center; 
-            margin-bottom: -15%; /* Pull it down to frame face */
-        }
-        
-        /* TEAM IMAGE - FITTED */
-        .slot.filled[data-type="team"] .slot-img { 
-            width: 95%; height: auto; object-fit: contain; margin-bottom: 10px; 
-            filter: drop-shadow(0 4px 4px rgba(0,0,0,0.2));
-        }
-        
-        /* FIA IMAGE - INVERTED */
-        .slot.filled[data-type="fia"] .slot-img { 
-            width: 50%; height: auto; margin-bottom: 10px; 
-            filter: brightness(0) invert(1); opacity: 0.8; 
-        }
+        .slot.filled[data-type="driver"] .slot-img { width: 100%; height: 120%; object-fit: cover; object-position: top center; margin-bottom: -15%; }
+        .slot.filled[data-type="team"] .slot-img { width: 95%; height: auto; object-fit: contain; margin-bottom: 20px; }
+        .slot.filled[data-type="fia"] .slot-img { width: 50%; height: auto; margin-bottom: 20px; filter: brightness(0) invert(1); opacity: 0.8; }
+        .slot-price-tag { background: rgba(0,0,0,0.8); color: white; font-size: 9px; font-weight: 900; padding: 2px 6px; border-radius: 12px; position: absolute; bottom: 4px; right: 4px; z-index: 10; border: 1px solid rgba(255,255,255,0.2); }
 
-        .slot-price-tag { background: rgba(0,0,0,0.8); color: white; font-size: 10px; font-weight: 900; padding: 2px 6px; border-radius: 12px; position: absolute; bottom: 4px; right: 4px; z-index: 10; border: 1px solid rgba(255,255,255,0.2); }
-
-        .slot-text-container { 
-            width: 100%; height: 40%; 
-            display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center;
-            padding: 2px 4px; background: white; border-top: 1px solid rgba(0,0,0,0.05);
-        }
-        .slot-sub { font-size: 8px; text-transform: uppercase; font-weight: 900; color: var(--cat-text-color); margin-bottom: 2px; letter-spacing: 0.5px; opacity: 0.7; }
+        .slot-text-container { width: 100%; height: 40%; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; padding: 2px 4px; background: white; border-top: 1px solid rgba(0,0,0,0.05); }
+        .slot-sub { font-size: 7px; text-transform: uppercase; font-weight: 900; color: var(--cat-text-color); margin-bottom: 2px; letter-spacing: 0.5px; opacity: 0.7; }
         .slot-main { font-size: 10px; font-weight: 900; line-height: 1.1; color: #222; text-transform: uppercase; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
         @media (min-width: 380px) { .slot-main { font-size: 11px; } }
 
@@ -152,7 +114,7 @@
         .slot.matched { opacity: 1; box-shadow: inset 0 0 0 3px var(--score-win); transform: scale(1.02); z-index: 5; }
         .slot.matched::after { content: '✓'; position: absolute; top: 4px; right: 4px; background: var(--score-win); color: black; border-radius: 50%; width: 18px; height: 18px; display: flex; align-items: center; justify-content: center; font-weight: 900; font-size: 12px; box-shadow: 0 2px 5px rgba(0,0,0,0.2); z-index: 20; }
 
-        /* --- MARKET STYLES (THE FIX) --- */
+        /* MARKET STYLES */
         .tab-header { display: flex; border-bottom: 1px solid #eee; background: #f9f9f9; flex-shrink: 0; height: 45px; }
         .tab-btn { flex: 1; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 12px; cursor: pointer; color: #888; border-bottom: 3px solid transparent; transition: 0.2s; }
         .tab-btn.active { background: white; color: #000; }
@@ -160,25 +122,9 @@
         #tabBtn-teams.active { border-bottom-color: var(--c-team); color: var(--c-team); }
         #tabBtn-fia.active { border-bottom-color: var(--c-fia); color: var(--c-fia); }
 
-        /* FIXED DRIVER GRID (2 Columns on Mobile) */
-        .market-grid-drivers { 
-            padding: 15px; 
-            display: grid; 
-            grid-template-columns: repeat(2, 1fr); /* Force 2 columns */
-            gap: 10px; 
-            width: 100%;
-        }
-        @media (min-width: 600px) {
-             .market-grid-drivers { grid-template-columns: repeat(3, 1fr); }
-        }
-
-        .driver-card-market { 
-            background: var(--team-color); border-radius: 12px; overflow: hidden; 
-            display: flex; flex-direction: column; align-items: center; justify-content: flex-end; 
-            height: 160px; /* Tall cards */
-            cursor: pointer; position: relative; box-shadow: 0 4px 8px rgba(0,0,0,0.15); 
-        }
-        .dcm-img { width: 100%; height: 90%; object-fit: contain; object-position: bottom; margin-bottom: 0; z-index: 1; filter: drop-shadow(0 0 5px rgba(0,0,0,0.2)); }
+        .market-grid-drivers { padding: 15px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+        .driver-card-market { background: var(--team-color); border-radius: 12px; overflow: hidden; display: flex; flex-direction: column; align-items: center; justify-content: flex-end; height: 160px; cursor: pointer; position: relative; box-shadow: 0 4px 8px rgba(0,0,0,0.15); }
+        .dcm-img { width: 100%; height: 85%; object-fit: contain; object-position: bottom; margin-bottom: 0; z-index: 1; filter: drop-shadow(0 0 5px rgba(0,0,0,0.2)); }
         .dcm-name { width: 100%; background: rgba(20,20,30,0.9); color: white; font-size: 10px; font-weight: 800; text-align: center; padding: 6px 2px; z-index: 2; text-transform: uppercase; line-height: 1; }
 
         .market-list-teams { padding: 15px; display: flex; flex-direction: column; gap: 10px; }
@@ -221,13 +167,6 @@
         .strat-card { background: #fff; border: 2px solid #eee; border-radius: 12px; padding: 20px; cursor: pointer; display: flex; flex-direction: column; align-items: center; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
         .mini-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2px; width: 60px; height: 60px; margin-bottom: 10px; opacity: 0.8; } .mg-c { border-radius: 1px; }
         
-        /* FOOTER ACTIONS */
-        .actions-footer { padding: 15px 15px 0 15px; display: flex; gap: 10px; align-items: center; justify-content: center; width: 100%; flex-shrink: 0; border-top: 1px solid #eee; background: white; }
-        .btn-action { flex: 1; padding: 14px; border-radius: 8px; font-weight: 900; font-size: 11px; text-transform: uppercase; cursor: pointer; border: none; display: flex; align-items: center; justify-content: center; gap: 6px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); transition: 0.2s; }
-        .btn-lock { background: #22c55e; color: white; }
-        .btn-unlock { background: #ef4444; color: white; }
-        .btn-change-strat { background: white; color: #555; border: 2px solid #ddd; box-shadow: none; }
-
         /* MODAL */
         #customModal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 5000; display: flex; align-items: center; justify-content: center; backdrop-filter: blur(3px); }
         .modal-box { background: white; padding: 25px; border-radius: 15px; width: 85%; max-width: 320px; text-align: center; }
@@ -300,6 +239,12 @@
         <div id="view-login" class="view-login">
             <h2 style="font-style:italic; font-size:24px; margin-bottom:20px;">TEAM PRINCIPAL LOGIN</h2>
             <input type="text" id="teamNameInput" class="login-input" placeholder="Enter Team Name">
+            <div class="section-header">Select Favorite Driver</div>
+            <div id="favDriverGrid" class="selection-slider"></div>
+            <div class="scroll-hint"></div>
+            <div class="section-header">Select Favorite Team</div>
+            <div id="favTeamGrid" class="selection-slider"></div>
+            <div class="scroll-hint"></div>
             <button class="login-btn" onclick="login()">ENTER PADDOCK</button>
         </div>
 
@@ -320,15 +265,27 @@
 
         <div id="view-game" class="view-game hidden" style="width:100%; height:100%; display:flex; flex-direction:column;">
             <div id="raceHeader">
-                <div class="rh-left"><img id="rhFlag" src="" class="rh-flag"><div><div id="rhTitle" class="rh-title">RACE</div><div id="rhDate" class="rh-date">DATE</div></div></div>
-                <div class="budget-hud"><span style="font-size:9px; font-weight:800; color:#888;">CAP SPACE</span><div class="budget-hud-val" id="hudBudgetVal">$100M</div><div class="budget-hud-bar-bg"><div class="budget-hud-bar-fill" id="hudBudgetBar"></div></div></div>
+                <div class="rh-left">
+                    <img id="rhFlag" src="" class="rh-flag">
+                    <div>
+                        <div id="rhTitle" class="rh-title">RACE</div>
+                        <div id="rhDate" class="rh-date">DATE</div>
+                    </div>
+                </div>
+                <div class="rh-right-group">
+                    <button id="lockBtn" class="header-btn hb-lock" onclick="toggleUserLock()">🔒</button>
+                    <button id="unlockBtn" class="header-btn hb-unlock" onclick="toggleUserLock()">🔓</button>
+                    <button id="setupBtn" class="header-btn hb-setup" onclick="changeStrategy()">⚙</button>
+                    
+                    <div class="budget-hud">
+                        <span style="font-size:9px; font-weight:800; color:#888;">CAP</span>
+                        <div class="budget-hud-val" id="hudBudgetVal">$100M</div>
+                        <div class="budget-hud-bar-bg"><div class="budget-hud-bar-fill" id="hudBudgetBar"></div></div>
+                    </div>
+                </div>
             </div>
+            
             <div class="grid-container"><div id="grid" class="bingo-grid"></div></div>
-            <div class="actions-footer">
-                <button id="lockBtn" class="btn-action btn-lock" onclick="toggleUserLock()">🔒 LOCK CARD</button>
-                <button id="unlockBtn" class="btn-action btn-unlock" onclick="toggleUserLock()">🔓 UNLOCK CARD</button>
-                <button class="btn-action btn-change-strat" onclick="changeStrategy()">⚙ SETUP</button>
-            </div>
         </div>
         
         <div id="view-standings" class="hidden" style="padding:20px; overflow-y:auto; height:100%;">
@@ -347,6 +304,7 @@
                     <div class="step-content">
                         <div class="step-title">Fill The Grid</div>
                         <div class="step-desc">Tap a slot to open the market and pick a prediction.</div>
+                        <div class="chip-example"><div class="ce-text">Driver Name • Pole Position</div></div>
                     </div>
                 </div>
                 <div class="rule-step">
@@ -390,6 +348,7 @@
     let isGridLocked = false;
     let isUserLocked = false;
     const BUDGET_CAP = 100;
+    let favDriver = null, favTeam = null;
     let activeMarketTab = 'drivers';
 
     const templates = {
@@ -404,6 +363,7 @@
         const savedRace = localStorage.getItem('current_race_id');
         if(savedRace) activeRace = savedRace;
 
+        buildLoginSelectionGrids();
         renderRaces();
         buildMarketGrids(); 
         
@@ -437,11 +397,54 @@
         document.getElementById(`${tab}-root`).style.display = (tab === 'fia') ? 'block' : (tab === 'teams' ? 'flex' : 'grid');
     }
 
+    function buildLoginSelectionGrids() {
+        const dGrid = document.getElementById('favDriverGrid');
+        // Sort by Tier (ascending) to show top drivers first
+        const sortedDrivers = BINGO_CONFIG.drivers.filter(d=>d.team!=='FIA').sort((a,b) => a.tier - b.tier);
+        sortedDrivers.forEach(d => {
+            const c = createSelectionCard(d, 'driver');
+            dGrid.appendChild(c);
+        });
+
+        const tGrid = document.getElementById('favTeamGrid');
+        // Sort by Tier
+        const sortedTeams = BINGO_CONFIG.constructors.filter(c=>c.type==='Team').sort((a,b) => a.tier - b.tier);
+        sortedTeams.forEach(t => {
+            const c = createSelectionCard(t, 'team');
+            tGrid.appendChild(c);
+        });
+    }
+
+    function createSelectionCard(entity, type) {
+        const div = document.createElement('div');
+        div.className = 'selection-card';
+        // Remove border logic, add top color bar
+        div.style.setProperty('--team-color', entity.color);
+        div.onclick = () => {
+            const p = div.parentElement;
+            p.querySelectorAll('.selection-card').forEach(c=>c.classList.remove('selected'));
+            div.classList.add('selected');
+            if(type==='driver') favDriver = entity.name;
+            else favTeam = entity.name;
+        };
+        div.innerHTML = `
+            <div class="selection-card-color"></div>
+            <img src="${entity.img}" class="selection-img">
+            <div class="selection-name">${entity.name}</div>
+        `;
+        return div;
+    }
+
     function login(auto) {
         const name = document.getElementById('teamNameInput').value;
         if(!auto) {
-            if(!name) return showModal("MISSING INFO", "Please enter a team name.", false);
+            if(!name || !favDriver || !favTeam) return showModal("MISSING INFO", "Please enter a team name.", false);
             localStorage.setItem('f1_team_name', name);
+            localStorage.setItem('f1_fav_driver', favDriver);
+            localStorage.setItem('f1_fav_team', favTeam);
+        } else {
+            favDriver = localStorage.getItem('f1_fav_driver');
+            favTeam = localStorage.getItem('f1_fav_team');
         }
         document.getElementById('displayTeamName').innerText = name.toUpperCase();
         const savedGrid = db.load(`grid_${activeRace}`);
@@ -681,15 +684,24 @@
 
     function updateActionButtons() {
         const l = document.getElementById('lockBtn'), u = document.getElementById('unlockBtn');
-        const full = currentGrid.every(x=>x);
-        if(isGridLocked || isUserLocked) {
-            l.style.display = 'none';
-            u.style.display = isUserLocked && !isGridLocked ? 'flex' : 'none';
+        const setup = document.getElementById('setupBtn');
+        
+        // Default Visibility
+        l.style.display = 'none';
+        u.style.display = 'none';
+        setup.style.display = 'flex';
+
+        if(isGridLocked) {
             document.getElementById('grid').classList.add('grid-locked');
+            setup.style.display = 'none'; // Cant change setup if race started
+        } else if(isUserLocked) {
+            document.getElementById('grid').classList.add('grid-locked');
+            u.style.display = 'flex';
+            setup.style.display = 'none'; // Must unlock first
         } else {
             document.getElementById('grid').classList.remove('grid-locked');
-            u.style.display = 'none';
-            l.style.display = full ? 'flex' : 'none';
+            const isFull = currentGrid.every(x => x !== null);
+            if(isFull) l.style.display = 'flex';
         }
     }
 
