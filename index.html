@@ -586,10 +586,11 @@
         const currentSpent = calculateTotalCost();
         if(currentSpent + cost > BUDGET_CAP) return showModal("OVER BUDGET", "You cannot afford this pick.", false);
         
-        // ** FIX: Duplicate Check ignores FIA **
-        if(driverName && subType && type !== 'fia') {
-            const conflict = currentGrid.some(x => x && x.driver === driverName && x.subtype === subType);
-            if(conflict) return showModal("RULE VIOLATION", "One pick per category per driver.", false);
+        // ** LOGIC UPDATE: ALLOW MULTIPLE FIA **
+        // Check for duplicates only if type is NOT 'fia'
+        if(type !== 'fia' && driverName) {
+            const conflict = currentGrid.some(x => x && x.driver === driverName);
+            if(conflict) return showModal("RULE VIOLATION", "You can only select one pick per driver/team per race.", false);
         }
 
         currentGrid[targetIdx] = { text, type, driver: driverName, subtype: subType, cost };
@@ -618,12 +619,12 @@
         
         if ((currentSpent - oldCost + cost) > BUDGET_CAP) return showModal("OVER BUDGET", "", false);
 
-        // ** FIX: Duplicate Check ignores FIA **
-        if (driverName && subType && type !== 'fia') {
+        // ** LOGIC UPDATE: ALLOW MULTIPLE FIA **
+        if (type !== 'fia' && driverName) {
             const hasConflict = currentGrid.some((item, i) => 
-                i !== index && item && item.driver === driverName && item.subtype === subType
+                i !== index && item && item.driver === driverName
             );
-            if (hasConflict) return showModal("Rule Violation", "One pick per category per driver.", false);
+            if (hasConflict) return showModal("RULE VIOLATION", "One pick per category per driver.", false);
         }
         
         currentGrid[index] = { text, type, driver: driverName, subtype: subType, cost: cost };
