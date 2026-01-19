@@ -83,14 +83,14 @@
 
         .slot-img-container { width: 40%; display: flex; flex-direction: column; align-items: center; justify-content: center; background-color: var(--team-color-hex); position: relative; border-right: 1px solid rgba(255,255,255,0.2); }
         .slot-img { width: 85%; height: 85%; object-fit: contain; filter: drop-shadow(0 4px 4px rgba(0,0,0,0.3)); z-index: 2; }
+        .slot.filled[data-type="team"] .slot-img { width: 95%; height: auto; }
+        .slot.filled[data-type="fia"] .slot-img { filter: brightness(0) invert(1); }
         .slot-price-tag { background: rgba(0,0,0,0.7); color: white; font-size: 10px; font-weight: 900; padding: 2px 6px; border-radius: 4px; position: absolute; bottom: 5px; z-index: 3; }
         .slot-text-container { flex: 1; display: flex; flex-direction: column; justify-content: center; padding: 5px 10px; background-color: #f9f9f9; background-image: linear-gradient(45deg, #eee 25%, transparent 25%, transparent 75%, #eee 75%, #eee), linear-gradient(45deg, #eee 25%, transparent 25%, transparent 75%, #eee 75%, #eee); background-size: 16px 16px; background-position: 0 0, 8px 8px; }
         .slot-sub { font-size: 9px; text-transform: uppercase; font-weight: 900; color: var(--cat-text-color); margin-bottom: 2px; letter-spacing: 0.5px; }
         .slot-main { font-size: 13px; font-weight: 800; line-height: 1.1; word-wrap: break-word; color: #111; }
         .remove-pick-btn { position: absolute; top: 0; right: 0; width: 24px; height: 24px; background: rgba(0,0,0,0.8); color: #fff; display: flex; align-items: center; justify-content: center; z-index: 10; border-bottom-left-radius: 6px; font-size: 14px; font-weight: bold; cursor: pointer; }
         .slot.matched::after { content: '✓'; position: absolute; bottom: 5px; right: 5px; background: var(--score-win); color: black; border-radius: 50%; width: 28px; height: 28px; display: flex; align-items: center; justify-content: center; font-weight: 900; font-size: 18px; box-shadow: 0 2px 5px rgba(0,0,0,0.3); }
-        .slot.filled[data-type="team"] .slot-img { width: 95%; height: auto; }
-        .slot.filled[data-type="fia"] .slot-img { filter: brightness(0) invert(1); }
 
         /* MARKET STYLES */
         .tab-header { display: flex; border-bottom: 1px solid #eee; background: #f9f9f9; flex-shrink: 0; height: 45px; }
@@ -533,9 +533,11 @@
         if(window.innerWidth <= 1024) panel.classList.add('mobile-modal');
         panel.dataset.targetIndex = idx;
         
-        if(type === 'driver' && favDriver) { showMarketTab('drivers'); openDrillDown(BINGO_CONFIG.drivers.find(d=>d.name===favDriver), 'driver'); }
-        else if(type === 'team' && favTeam) { showMarketTab('teams'); openDrillDown(BINGO_CONFIG.constructors.find(c=>c.name===favTeam), 'team'); }
-        else showMarketTab(type === 'driver' ? 'drivers' : (type === 'team' ? 'teams' : 'fia'));
+        backToRoot(); // Ensure reset
+        let tab = 'drivers';
+        if(type === 'team') tab = 'teams';
+        if(type === 'fia') tab = 'fia';
+        showMarketTab(tab);
     }
 
     function closeMobileMarket() { document.getElementById('marketPanel').classList.remove('mobile-modal'); backToRoot(); }
