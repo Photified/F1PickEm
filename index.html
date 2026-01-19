@@ -6,6 +6,7 @@
     <meta name="theme-color" content="#e10600">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="mobile-web-app-capable" content="yes">
     <title>F1 PICKEM</title>
     <link href="https://fonts.googleapis.com/css2?family=Titillium+Web:ital,wght@0,400;0,700;0,900;1,400&display=swap" rel="stylesheet">
     <link rel="manifest" href="manifest.json">
@@ -25,11 +26,28 @@
         header { background: white; border-bottom: 3px solid var(--brand-red); height: 60px; display: flex; align-items: center; box-shadow: 0 4px 10px rgba(0,0,0,0.05); z-index: 20; flex-shrink: 0; }
         .logo-area { padding: 0 15px; height: 100%; display: flex; align-items: center; border-right: 1px solid #eee; cursor: pointer; }
         .header-logo { max-height: 28px; width: auto; }
-        .race-scroll-area { flex: 1; display: flex; flex-direction: row; align-items: center; overflow-x: auto; height: 100%; scrollbar-width: none; }
-        .race-card { flex: 0 0 65px; height: 100%; display: inline-flex; flex-direction: column; align-items: center; justify-content: center; border-right: 1px solid #f5f5f5; cursor: pointer; opacity: 0.5; transition: 0.2s; }
+        
+        .race-scroll-area { 
+            flex: 1; display: flex; flex-direction: row; align-items: center; 
+            overflow-x: auto; height: 100%; scrollbar-width: none; 
+            -webkit-overflow-scrolling: touch;
+        }
+        
+        .race-card { 
+            flex: 0 0 75px; /* Made slightly wider */
+            height: 100%; display: inline-flex; flex-direction: column; 
+            align-items: center; justify-content: center; 
+            border-right: 1px solid #f5f5f5; cursor: pointer; 
+            opacity: 0.5; transition: 0.2s; 
+        }
         .race-card.active { opacity: 1; background: #fff; border-bottom: 4px solid var(--brand-red); }
         .race-flag-img { width: 24px; height: 16px; object-fit: cover; border-radius: 2px; margin-bottom: 4px; }
-        .race-name { font-size: 10px; font-weight: 800; text-transform: uppercase; }
+        /* FIX: Prevent text wrapping */
+        .race-name { 
+            font-size: 9px; font-weight: 800; text-transform: uppercase; 
+            white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 100%; padding: 0 4px;
+        }
+        
         .user-area { padding: 0 15px; font-weight: 800; font-size: 12px; border-left: 1px solid #eee; height: 100%; display: flex; align-items: center; background: #fff; z-index: 25; }
 
         /* LAYOUT & PANELS */
@@ -38,7 +56,6 @@
         .active-panel { background: white; border-radius: 12px; border: 1px solid #e0e0e0; padding: 0; display: flex; flex-direction: column; overflow: hidden; height: 100%; position: relative; }
 
         .view-login, .view-strategy, .view-standings, .view-rules { padding-bottom: 120px !important; }
-        
         #view-game { padding-bottom: 70px !important; } 
 
         @media (max-width: 1024px) {
@@ -247,7 +264,6 @@
         .btn-lock { background: #22c55e; color: white; border: 1px solid #16a34a; }
         .btn-unlock { background: #ef4444; color: white; border: 1px solid #b91c1c; }
         .btn-change-strat { background: white; color: #555; border: 2px solid #ddd; box-shadow: none; }
-        .btn-install-manual { background: #333; color: white; display: none; } /* Hidden unless installable */
 
         /* MODAL */
         #customModal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 5000; display: flex; align-items: center; justify-content: center; backdrop-filter: blur(3px); }
@@ -280,27 +296,40 @@
 <body>
 
 <script>
-  // Service Worker
   if ('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js');
-  
-  // PWA Prompt Logic
+
+  // INSTALL PROMPT LOGIC
   let deferredPrompt;
   const isIos = /iphone|ipad|ipod/.test(window.navigator.userAgent.toLowerCase());
   const isInStandaloneMode = ('standalone' in window.navigator) && (window.navigator.standalone);
 
+  // Auto-Show Install Prompt logic
   window.addEventListener('beforeinstallprompt', (e) => {
     e.preventDefault();
     deferredPrompt = e;
+    // Show install modal immediately
     document.getElementById('installModal').classList.remove('hidden');
-    // Also show footer button
-    document.querySelector('.btn-install-manual').style.display = 'flex';
   });
 
-  // iOS Detection (Manually show instructions if on iOS and not installed)
-  if (isIos && !isInStandaloneMode) {
-      // You can uncomment this to force the modal on iOS, but usually it's annoying.
-      // document.getElementById('installModal').classList.remove('hidden');
+  async function triggerInstall() {
+    if (deferredPrompt) {
+        deferredPrompt.prompt();
+        const { outcome } = await deferredPrompt.userChoice;
+        if (outcome === 'accepted') {
+            deferredPrompt = null;
+            document.getElementById('installModal').classList.add('hidden');
+        }
+    }
   }
+
+  // If on iOS and not installed, show modal with specific text
+  if (isIos && !isInStandaloneMode) {
+     // Optional: You can uncomment this to force the modal on iPhone
+     // document.getElementById('installModal').classList.remove('hidden');
+     // document.getElementById('btnInstall').style.display = 'none'; // iOS cant auto install
+     // document.querySelector('.install-box p').innerText = "Tap the Share button below, then 'Add to Home Screen'";
+  }
+
 </script>
 
 <div id="installModal" class="hidden">
@@ -385,7 +414,6 @@
                 <button id="lockBtn" class="btn-action btn-lock" onclick="toggleUserLock()">🔒 LOCK CARD</button>
                 <button id="unlockBtn" class="btn-action btn-unlock" onclick="toggleUserLock()">🔓 UNLOCK CARD</button>
                 <button class="btn-action btn-change-strat" onclick="changeStrategy()">⚙ SETUP</button>
-                <button class="btn-action btn-install-manual" onclick="triggerInstall()">⬇ INSTALL APP</button>
             </div>
         </div>
         
@@ -435,17 +463,6 @@
 </div>
 
 <script>
-    async function triggerInstall() {
-        if (deferredPrompt) {
-            deferredPrompt.prompt();
-            const { outcome } = await deferredPrompt.userChoice;
-            if (outcome === 'accepted') {
-                deferredPrompt = null;
-                document.getElementById('installModal').classList.add('hidden');
-            }
-        }
-    }
-
     class DataManager {
         constructor() { this.type = 'local'; }
         save(key, data) { localStorage.setItem(key, JSON.stringify(data)); }
