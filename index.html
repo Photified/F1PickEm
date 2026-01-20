@@ -60,11 +60,10 @@
         /* SETUP & PROFILE */
         .setup-input { width: 100%; padding: 12px; border: 2px solid #eee; border-radius: 8px; font-size: 16px; margin-bottom: 15px; font-weight: bold; background: white; }
         .setup-label { width: 100%; text-align: left; font-size: 11px; font-weight: 900; color: #888; text-transform: uppercase; margin-bottom: 5px; }
-        
         .profile-card { background: white; padding: 40px 25px; border-radius: 15px; text-align: center; box-shadow: var(--card-shadow); width: 100%; max-width: 350px; border: 1px solid #eee; }
         .logout-btn { margin-top: 30px; background: #333; color: white; border: none; padding: 12px 30px; font-weight: 900; border-radius: 8px; cursor: pointer; width: 100%; }
 
-        /* LEADERBOARD - CLEANER */
+        /* LEADERBOARD */
         .leaderboard-row { display: flex; align-items: center; padding: 15px; border-bottom: 1px solid #eee; background: white; }
         .leaderboard-row:first-child { background: #f9f9f9; border-top: 1px solid #eee; border-radius: 8px 8px 0 0; }
         .lb-rank { width: 40px; font-weight: 900; color: #888; font-style: italic; font-size: 16px; }
@@ -107,10 +106,38 @@
         .budget-hud-bar-bg { width: 100%; height: 4px; background: #e0e0e0; margin-top: 4px; border-radius: 3px; }
         .budget-hud-bar-fill { height: 100%; background: #22c55e; width: 50%; border-radius: 3px; transition: 0.3s; }
 
-        /* GRID */
-        .grid-container { flex: 1; padding: 10px; display: flex; flex-direction: column; overflow-y: auto; height: 100%; min-height: 0; }
-        .bingo-grid { display: grid; grid-template-columns: repeat(3, 1fr); grid-template-rows: repeat(3, 1fr); gap: 8px; width: 100%; max-width: 600px; margin: 0 auto; flex-shrink: 0; min-height: 400px; }
-        .slot { background: #fafafa; border: 2px dashed #ddd; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 10px; font-weight: 800; position: relative; cursor: pointer; user-select: none; transition: 0.2s; text-transform: uppercase; color: #aaa; width: 100%; aspect-ratio: 3/4; }
+        /* GRID CONTAINER - THE FIX */
+        .grid-container { 
+            flex: 1; 
+            padding: 10px; 
+            display: flex; 
+            flex-direction: column; 
+            align-items: center; /* Center horizontally */
+            justify-content: center; /* Center vertically */
+            overflow: hidden; /* Prevent scrolling */
+            height: 100%; 
+            min-height: 0; 
+        }
+        
+        /* THE ACTUAL GRID - FIXED */
+        .bingo-grid { 
+            display: grid; 
+            grid-template-columns: repeat(3, 1fr); 
+            grid-template-rows: repeat(3, 1fr); 
+            gap: 8px; 
+            
+            /* THIS IS THE MAGIC FIX */
+            height: 100%; 
+            max-height: 100%;
+            width: auto;
+            aspect-ratio: 3/4; /* Force 3x3 grid of 3:4 cards = 9:12 = 3:4 total ratio */
+            max-width: 100%;
+            
+            margin: 0 auto; 
+            flex-shrink: 1;
+        }
+        
+        .slot { background: #fafafa; border: 2px dashed #ddd; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 10px; font-weight: 800; position: relative; cursor: pointer; user-select: none; transition: 0.2s; text-transform: uppercase; color: #aaa; width: 100%; height: 100%; }
         .slot:active { transform: scale(0.98); background: #eee; }
         .slot[data-req="driver"] { background: #fff8e6; border-color: var(--c-driver); color: var(--c-driver); }
         .slot[data-req="team"] { background: #e0fbf8; border-color: var(--c-team); color: var(--c-team); }
