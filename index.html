@@ -56,17 +56,25 @@
 
         .view-login, .view-strategy, .view-standings, .view-rules { padding-bottom: 120px !important; }
         
-        /* UPDATED: Mobile Layout Fixes */
+        /* CRITICAL MOBILE FIX:
+           Calculation: 100dvh (Screen) - 60px (Header) - 70px (Nav) = Exact Content Height.
+           This physically prevents content from going behind the tabs.
+        */
         @media (max-width: 1024px) {
             .main-stage { 
                 grid-template-columns: 1fr; 
-                padding: 10px; 
-                /* Vital Fix: Pushes content up so it doesn't go behind the 70px nav bar */
-                padding-bottom: 90px !important; 
+                padding: 10px;
+                padding-bottom: 0 !important;
+                height: calc(100dvh - 130px) !important;
+                margin-top: 0; 
+                overflow-y: hidden; /* Contains the grid */
             }
             .panel { display: none; } 
             .panel.mobile-modal { display: flex; position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 2000; border-radius: 0; animation: slideUp 0.25s ease-out; }
             .mobile-close-btn { display: block !important; }
+            
+            /* Hide desktop specific buttons on mobile */
+            .desk-only-btn { display: none !important; }
         }
         @keyframes slideUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
         .mobile-close-btn { display: none; padding: 15px; background: #333; color: white; text-align: center; font-weight: 800; cursor: pointer; text-transform: uppercase; letter-spacing: 1px; }
@@ -94,6 +102,7 @@
         .hb-setup { background: white; border: 1px solid #ddd; color: #555; }
         .hb-lock { background: #22c55e; color: white; display: none; } 
         .hb-unlock { background: #ef4444; color: white; display: none; } 
+        .desk-only-btn { margin-right: 10px; font-size: 12px; padding: 0 12px; font-weight: 800; width: auto; background: #f4f4f8; }
 
         .budget-hud { background: #f4f4f8; padding: 6px 12px; border-radius: 6px; border: 1px solid #ddd; border-left: 4px solid #22c55e; display: flex; flex-direction: column; align-items: flex-end; min-width: 70px; height: 38px; justify-content: center; }
         .budget-hud-val { font-size: 14px; font-weight: 900; color: #22c55e; line-height: 1; }
@@ -101,7 +110,8 @@
         .budget-hud-bar-fill { height: 100%; background: #22c55e; width: 50%; border-radius: 3px; transition: 0.3s; }
 
         /* GRID */
-        .grid-container { flex: 1; padding: 10px; display: flex; flex-direction: column; justify-content: center; overflow: hidden; }
+        .grid-container { flex: 1; padding: 10px; display: flex; flex-direction: column; justify-content: center; overflow: hidden; height: 100%; }
+        /* Grid height 100% will now respect the Main Stage height calculation */
         .bingo-grid { display: grid; grid-template-columns: repeat(3, 1fr); grid-template-rows: repeat(3, 1fr); gap: 8px; width: 100%; height: 100%; max-width: 600px; margin: 0 auto; }
         
         .slot { background: #fafafa; border: 2px dashed #ddd; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 10px; font-weight: 800; position: relative; cursor: pointer; user-select: none; transition: 0.2s; text-transform: uppercase; color: #aaa; width: 100%; height: 100%; }
@@ -381,6 +391,7 @@
             <div id="raceHeader">
                 <div class="rh-left"><img id="rhFlag" src="" class="rh-flag"><div><div id="rhTitle" class="rh-title">RACE</div><div id="rhDate" class="rh-date">DATE</div></div></div>
                 <div class="rh-right-group">
+                    <button class="header-btn hb-setup desk-only-btn" onclick="switchMobileView('rules')">RULES</button>
                     <button id="headerLockBtn" class="header-btn hb-lock" onclick="toggleUserLock()">🔒</button>
                     <button id="headerUnlockBtn" class="header-btn hb-unlock" onclick="toggleUserLock()">🔓</button>
                     <button class="header-btn hb-setup" onclick="changeStrategy()">⚙</button>
