@@ -55,17 +55,17 @@ const BINGO_CONFIG = {
     ],
 
     constructors: [
-        { name: "Red Bull", type: "Team", tier: 1, color: "#3671C6", img: "images/car_rb.png", price: 8 },
-        { name: "McLaren", type: "Team", tier: 1, color: "#FF8000", img: "images/car_mclaren.png", price: 7 },
-        { name: "Ferrari", type: "Team", tier: 1, color: "#E80020", img: "images/car_ferrari.png", price: 7 },
-        { name: "Mercedes", type: "Team", tier: 1, color: "#27F4D2", img: "images/car_merc.png", price: 6 },
-        { name: "Aston Martin", type: "Team", tier: 2, color: "#229971", img: "images/car_aston.png", price: 5 },
-        { name: "Williams", type: "Team", tier: 2, color: "#64C4FF", img: "images/car_williams.png", price: 4 },
-        { name: "Alpine", type: "Team", tier: 2, color: "#FF87BC", img: "images/car_alpine.png", price: 4 },
-        { name: "VCARB", type: "Team", tier: 2, color: "#6692FF", img: "images/car_vcarb.png", price: 3 },
-        { name: "Haas", type: "Team", tier: 3, color: "#B6BABD", img: "images/car_haas.png", price: 3 },
-        { name: "Audi", type: "Team", tier: 3, color: "#F2F2F2", img: "images/car_audi.png", price: 2 },
-        { name: "Cadillac", type: "Team", tier: 3, color: "#FFD700", img: "images/car_cadillac.png", price: 2 }
+        { name: "Red Bull", type: "Team", tier: 1, color: "#3671C6", img: "images/team_rb.png", price: 8 },
+        { name: "McLaren", type: "Team", tier: 1, color: "#FF8000", img: "images/team_mclaren.png", price: 7 },
+        { name: "Ferrari", type: "Team", tier: 1, color: "#E80020", img: "images/team_ferrari.png", price: 7 },
+        { name: "Mercedes", type: "Team", tier: 1, color: "#27F4D2", img: "images/team_merc.png", price: 6 },
+        { name: "Aston Martin", type: "Team", tier: 2, color: "#229971", img: "images/team_aston.png", price: 5 },
+        { name: "Williams", type: "Team", tier: 2, color: "#64C4FF", img: "images/team_williams.png", price: 4 },
+        { name: "Alpine", type: "Team", tier: 2, color: "#FF87BC", img: "images/team_alpine.png", price: 4 },
+        { name: "VCARB", type: "Team", tier: 2, color: "#6692FF", img: "images/team_vcarb.png", price: 3 },
+        { name: "Haas", type: "Team", tier: 3, color: "#B6BABD", img: "images/team_haas.png", price: 3 },
+        { name: "Audi", type: "Team", tier: 3, color: "#F2F2F2", img: "images/team_audi.png", price: 2 },
+        { name: "Cadillac", type: "Team", tier: 3, color: "#FFD700", img: "images/team_cadillac.png", price: 2 }
     ],
 
     templates: {
