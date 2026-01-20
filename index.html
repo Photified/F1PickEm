@@ -61,17 +61,15 @@
         .setup-input { width: 100%; padding: 12px; border: 2px solid #eee; border-radius: 8px; font-size: 16px; margin-bottom: 15px; font-weight: bold; background: white; }
         .setup-label { width: 100%; text-align: left; font-size: 11px; font-weight: 900; color: #888; text-transform: uppercase; margin-bottom: 5px; }
         
-        .profile-card { background: white; padding: 25px; border-radius: 15px; text-align: center; box-shadow: var(--card-shadow); width: 100%; max-width: 350px; border: 1px solid #eee; }
-        .profile-avatar { width: 80px; height: 80px; background: #eee; border-radius: 50%; margin: 0 auto 15px auto; display: flex; align-items: center; justify-content: center; font-size: 30px; font-weight: 900; color: #888; text-transform: uppercase; overflow: hidden; }
-        .logout-btn { margin-top: 20px; background: #333; color: white; border: none; padding: 12px 30px; font-weight: 900; border-radius: 8px; cursor: pointer; width: 100%; }
+        .profile-card { background: white; padding: 40px 25px; border-radius: 15px; text-align: center; box-shadow: var(--card-shadow); width: 100%; max-width: 350px; border: 1px solid #eee; }
+        .logout-btn { margin-top: 30px; background: #333; color: white; border: none; padding: 12px 30px; font-weight: 900; border-radius: 8px; cursor: pointer; width: 100%; }
 
         /* LEADERBOARD */
-        .leaderboard-row { display: flex; align-items: center; padding: 12px; border-bottom: 1px solid #eee; background: white; }
+        .leaderboard-row { display: flex; align-items: center; padding: 15px; border-bottom: 1px solid #eee; background: white; }
         .leaderboard-row:first-child { background: #f9f9f9; border-top: 1px solid #eee; border-radius: 8px 8px 0 0; }
-        .lb-rank { width: 30px; font-weight: 900; color: #888; font-style: italic; }
-        .lb-user { flex: 1; display: flex; align-items: center; gap: 10px; font-weight: 700; font-size: 14px; text-transform: uppercase; }
-        .lb-pts { font-weight: 900; color: var(--brand-red); width: 60px; text-align: right; }
-        .lb-avatar { width: 24px; height: 24px; background: #eee; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 10px; color: #555; overflow: hidden; }
+        .lb-rank { width: 40px; font-weight: 900; color: #888; font-style: italic; font-size: 16px; }
+        .lb-user { flex: 1; font-weight: 800; font-size: 15px; text-transform: uppercase; color: #222; }
+        .lb-pts { font-weight: 900; color: var(--brand-red); width: 60px; text-align: right; font-size: 16px; }
 
         /* MOBILE OVERRIDES */
         @media (max-width: 1024px) {
@@ -289,9 +287,8 @@
 
         <div id="view-profile" class="view-login hidden">
             <div class="profile-card">
-                <div class="profile-avatar" id="profileAvatar">P</div>
-                <h2 style="font-style:italic; margin-bottom:5px; text-transform:uppercase;" id="profileName">PLAYER NAME</h2>
-                <div style="font-size:12px; color:#888; font-weight:700; margin-bottom:20px;" id="profileEmail">player@email.com</div>
+                <h2 style="font-style:italic; margin-bottom:5px; text-transform:uppercase; font-size:24px;" id="profileName">PLAYER NAME</h2>
+                <div style="font-size:12px; color:#888; font-weight:700;" id="profileEmail">player@email.com</div>
                 <button class="logout-btn" onclick="signOut()">LOG OUT</button>
             </div>
         </div>
@@ -384,7 +381,7 @@
   let db = null;
   let auth = null;
   let currentUser = null;
-  let userProfile = null; // Store full user profile data
+  let userProfile = null; 
 
   try {
       firebase.initializeApp(firebaseConfig);
@@ -431,7 +428,7 @@
       });
 
       setInterval(checkLockStatus, 1000);
-      loadStandings(); // Load leaderboard
+      loadStandings(); 
       
       setTimeout(() => {
           if (!isPWA() && !localStorage.getItem('installDismissed') && isMobile()) {
@@ -480,7 +477,7 @@
         document.getElementById(`view-${view}`).classList.remove('hidden');
         document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
         if(btn) btn.classList.add('active');
-        if(view === 'standings') loadStandings(); // Refresh when tab clicked
+        if(view === 'standings') loadStandings(); 
   }
 
   function showDesktopTab(tab) {
@@ -555,13 +552,12 @@
             
             if(doc.exists) {
                 const data = doc.data();
-                userProfile = data; // Save full profile
+                userProfile = data; 
                 
                 // Update Profile View UI
                 document.getElementById('displayTeamName').innerText = (data.teamName || "RACER").toUpperCase();
                 document.getElementById('profileName').innerText = (data.teamName || "RACER").toUpperCase();
                 document.getElementById('profileEmail').innerText = currentUser.email;
-                document.getElementById('profileAvatar').innerText = (data.teamName || "R").charAt(0).toUpperCase();
 
                 currentGrid = data[`grid_${activeRace}`] || null;
                 currentStrategy = data[`strat_${activeRace}`] || 'balanced'; 
@@ -578,7 +574,6 @@
             } else {
                 // NEW USER -> GOTO SETUP
                 switchMobileView('setup');
-                document.getElementById('setupTeamName').value = currentUser.displayName;
             }
         } catch(e) {
             console.error("Load Data Error:", e);
@@ -641,7 +636,6 @@
                 <div class="leaderboard-row">
                     <div class="lb-rank">${rank}</div>
                     <div class="lb-user">
-                        <div class="lb-avatar">${(u.teamName||"?").charAt(0)}</div>
                         ${u.teamName || "Racer"}
                     </div>
                     <div class="lb-pts">${u.totalPoints || 0}</div>
