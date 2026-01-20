@@ -20,7 +20,7 @@
         }
         * { -webkit-tap-highlight-color: transparent; box-sizing: border-box; }
         
-        /* STRICT FLEX LAYOUT: Body takes 100% of viewport, no more, no less */
+        /* LAYOUT ROOT */
         body { 
             font-family: 'Titillium Web', sans-serif; 
             background: var(--bg-body); 
@@ -34,12 +34,12 @@
         }
         .hidden { display: none !important; }
 
-        /* HEADER: Fixed Height 60px */
+        /* HEADER */
         header { 
             background: white; 
             border-bottom: 3px solid var(--brand-red); 
             height: 60px; 
-            flex: 0 0 60px; 
+            flex: 0 0 60px; /* Rigid height */
             display: flex; 
             align-items: center; 
             box-shadow: 0 4px 10px rgba(0,0,0,0.05); 
@@ -66,23 +66,34 @@
         .race-name { font-size: 9px; font-weight: 800; text-transform: uppercase; white-space: nowrap; }
         .user-area { padding: 0 15px; font-weight: 800; font-size: 12px; border-left: 1px solid #eee; height: 100%; display: flex; align-items: center; background: #fff; z-index: 25; }
 
-        /* MAIN STAGE: Takes all remaining space */
+        /* MAIN STAGE */
         .main-stage { 
             flex: 1; 
             display: grid; 
             grid-template-columns: 320px 1fr 300px; 
             padding: 20px; 
             gap: 20px; 
-            overflow: hidden; /* Contains the scroll bars inside children */
-            position: relative;
+            overflow: hidden; 
+            min-height: 0; /* Critical for Flex scrolling */
         }
 
         /* PANELS */
         .panel { background: white; border-radius: 12px; box-shadow: var(--card-shadow); overflow: hidden; display: flex; flex-direction: column; border: 1px solid #e0e0e0; height: 100%; }
-        .active-panel { background: white; border-radius: 12px; border: 1px solid #e0e0e0; padding: 0; display: flex; flex-direction: column; overflow: hidden; height: 100%; position: relative; }
+        
+        .active-panel { 
+            background: white; 
+            border-radius: 12px; 
+            border: 1px solid #e0e0e0; 
+            padding: 0; 
+            display: flex; 
+            flex-direction: column; 
+            overflow: hidden; 
+            height: 100%; 
+            min-height: 0; /* Critical for Flex scrolling */
+            position: relative; 
+        }
 
-        /* SCROLLABLE AREAS */
-        /* This applies to the game view, rules, standings, etc */
+        /* SCROLLABLE VIEWS */
         .view-scrollable { 
             height: 100%; 
             overflow-y: auto; 
@@ -90,7 +101,7 @@
         }
 
         /* LOGIN */
-        .view-login { width: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 25px; }
+        .view-login { width: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 25px; height: 100%; overflow-y: auto; }
         .login-input { padding: 15px; width: 100%; text-align: center; border: 2px solid #eee; border-radius: 10px; font-weight: bold; font-size: 18px; max-width: 400px; margin-bottom: 25px; background: #fff; }
         .login-btn { padding: 16px; width: 100%; max-width: 400px; margin-top: 20px; background: var(--brand-red); color: white; border: none; font-weight: 900; cursor: pointer; border-radius: 10px; font-size: 16px; box-shadow: 0 4px 10px rgba(225, 6, 0, 0.2); margin-bottom: 50px; }
 
@@ -99,14 +110,15 @@
             .main-stage { 
                 grid-template-columns: 1fr; 
                 padding: 10px; 
-                /* Remove bottom padding here, apply it to the scrolling child instead */
-                padding-bottom: 0 !important; 
+                padding-bottom: 0 !important; /* Reset padding, handle inside views */
             }
             .panel { display: none; } 
             
-            /* Add massive padding to the bottom of the scrollable content to clear the footer */
+            /* ADD PADDING TO BOTTOM OF LISTS TO CLEAR FOOTER */
             .view-scrollable { padding-bottom: 120px !important; }
-            .grid-container { padding-bottom: 120px !important; }
+            
+            /* Specific fix for Grid padding */
+            .bingo-grid { padding-bottom: 120px !important; }
 
             .panel.mobile-modal { display: flex; position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 2000; border-radius: 0; animation: slideUp 0.25s ease-out; }
             .mobile-close-btn { display: block !important; }
@@ -114,7 +126,7 @@
         @keyframes slideUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
         .mobile-close-btn { display: none; padding: 15px; background: #333; color: white; text-align: center; font-weight: 800; cursor: pointer; text-transform: uppercase; letter-spacing: 1px; }
 
-        /* MOBILE NAV (Fixed Bottom) */
+        /* MOBILE NAV */
         .mobile-nav { display: none; position: fixed; bottom: 0; left: 0; width: 100%; height: 75px; background: white; border-top: 1px solid #ddd; z-index: 1000; justify-content: space-around; align-items: center; box-shadow: 0 -2px 10px rgba(0,0,0,0.05); padding-bottom: 15px; }
         .nav-item { flex: 1; height: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; font-size: 10px; font-weight: 800; color: #888; text-transform: uppercase; cursor: pointer; }
         .nav-item.active { color: var(--brand-red); background: #fff5f5; }
@@ -140,10 +152,30 @@
         .budget-hud-bar-bg { width: 100%; height: 4px; background: #e0e0e0; margin-top: 4px; border-radius: 3px; }
         .budget-hud-bar-fill { height: 100%; background: #22c55e; width: 50%; border-radius: 3px; transition: 0.3s; }
 
-        /* GRID */
-        /* Important: Height 100% and overflow auto here ensures scrolling happens INSIDE this div */
-        .grid-container { flex: 1; padding: 10px; display: flex; flex-direction: column; justify-content: center; overflow-y: auto; height: 100%; }
-        .bingo-grid { display: grid; grid-template-columns: repeat(3, 1fr); grid-template-rows: repeat(3, 1fr); gap: 8px; width: 100%; max-width: 600px; margin: 0 auto; flex-shrink: 0; min-height: 400px; }
+        /* GRID CONTAINER - The layout engine */
+        .grid-container { 
+            flex: 1; 
+            padding: 10px; 
+            display: flex; 
+            flex-direction: column; 
+            /* NO justify-content: center - this causes overflow issues on resize */
+            overflow-y: auto; 
+            height: 100%; 
+            min-height: 0; /* Critical */
+        }
+        
+        /* THE ACTUAL GRID */
+        .bingo-grid { 
+            display: grid; 
+            grid-template-columns: repeat(3, 1fr); 
+            grid-template-rows: repeat(3, 1fr); 
+            gap: 8px; 
+            width: 100%; 
+            max-width: 600px; 
+            margin: 0 auto; 
+            flex-shrink: 0; /* Don't shrink smaller than content */
+            min-height: 400px; /* Ensure at least some height */
+        }
         
         .slot { background: #fafafa; border: 2px dashed #ddd; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 10px; font-weight: 800; position: relative; cursor: pointer; user-select: none; transition: 0.2s; text-transform: uppercase; color: #aaa; width: 100%; aspect-ratio: 3/4; }
         .slot:active { transform: scale(0.98); background: #eee; }
@@ -389,7 +421,7 @@
             </div>
         </div>
 
-        <div id="view-game" class="view-game hidden" style="width:100%; height:100%; display:flex; flex-direction:column;">
+        <div id="view-game" class="view-game hidden" style="width:100%; height:100%; display:flex; flex-direction:column; min-height:0;">
             <div id="raceHeader">
                 <div class="rh-left"><img id="rhFlag" src="" class="rh-flag"><div><div id="rhTitle" class="rh-title">RACE</div><div id="rhDate" class="rh-date">DATE</div></div></div>
                 <div class="rh-right-group">
