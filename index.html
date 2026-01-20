@@ -13,7 +13,9 @@
     
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script> <script src="bingo_data.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+    
+    <script src="bingo_data.js"></script>
 
     <style>
         :root {
@@ -108,11 +110,16 @@
             -webkit-overflow-scrolling: touch;
         }
 
-        /* LOGIN SCREEN - UPDATED FOR GOOGLE */
+        /* LOGIN SCREEN */
         .view-login { width: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 25px; height: 100%; overflow-y: auto; }
         .login-btn-google { display: flex; align-items: center; justify-content: center; gap: 10px; padding: 12px 24px; background: white; color: #333; border: 1px solid #ccc; font-weight: 700; cursor: pointer; border-radius: 8px; font-size: 16px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); width: 100%; max-width: 300px; transition: 0.2s; }
         .login-btn-google:active { transform: scale(0.98); background: #f5f5f5; }
         .google-icon { width: 20px; height: 20px; }
+
+        /* PROFILE CARD */
+        .profile-card { background: white; padding: 30px; border-radius: 15px; text-align: center; box-shadow: var(--card-shadow); width: 100%; max-width: 350px; border:1px solid #eee; }
+        .profile-avatar { width: 80px; height: 80px; background: #eee; border-radius: 50%; margin: 0 auto 15px auto; display: flex; align-items: center; justify-content: center; font-size: 30px; font-weight: 900; color: #888; text-transform: uppercase; }
+        .logout-btn { margin-top: 20px; background: var(--brand-red); color: white; border: none; padding: 12px 30px; font-weight: 900; border-radius: 8px; cursor: pointer; width: 100%; box-shadow: 0 4px 10px rgba(225,6,0,0.2); }
 
         /* MOBILE OVERRIDES */
         @media (max-width: 1024px) {
@@ -363,7 +370,7 @@
         <img src="images/logotop.png" class="header-logo" alt="F1 Pick Em">
     </div>
     <div class="race-scroll-area" id="raceBar"></div>
-    <div class="user-area" id="displayTeamName" onclick="signOut()">GUEST</div>
+    <div class="user-area" id="displayTeamName" onclick="switchMobileView('profile')">GUEST</div>
 </header>
 
 <div class="main-stage">
@@ -397,6 +404,15 @@
                 <img src="https://upload.wikimedia.org/wikipedia/commons/5/53/Google_%22G%22_Logo.svg" class="google-icon">
                 Sign in with Google
             </button>
+        </div>
+
+        <div id="view-profile" class="view-login hidden">
+            <div class="profile-card">
+                <div class="profile-avatar" id="profileAvatar">P</div>
+                <h2 style="font-style:italic; margin-bottom:5px;" id="profileName">PLAYER NAME</h2>
+                <div style="font-size:12px; color:#888; font-weight:700;" id="profileEmail">player@email.com</div>
+                <button class="logout-btn" onclick="signOut()">LOG OUT</button>
+            </div>
         </div>
 
         <div id="view-strategy" class="view-strategy hidden">
@@ -465,7 +481,7 @@
   if ('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js');
 
   // --- FIREBASE CONFIGURATION ---
-  const firebaseConfig = {
+ const firebaseConfig = {
   apiKey: "AIzaSyA4tMo0m5HMYVUqpavy1ELkAUNsRd3c9gA",
   authDomain: "f1-pickem-25550.firebaseapp.com",
   projectId: "f1-pickem-25550",
@@ -518,7 +534,14 @@
           if (user) {
               // User is signed in.
               currentUser = user;
-              document.getElementById('displayTeamName').innerText = (user.displayName || "Racer").toUpperCase();
+              const dName = (user.displayName || "Racer").toUpperCase();
+              document.getElementById('displayTeamName').innerText = dName;
+              
+              // Populate Profile View
+              document.getElementById('profileAvatar').innerText = dName.charAt(0);
+              document.getElementById('profileName').innerText = dName;
+              document.getElementById('profileEmail').innerText = user.email;
+
               await loadUserData(user.uid);
           } else {
               // No user is signed in. Show login screen.
@@ -558,12 +581,12 @@
   /* APP LOGIC */
   let activeRace = 'aus';
   let currentGrid = Array(9).fill(null);
+  let currentStrategy = null; // Track strategy type
   let isGridLocked = false;
   let isUserLocked = false;
   const BUDGET_CAP = 100;
   let activeMarketTab = 'drivers';
-  let teamId = null;
-
+  
   const templates = {
         balanced: ['driver','team','driver', 'team','driver','fia', 'driver','fia','team'],
         team:     ['team','team','driver', 'team','team','team', 'driver','team','fia'],
@@ -572,7 +595,7 @@
   };
 
   function switchMobileView(view, btn) {
-        ['game','standings','rules','strategy','login'].forEach(v => document.getElementById(`view-${v}`).classList.add('hidden'));
+        ['game','standings','rules','strategy','login', 'profile'].forEach(v => document.getElementById(`view-${v}`).classList.add('hidden'));
         document.getElementById(`view-${view}`).classList.remove('hidden');
         document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
         if(btn) btn.classList.add('active');
@@ -651,10 +674,15 @@
             if(doc.exists) {
                 const data = doc.data();
                 currentGrid = data[`grid_${activeRace}`] || null;
+                currentStrategy = data[`strat_${activeRace}`] || 'balanced'; // FIX: Default to 'balanced' if missing
+                
                 // If user has a saved grid, show game
                 if(currentGrid) {
                     switchMobileView('game');
                     renderRaceHeader();
+                    // FIX: Rebuild the DOM structure based on strategy BEFORE filling
+                    // If no strategy was saved (old data), it defaults to 'balanced'
+                    renderGridStructure(templates[currentStrategy] || templates['balanced']);
                     renderGrid();
                 } else {
                     // No grid for this race yet -> Strategy
@@ -686,6 +714,7 @@
       try {
           await db.collection('users').doc(currentUser.uid).set({
               [`grid_${activeRace}`]: currentGrid,
+              [`strat_${activeRace}`]: currentStrategy, // SAVE STRATEGY TYPE
               last_updated: new Date()
           }, { merge: true });
       } catch(e) { console.error("Save error", e); }
@@ -796,11 +825,12 @@
   }
 
   function confirmStrategy(type) {
+        currentStrategy = type; // Save global
         currentGrid = templates[type].map(t => null);
         renderGridStructure(templates[type]);
         switchMobileView('game');
         renderRaceHeader();
-        saveGrid(); // Save empty grid structure
+        saveGrid(); 
   }
 
   function changeStrategy() {
