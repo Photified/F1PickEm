@@ -34,10 +34,26 @@
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
 
         /* HEADER */
-        header { background: white; border-bottom: 3px solid var(--brand-red); height: 60px; flex: 0 0 60px; display: flex; align-items: center; box-shadow: 0 4px 10px rgba(0,0,0,0.05); z-index: 20; }
+        header { background: white; border-bottom: 3px solid var(--brand-red); height: 60px; flex: 0 0 60px; display: flex; align-items: center; box-shadow: 0 4px 10px rgba(0,0,0,0.05); z-index: 20; position: relative; }
         .logo-area { padding: 0 15px; height: 100%; display: flex; align-items: center; border-right: 1px solid #eee; cursor: pointer; }
         .header-logo { max-height: 28px; width: auto; }
-        .race-scroll-area { flex: 1; display: flex; flex-direction: row; align-items: center; overflow-x: auto; height: 100%; scrollbar-width: none; -webkit-overflow-scrolling: touch; }
+        
+        /* SCROLL ARROWS (Desktop Only) */
+        .scroll-arrow { 
+            display: none; /* Hidden on mobile by default */
+            width: 30px; height: 100%; background: #fff; 
+            align-items: center; justify-content: center; 
+            cursor: pointer; z-index: 30; font-weight: 900; color: #888; 
+            user-select: none; transition: 0.2s;
+        }
+        .scroll-arrow:hover { background: #f5f5f5; color: var(--brand-red); }
+        .scroll-arrow.left { border-right: 1px solid #eee; }
+        .scroll-arrow.right { border-left: 1px solid #eee; }
+
+        /* Show arrows on desktop */
+        @media (min-width: 1024px) { .scroll-arrow { display: flex; } }
+
+        .race-scroll-area { flex: 1; display: flex; flex-direction: row; align-items: center; overflow-x: auto; height: 100%; scrollbar-width: none; -webkit-overflow-scrolling: touch; scroll-behavior: smooth; }
         .race-card { flex: 0 0 auto; min-width: 70px; padding: 0 12px; height: 100%; display: inline-flex; flex-direction: column; align-items: center; justify-content: center; border-right: 1px solid #f5f5f5; cursor: pointer; opacity: 0.5; transition: 0.2s; }
         .race-card.active { opacity: 1; background: #fff; border-bottom: 4px solid var(--brand-red); }
         .race-flag-img { width: 24px; height: 16px; object-fit: cover; border-radius: 2px; margin-bottom: 4px; }
@@ -106,38 +122,36 @@
         .budget-hud-bar-bg { width: 100%; height: 4px; background: #e0e0e0; margin-top: 4px; border-radius: 3px; }
         .budget-hud-bar-fill { height: 100%; background: #22c55e; width: 50%; border-radius: 3px; transition: 0.3s; }
 
-        /* GRID CONTAINER - THE FIX */
+        /* GRID CONTAINER - THE FIX v2 */
         .grid-container { 
             flex: 1; 
             padding: 10px; 
             display: flex; 
             flex-direction: column; 
-            align-items: center; /* Center horizontally */
-            justify-content: center; /* Center vertically */
-            overflow: hidden; /* Prevent scrolling */
+            align-items: center; 
+            justify-content: center; 
+            overflow: hidden; 
             height: 100%; 
             min-height: 0; 
+            position: relative;
         }
         
-        /* THE ACTUAL GRID - FIXED */
+        /* THE ACTUAL GRID - ENFORCED CONTAINMENT */
         .bingo-grid { 
             display: grid; 
             grid-template-columns: repeat(3, 1fr); 
             grid-template-rows: repeat(3, 1fr); 
             gap: 8px; 
-            
-            /* THIS IS THE MAGIC FIX */
             height: 100%; 
             max-height: 100%;
             width: auto;
-            aspect-ratio: 3/4; /* Force 3x3 grid of 3:4 cards = 9:12 = 3:4 total ratio */
+            aspect-ratio: 3/4; 
             max-width: 100%;
-            
             margin: 0 auto; 
             flex-shrink: 1;
         }
         
-        .slot { background: #fafafa; border: 2px dashed #ddd; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 10px; font-weight: 800; position: relative; cursor: pointer; user-select: none; transition: 0.2s; text-transform: uppercase; color: #aaa; width: 100%; height: 100%; }
+        .slot { background: #fafafa; border: 2px dashed #ddd; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 10px; font-weight: 800; position: relative; cursor: pointer; user-select: none; transition: 0.2s; text-transform: uppercase; color: #aaa; width: 100%; height: 100%; overflow: hidden; }
         .slot:active { transform: scale(0.98); background: #eee; }
         .slot[data-req="driver"] { background: #fff8e6; border-color: var(--c-driver); color: var(--c-driver); }
         .slot[data-req="team"] { background: #e0fbf8; border-color: var(--c-team); color: var(--c-team); }
@@ -261,7 +275,11 @@
     <div class="logo-area" onclick="location.reload()">
         <img src="images/logotop.png" class="header-logo" alt="F1 Pick Em">
     </div>
+    
+    <div class="scroll-arrow left" onclick="scrollRaces(-200)">&#8249;</div>
     <div class="race-scroll-area" id="raceBar"></div>
+    <div class="scroll-arrow right" onclick="scrollRaces(200)">&#8250;</div>
+    
     <div class="user-area" id="displayTeamName" onclick="switchMobileView('profile')">GUEST</div>
 </header>
 
@@ -394,7 +412,7 @@
   if ('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js');
 
   // --- FIREBASE CONFIGURATION ---
-  const firebaseConfig = {
+ const firebaseConfig = {
   apiKey: "AIzaSyA4tMo0m5HMYVUqpavy1ELkAUNsRd3c9gA",
   authDomain: "f1-pickem-25550.firebaseapp.com",
   projectId: "f1-pickem-25550",
@@ -465,6 +483,10 @@
           }
       }, 2000);
   };
+
+  function scrollRaces(amount) {
+      document.getElementById('raceBar').scrollLeft += amount;
+  }
 
   async function triggerInstall() {
     if (deferredPrompt) {

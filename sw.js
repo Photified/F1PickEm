@@ -1,4 +1,4 @@
-const CACHE_NAME = 'f1-pickem-v5';
+const CACHE_NAME = 'f1-pickem-v6';
 const ASSETS = [
   './',
   './index.html',
