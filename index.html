@@ -95,7 +95,9 @@
         .step-content { flex: 1; }
         .step-title { font-weight: 900; font-size: 14px; margin-bottom: 5px; text-transform: uppercase; color: #333; }
         .step-desc { font-size: 13px; color: #666; line-height: 1.4; margin: 0; }
-        
+        .chip-example { display: flex; align-items: center; gap: 10px; margin-top: 5px; background: #f9f9f9; padding: 8px; border-radius: 6px; border: 1px solid #eee; }
+        .ce-text { font-size: 11px; font-weight: 800; color: #333; text-transform: uppercase; }
+
         /* STRATEGY SCREEN */
         .view-strategy { text-align: center; width: 100%; display: flex; flex-direction: column; align-items: center; height: 100%; padding: 20px; overflow-y: auto; }
         .strategy-header-container { margin-top: 20px; margin-bottom: 30px; display: flex; flex-direction: column; align-items: center; gap: 5px; }
@@ -237,7 +239,15 @@
         .pb-img { width: 100%; height: 100%; object-fit: cover; object-position: top center; }
         .prediction-btn.team-mode .pb-left { width: 80px; } 
         .prediction-btn.team-mode .pb-img { width: 90%; height: 90%; object-fit: contain; filter: drop-shadow(0 2px 2px rgba(0,0,0,0.3)); }
-        .pb-left.fia-bg .pb-img { filter: brightness(0) invert(1); width: 50%; object-fit: contain; } 
+        
+        /* FIA MARKET FIX: CENTERED */
+        .pb-left.fia-bg .pb-img { 
+            filter: brightness(0) invert(1); 
+            width: 50%; 
+            object-fit: contain;
+            object-position: center; /* FIXED HERE */
+        } 
+        
         .pb-right { flex: 1; display: flex; align-items: center; justify-content: space-between; padding: 0 15px; background: linear-gradient(45deg, #fff 25%, transparent 25%, transparent 75%, #fff 75%, #fff), linear-gradient(45deg, #fff 25%, transparent 25%, transparent 75%, #fff 75%, #fff); background-size: 10px 10px; background-color: #fafafa; }
         .pb-text { font-size: 12px; font-weight: 800; color: #333; text-transform: uppercase; }
         .pb-cost { background: #333; color: white; padding: 4px 8px; border-radius: 4px; font-size: 11px; font-weight: 900; }
@@ -439,12 +449,12 @@
 
   // --- FIREBASE CONFIGURATION ---
   const firebaseConfig = {
-  apiKey: "AIzaSyA4tMo0m5HMYVUqpavy1ELkAUNsRd3c9gA",
-  authDomain: "f1-pickem-25550.firebaseapp.com",
-  projectId: "f1-pickem-25550",
-  storageBucket: "f1-pickem-25550.firebasestorage.app",
-  messagingSenderId: "698392572260",
-  appId: "1:698392572260:web:0ffda4c77e17d2a4f50a71"
+      apiKey: "AIzaSyA4tMo0m5HMYVUqpavy1ELkAUNsRd3c9gA",
+      authDomain: "f1-pickem-25550.firebaseapp.com",
+      projectId: "f1-pickem-25550",
+      storageBucket: "f1-pickem-25550.firebasestorage.app",
+      messagingSenderId: "698392572260",
+      appId: "1:698392572260:web:0ffda4c77e17d2a4f50a71"
   };
   // ------------------------------
 
